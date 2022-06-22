@@ -1,0 +1,66 @@
+.landing {
+	min-width: 100%;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+
+	background-color: #0E101D;
+	padding: 40px 20px;
+
+	&__logo-container {
+		flex: 1;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	&__logo{
+		display: flex;
+		max-height: 40vh;
+		pointer-events: none;
+	}
+
+	&__header {
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+
+		&-title {
+			font-size: 24px;
+			color: #33A9FF;
+		}
+	
+		&-description {
+			font-size: 42px;
+			color: white;
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+	}
+
+	&__button {
+		display: flex;
+		align-self: stretch;
+		justify-content: center;
+		align-items: center;
+		border-radius: 5px;
+		padding: 1.2rem 0;
+	
+		font-size: 18px;
+		font-weight: 600;
+	}
+
+	&--login {
+		background-color: #2B64F8;
+		color: white;
+	}
+	&--signup {
+		background-color: white;
+		color: #0E101D;
+	}
+}

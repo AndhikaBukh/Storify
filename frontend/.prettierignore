@@ -1,0 +1,6 @@
+.next
+.idea
+.vscode
+node_modules
+CHANGELOG.md
+README.md
