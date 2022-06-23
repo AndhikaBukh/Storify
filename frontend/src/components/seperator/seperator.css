@@ -1,0 +1,16 @@
+@import url("../../colors.css");
+
+.seperator-container {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.seperator-element {
+	min-height: 3px;
+	flex: 1;
+	display: flex;
+	background: var(--primary-white);
+	border-radius: 4px;
+}

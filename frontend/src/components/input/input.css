@@ -1,0 +1,43 @@
+@import url("../../colors.css");
+
+.input-container {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	background: var(--primary-grey);
+	padding: 12px;
+	gap: 10px;
+	border-radius: 5px;
+}
+
+.input-container__element, .input-container__element::placeholder {
+	flex: 1;
+	font-size: 1.250rem;
+	font-weight: 600;
+	letter-spacing: 1px;
+	color: var(--primary-white);
+}
+.input-container__element::placeholder {
+	color: var(--opacity-white--75);
+}
+
+.login__input-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.input-container__icon-wrapper {
+	display: flex;
+	justify-content: center;
+	--size: 40px;
+	min-width: var(--size);
+	min-height: var(--size);
+	padding: 6px;
+}
+
+.input--full-sized {
+	padding: 10px;
+	gap: 10px;
+}
+

@@ -1,0 +1,51 @@
+.login {
+	min-width: 100%;
+	min-height: 100%;
+	position: relative;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	gap: 40px;
+	padding: 20px;
+}
+
+.login__header {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.login__header-icon {
+	max-width: 12vw;
+}
+
+.login__header-title {
+	font-size: 2rem;
+	color: var(--primary-white);
+}
+
+.login__input-container {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+                      aws
+.login__input-seperator {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 1.25rem;
+	color: var(--primary-white);
+	min-height: 54px;
+}
+
+.login__button-container {
+	position: absolute;
+	bottom: 20px;
+	--width: calc(100% - 40px);
+	max-width: var(--width);
+	min-width: var(--width);
+	display: flex;
+	flex-direction: column;
+}
+

@@ -1,0 +1,60 @@
+.landing {
+	min-width: 100%;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+
+	background-color: #0E101D;
+	padding: 40px 20px;
+}
+
+.landing__logo-container {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.landing__logo {
+	height: 40vmin;
+	pointer-events: none;
+}
+
+.landing__header {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+.landing__app-title {
+	font-size: calc(10px + 2vmin);
+	color: #33A9FF;
+}
+.landing__header {
+	font-size: calc(10px + 2.4vmin);
+	color: white;
+}
+
+.landing__buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+.landing__button {
+	display: flex;
+	align-self: stretch;
+	justify-content: center;
+	align-items: center;
+	border-radius: 5px;
+	padding: 1.2rem 0;
+
+	font-size: calc(10px + 2vmin);
+	font-weight: 600;
+}
+.landing--login {
+	background-color: #2B64F8;
+	color: white;
+}
+.landing--signup {
+	background-color: white;
+	color: #0E101D;
+}
