@@ -1,24 +1,29 @@
-@import url("../../colors.css");
+@import url("../../styles/colors.css");
 
 .input-container {
 	flex: 1;
 	display: flex;
 	align-items: center;
 	background: var(--primary-grey);
-	padding: 12px;
+	padding: 10px;
 	gap: 10px;
 	border-radius: 5px;
+	outline: 2px solid transparent;
+	transition: outline 200ms linear;
 }
 
 .input-container__element, .input-container__element::placeholder {
 	flex: 1;
-	font-size: 1.250rem;
+	font-size: 1.125rem;
 	font-weight: 600;
-	letter-spacing: 1px;
 	color: var(--primary-white);
+	overflow: auto;
 }
 .input-container__element::placeholder {
 	color: var(--opacity-white--75);
+}
+.input-container:focus-within {
+	outline: 2px solid var(--primary-dark-blue);
 }
 
 .login__input-container {
@@ -33,7 +38,9 @@
 	--size: 40px;
 	min-width: var(--size);
 	min-height: var(--size);
-	padding: 6px;
+	max-width: var(--size);
+	max-height: var(--size);
+	padding: 8px;
 }
 
 .input--full-sized {
