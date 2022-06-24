@@ -16,10 +16,6 @@
 	Position Order : T - R - B - L	or	TB - RL
 */
 
-:root { 
-
-}
-
 html, body {
 	height: 100%;
 	width: 100%;
@@ -32,6 +28,7 @@ html, body {
 	box-sizing: border-box;
 /* apple font */
 	font-family: 'SF Pro Text';
+	letter-spacing: 1.4px;
 }
 
 a, p, h1, h2, h3, h4, h5, h6 {
@@ -72,4 +69,11 @@ input {
 	border: 0;
 	outline: 0;
 	background: transparent;
+}
+
+.app {
+	min-width: 100vw;
+	min-height: 100vh;
+	background: var(--primary-black);
+	display: flex;
 }
