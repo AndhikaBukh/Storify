@@ -3,10 +3,11 @@
 	min-height: 100%;
 	position: relative;
 	display: flex;
-	justify-content: center;
 	flex-direction: column;
 	gap: 40px;
 	padding: 20px;
+	padding-top: 30vw;
+	overflow: hidden;
 }
 
 .login__header {
@@ -29,23 +30,20 @@
 	flex-direction: column;
 	gap: 20px;
 }
-                      aws
+
 .login__input-seperator {
 	display: flex;
 	align-items: center;
 	gap: 10px;
-	font-size: 1.25rem;
+	font-size: 1.125rem;
 	color: var(--primary-white);
 	min-height: 54px;
 }
 
 .login__button-container {
-	position: absolute;
-	bottom: 20px;
-	--width: calc(100% - 40px);
-	max-width: var(--width);
-	min-width: var(--width);
+	max-width: 100%;
+	margin-top: auto;
 	display: flex;
 	flex-direction: column;
+	gap: 20px;
 }
-
