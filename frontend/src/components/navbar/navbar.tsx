@@ -1,29 +1,27 @@
-import React, { FC } from "react"; 
-import { BellIcon } from "../icons/bell";
-import { MenuIcon } from "../icons/menu";
-import "./navbar.css";
+import React, { FC } from 'react';
+import { BellIcon, MenuIcon } from '../icons';
+import './navbar.css';
 
 interface NavbarProps {
 	show: boolean;
-	bottomNav?: boolean
+	bottomNav?: boolean;
 	className?: string;
 }
 
 export const Navbar: FC<NavbarProps> = props => {
+	const { show, bottomNav, className } = props;
 
-	const {
-		show,
-		bottomNav,
-		className  
-	} = props;
-
-	return show && show ? 
+	return show && show ? (
 		bottomNav && bottomNav ? (
-			<div className="navbar-bottom">
-
-			</div>
+			<div className="navbar-bottom"></div>
 		) : (
-			<div className={className !== undefined ? `navbar-top ${className}` : "navbar-top"}>
+			<div
+				className={
+					className !== undefined
+						? `navbar-top ${className}`
+						: 'navbar-top'
+				}
+			>
 				<div className="navbar-top__container">
 					<div className="navbar-top__wrapper">
 						<button className="navbar-top__icon-wrapper">
@@ -38,5 +36,6 @@ export const Navbar: FC<NavbarProps> = props => {
 					</div>
 				</div>
 			</div>
-		) : null;
+		)
+	) : null;
 };
