@@ -1,5 +1,6 @@
-import React from "react";
-import "./index.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './index.css';
 
 export const Landing = () => {
 	return (
@@ -9,9 +10,7 @@ export const Landing = () => {
 			</div>
 
 			<div className="landing__header">
-				<h4 className="landing__app-title">
-					Project Sylly
-				</h4>
+				<h4 className="landing__app-title">Project Sylly</h4>
 
 				<h1 className="landing__app-description">
 					Everything that you need just in your pocket!
@@ -19,13 +18,13 @@ export const Landing = () => {
 			</div>
 
 			<div className="landing__buttons">
-				<button className="landing__button landing--login">
+				<Link to="login" className="landing__button landing--login">
 					Log In
-				</button>
+				</Link>
 
-				<button className="landing__button landing--signup">
+				<Link to="signup" className="landing__button landing--signup">
 					Sign Up
-				</button>
+				</Link>
 			</div>
 		</div>
 	);
