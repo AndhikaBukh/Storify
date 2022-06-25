@@ -26,6 +26,7 @@ app.use(session({
 }))
 
 app.use("/api/auth", require('./routes/auth.routes'))
+app.use("/api", require('./routes/user.routes'))
 
 // error handler
 app.use(errorHandler);

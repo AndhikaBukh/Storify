@@ -5,6 +5,7 @@ const session = require('express-session');
 
 exports.register = async (req, res, next) => {
     const {
+        name,
         username,
         email,
         password,
@@ -13,7 +14,7 @@ exports.register = async (req, res, next) => {
 
     try {
         const user = await User.create({
-            username, email, password, gender
+            name, username, email, password, gender
         })
         sendToken(user, 201, res);
 

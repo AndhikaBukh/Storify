@@ -6,19 +6,22 @@ const crypto = require('crypto');
 const UserSchema = new mongoose.Schema({
     name: {
         type: String,
-        unique: true,
-        maxlength: 25
+        trim: true,
+        maxlength: 30,
+        required: [true, "Name is required"],
     },
     username: {
         type: String,
         required: [true, "Please fill a Username"],
         unique: true,
         minlength: [3, "Username must be at least 3 characters"],
+        trim: true
     },
     email: {
         type: String,
         required: [true, "Please fill a Email"],
         unique: true,
+        trim: true,
         match: [
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
             "Please fill a valid email"
@@ -40,12 +43,12 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
     },
-    gender: { type: String, default: "male" },
     bio: {
         type: String,
         default: "",
         maxlength: [200, "Story must be at least 200 characters"]
     },
+    gender: { type: String, default: "male" },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -53,10 +56,6 @@ const UserSchema = new mongoose.Schema({
     following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
-    }],
-    saved: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
     }],
 }, { timestamps: true });
 
