@@ -14,15 +14,14 @@ const root = ReactDOM.createRoot(
 const App = () => {
 	return (
 		<div className="app">
-			<Signup />
-
-			{/* <BrowserRouter>
+			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<Landing />} />
 					<Route path="login" element={<Login />} />
 					<Route path="home" element={<Home />} />
+					<Route path="signup" element={<Signup />} />
 				</Routes>
-			</BrowserRouter> */}
+			</BrowserRouter>
 		</div>
 	);
 };
