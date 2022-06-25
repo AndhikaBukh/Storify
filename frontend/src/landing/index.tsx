@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Button } from '../components/button/button';
 import './index.css';
 
 export const Landing = () => {
@@ -18,12 +19,14 @@ export const Landing = () => {
 			</div>
 
 			<div className="landing__buttons">
-				<Link to="login" className="landing__button landing--login">
-					Log In
+				<Link to="../login" className="react-link">
+					<Button show>Log In</Button>
 				</Link>
 
-				<Link to="signup" className="landing__button landing--signup">
-					Sign Up
+				<Link to="../signup" className="react-link">
+					<Button show type="bold">
+						Sign Up
+					</Button>
 				</Link>
 			</div>
 		</div>
