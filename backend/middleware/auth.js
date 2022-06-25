@@ -2,20 +2,12 @@ const jwt = require('jsonwebtoken')
 const User = require('../models/user.model')
 const ErrorResponse = require('../utils/errorResponse');
 
-exports.protect = async (req, res, next) => {
-    let token;
-
-    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-        // Set token to the Bearer token sent in the authorization header
-        token = req.headers.authorization.split(' ')[1];
-    }
-
-    // If no token found, return response (without sending response)
-    if (!token) {
-        return next(new ErrorResponse('Not authorized', 401));
-    }
-
+const auth = async (req, res, next) => {
     try {
+        const token = req.header('Authorization');
+
+        if (!token) return next(new ErrorResponse('Not authorized to access this route', 401));
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token and get data
 
         const user = await User.findById(decoded.id); // Find user by id
@@ -30,3 +22,5 @@ exports.protect = async (req, res, next) => {
         return next(new ErrorResponse('Not authorized', 401));
     }
 }
+
+module.exports = auth;

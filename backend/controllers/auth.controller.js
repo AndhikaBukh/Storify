@@ -1,20 +1,24 @@
 const User = require('../models/user.model')
 const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
-const sendEmail = require('../utils/sendEmail');
+const session = require('express-session');
 
 exports.register = async (req, res, next) => {
     const {
+        name,
         username,
         email,
-        password
+        password,
+        gender
     } = req.body;
 
     try {
         const user = await User.create({
-            username, email, password
+            name, username, email, password, gender
         })
         sendToken(user, 201, res);
+
+
     } catch (error) {
         next(new ErrorResponse(error.message, 400));
     }
@@ -40,10 +44,15 @@ exports.login = async (req, res, next) => {
 
         const isMatch = await user.matchPasswords(password);
         if (!isMatch) {
-            return next(new ErrorResponse("Invalid Credentials", 401));
+            return next(new ErrorResponse('Passowrd in Correct', 400));
         }
+        req.session.user = 1;
 
-        sendToken(user, 200, res);
+        res.status(200).json({
+            success: true,
+            token: user.getSignedToken(),
+        })
+
     } catch (error) {
         next(error);
     }
@@ -62,21 +71,16 @@ exports.forgotPassword = async (req, res, next) => {
 
         await user.save();
 
-        const resetURL = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`;
+        const resetURL = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`; //localhost:5000/resetpassword/resetToken fetch
 
         const message = `Forgot your password? Go to ${resetURL} to reset it.`;
 
         try {
-            await sendEmail({
-                to: user.email,
-                subject: 'Password Reset',
-                text: message
-            });
-
             res.status(200).json({
                 success: true,
-                message: 'Token sent to email',
+                message: message,
             })
+
         } catch (error) {
             user.resetPasswordToken = undefined;
             user.resetPasswordExpire = undefined;
@@ -118,10 +122,22 @@ exports.resetPassword = async (req, res, next) => {
     }
 };
 
+exports.logout = async (req, res, next) => {
+    try {
+        req.session.destroy();
+        res.status(200).json({
+            success: true,
+            message: 'Logout Successfully'
+        })
+    } catch (error) {
+        next(error);
+    }
+}
+
 const sendToken = (user, statusCode, res) => {
     const token = user.getSignedToken();
     res.status(statusCode).json({
         success: true,
-        token
+        token,
     });
 }

@@ -4,16 +4,24 @@ const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 
 const UserSchema = new mongoose.Schema({
+    name: {
+        type: String,
+        trim: true,
+        maxlength: 30,
+        required: [true, "Name is required"],
+    },
     username: {
         type: String,
         required: [true, "Please fill a Username"],
         unique: true,
         minlength: [3, "Username must be at least 3 characters"],
+        trim: true
     },
     email: {
         type: String,
         required: [true, "Please fill a Email"],
         unique: true,
+        trim: true,
         match: [
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
             "Please fill a valid email"
@@ -22,20 +30,25 @@ const UserSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, "Please fill a Password"],
-        minlength: 6,
+        minlength: [6, "Password must be at least 6 characters"],
         select: false
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-    profilePicture: {
+    role: {
+        type: String,
+        default: "user"
+    },
+    avatar: {
         type: String,
         default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
     },
-    gender: { type: String },
     bio: {
         type: String,
-        default: ""
+        default: "",
+        maxlength: [200, "Story must be at least 200 characters"]
     },
+    gender: { type: String, default: "male" },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -44,12 +57,22 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     }],
-
-})
+}, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
     if (!this.isModified("password")) {
         next();
+    }
+
+    // if useranme aleready exists
+    const user_name = await User.findOne({ username: this.username });
+    if (user_name) {
+        throw new Error("Username already exists");
+    }
+
+    const user_email = await User.findOne({ email: this.email });
+    if (user_email) {
+        throw new Error("Email already exists");
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -80,6 +103,14 @@ UserSchema.methods.getResetPasswordToken = function () {
     this.resetPasswordExpire = Date.now() + 10 * (60 * 1000)
 
     return resetToken;
+}
+
+// destroy token when user logs out
+UserSchema.methods.removeTokenLogout = function () {
+    this.tokens = this.tokens.filter(token => {
+        return token.token !== this.token;
+    }
+    );
 }
 
 const User = mongoose.model("User", UserSchema);
