@@ -6,7 +6,7 @@
 	flex-direction: column;
 	gap: 40px;
 	padding: 20px;
-	padding-top: 30vw;
+	padding-top: 30%;
 	overflow: hidden;
 }
 
@@ -17,7 +17,7 @@
 }
 
 .login__header-icon {
-	max-width: 12vw;
+	max-width: 12%;
 }
 
 .login__header-title {

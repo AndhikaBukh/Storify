@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Button } from '../components/button/button';
 import { UserIcon, PassIcon, EyeIcon, EyeSlashIcon } from '../components/icons';
 import { Input } from '../components/input/input';
@@ -31,7 +32,7 @@ export const Login = () => {
 				<Input
 					show
 					icon={<UserIcon color="#776bf8" />}
-					placeholder="Username"
+					placeholder="Email Address"
 				/>
 				<Input
 					show
@@ -60,9 +61,12 @@ export const Login = () => {
 
 			<div className="login__button-container">
 				<Button show>Log In</Button>
-				<Button show type="optional">
-					Don’t have account? Create One!
-				</Button>
+
+				<Link to="../signup" className="react-link">
+					<Button show type="optional">
+						Don’t have account? Sign Up
+					</Button>
+				</Link>
 			</div>
 		</div>
 	);
