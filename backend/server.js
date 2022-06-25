@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const session = require('express-session');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,7 +11,19 @@ const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 connectDB();
 
+
 app.use(express.json())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    rolling: true,
+    cookie: {
+        secure: false,
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+    }
+}))
 
 app.use("/api/auth", require('./routes/auth.routes'))
 app.use("/api/private", require('./routes/private.routes'))
