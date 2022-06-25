@@ -1,4 +1,5 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
+import { HasTypeArguments } from 'typescript';
 import './input.css';
 
 interface InputProps {
@@ -8,6 +9,7 @@ interface InputProps {
 	icon?: JSX.Element;
 	eventIcon?: JSX.Element;
 	handleEventIcon?: () => void;
+	handleInputValue?: (param: HTMLInputElement) => void;
 	className?: string;
 }
 
@@ -18,7 +20,8 @@ export const Input: FC<InputProps> = props => {
 		type,
 		icon,
 		eventIcon,
-		handleEventIcon,
+		handleEventIcon = () => true,
+		handleInputValue = (e: Element) => e,
 		className,
 	} = props;
 
@@ -38,9 +41,12 @@ export const Input: FC<InputProps> = props => {
 				className="input-container__element"
 				type={type !== undefined ? type : 'text'}
 				placeholder={placeholder}
+				onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
+					handleInputValue(e.target)
+				}
 			/>
 
-			{eventIcon !== undefined && handleEventIcon !== undefined ? (
+			{eventIcon !== undefined ? (
 				<button
 					className="input-container__icon-wrapper"
 					onClick={handleEventIcon}
