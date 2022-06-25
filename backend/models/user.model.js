@@ -27,6 +27,24 @@ const UserSchema = new mongoose.Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    profilePicture: {
+        type: String,
+        default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
+    },
+    gender: { type: String },
+    bio: {
+        type: String,
+        default: ""
+    },
+    followers: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+    following: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
+
 })
 
 UserSchema.pre("save", async function (next) {
