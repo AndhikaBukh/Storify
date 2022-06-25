@@ -1,17 +1,17 @@
 @import url("../../styles/colors.css");
 
-.navbar {
-	position: absolute;
-	z-index: 999;
+.navbar__icon-wrapper {
+	--size: 40px;
+	min-width: var(--size);
+	min-height: var(--size);
+	padding: 8px;
 }
 
+/* ------------------------ Navbar Top ------------------------ */
+
 .navbar-top {
-	top: 0;
-	min-width: 100vw;
+	min-width: 100%;
 	display: flex;
-	padding: 32px 20px 20px;
-	background: var(--primary-grey);
-	border-radius: 0 0 20px 20px;
 }
 
 .navbar-top__container {
@@ -26,9 +26,23 @@
 	margin-left: auto;
 }
 
-.navbar-top__icon-wrapper {
-	--size: 40px;
-	min-width: var(--size);
-	min-height: var(--size);
-	padding: 6px;
+/* ------------------------ Navbar Page ------------------------ */
+
+.navbar-page {
+	min-width: 100%;
+	display: flex;
 }
+
+.navbar-page__container {
+	min-width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+.navbar-page__header {
+	font-size: 1.125rem;
+	font-weight: 600;
+	color: var(--primary-white);
+}
+
+
