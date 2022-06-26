@@ -20,13 +20,11 @@ export const Landing = () => {
 
 			<div className="landing__buttons">
 				<Link to="../login" className="react-link">
-					<Button show>Log In</Button>
+					<Button>Log In</Button>
 				</Link>
 
 				<Link to="../signup" className="react-link">
-					<Button show type="bold">
-						Sign Up
-					</Button>
+					<Button type="bold">Sign Up</Button>
 				</Link>
 			</div>
 		</div>

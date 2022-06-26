@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../components/button/button';
 import {
 	UserIcon,
@@ -46,19 +46,16 @@ export const Signup = () => {
 				</header>
 
 				<Input
-					show
 					icon={<PenIcon color="#776bf8" />}
 					placeholder="Username"
 					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
-					show
 					icon={<UserIcon color="#776bf8" />}
 					placeholder="Email Address"
 					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
-					show
 					icon={<PassIcon color="#776bf8" />}
 					eventIcon={passwordIcon}
 					handleEventIcon={() => {
@@ -72,7 +69,6 @@ export const Signup = () => {
 					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
-					show
 					icon={<PassIcon color="#776bf8" />}
 					eventIcon={passwordIcon}
 					handleEventIcon={() => {
@@ -86,19 +82,21 @@ export const Signup = () => {
 					handleInputValue={ele => console.log(ele.value)}
 				/>
 
-				<Button show>Sign Up</Button>
+				<Link to="/home" className="react-link">
+					<Button>Sign Up</Button>
+				</Link>
 			</div>
 
 			<div className="signup__button-container">
 				<div className="signup__button-seperator">
-					<Seperator show />
+					<Seperator />
 					Or
-					<Seperator show />
+					<Seperator />
 				</div>
 
-				<Button show type="bold">
-					Sign Up With Google
-				</Button>
+				<Link to="/home" className="react-link">
+					<Button type="bold">Sign Up With Google</Button>
+				</Link>
 			</div>
 		</div>
 	);

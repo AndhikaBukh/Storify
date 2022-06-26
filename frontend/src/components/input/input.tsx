@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { HasTypeArguments } from 'typescript';
 import './input.css';
 
 interface InputProps {
@@ -15,7 +14,7 @@ interface InputProps {
 
 export const Input: FC<InputProps> = props => {
 	const {
-		show,
+		show = true,
 		placeholder,
 		type,
 		icon,

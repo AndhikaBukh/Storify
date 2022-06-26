@@ -49,23 +49,21 @@ export const Login = () => {
 				/>
 
 				<div className="login__input-seperator">
-					<Seperator show />
+					<Seperator />
 					Or
-					<Seperator show />
+					<Seperator />
 				</div>
 
-				<Button show type="bold">
-					Continue With Google
-				</Button>
+				<Button type="bold">Continue With Google</Button>
 			</div>
 
 			<div className="login__button-container">
-				<Button show>Log In</Button>
+				<Link to="/home" className="react-link">
+					<Button>Log In</Button>
+				</Link>
 
-				<Link to="../signup" className="react-link">
-					<Button show type="optional">
-						Don’t have account? Sign Up
-					</Button>
+				<Link to="/signup" className="react-link">
+					<Button type="optional">Don’t have account? Sign Up</Button>
 				</Link>
 			</div>
 		</div>

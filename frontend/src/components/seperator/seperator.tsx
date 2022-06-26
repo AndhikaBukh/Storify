@@ -2,13 +2,12 @@ import { FC } from 'react';
 import './seperator.css';
 
 interface SeperatorProps {
-	show: boolean;
-	bottomNav?: boolean;
+	show?: boolean;
 	className?: string;
 }
 
 export const Seperator: FC<SeperatorProps> = props => {
-	const { show, className } = props;
+	const { show = true, className } = props;
 
 	return show && show ? (
 		<div className="seperator-container">
