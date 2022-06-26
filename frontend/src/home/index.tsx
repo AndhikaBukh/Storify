@@ -1,18 +1,15 @@
-import React, { FC } from "react"; 
-import "./index.css";
+import React, { FC } from 'react';
+import { Navbar } from '../components/navbar/navbar';
+import { Post } from '../components/post/post';
+import './index.css';
 
-interface HomeProps {
-	className?: string;
-}
-
-export const Home: FC<HomeProps> = props => {
-
-	const {
-		className  
-	} = props;
-
+export const Home = () => {
 	return (
-		<button className={className !== undefined ? `input-container ${className}` : "input-container"}>
-		</button>
+		<div className="home">
+			<Navbar type="top" />
+			<div className="home__container">
+				<Post />
+			</div>
+		</div>
 	);
 };
