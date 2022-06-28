@@ -1,0 +1,82 @@
+/* --------------------------------------- Adjust Roots --------------------------------------- */
+
+/* Import Google Fonts - Poppins & Quicksand */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&family=Quicksand:wght@300;400;500;600;700&display=swap');
+
+/* 
+	#??????-BF - 75% Opacity
+	#??????-B3 - 70% Opacity
+	#??????-80 - 50% Opacity
+	#??????-40 - 25% Opacity
+	#??????-33 - 20% Opacity
+	#??????-1A - 10% Opacity
+	#??????-0D - 5% Opacity
+	#??????-03 - 1% Opacity
+
+	Position Order : T - R - B - L	or	TB - RL
+*/
+
+html, body {
+	height: 100%;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+*, *:before, *:after {
+	box-sizing: border-box;
+	font-family: 'Poppins';
+}
+
+a, p, h1, h2, h3, h4, h5, h6 {
+	margin: 0;
+}
+
+a, button {
+	text-decoration: none;
+	cursor: pointer;
+}
+
+.nosel, img {
+	-webkit-touch-callout: none;	/* iOS Safari */
+	-webkit-user-select: none;		/* Safari */
+	-khtml-user-select: none;		/* Konqueror HTML */
+	-moz-user-select: none;			/* Old versions of Firefox */
+	-ms-user-select: none;			/* Internet Explorer/Edge */
+	user-select: none;				/* Non-prefixed version, currently 
+									supported by Chrome, Edge, Opera and Firefox */
+}
+
+.ellipsis {
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+button {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: transparent;
+}
+
+input {
+	padding: 0;
+	margin: 0;
+	border: 0;
+	outline: 0;
+	background: transparent;
+}
+
+.app {
+	min-width: 100%;
+	min-height: 100vh;
+	background: var(--primary-black);
+	display: flex;
+}
+
+.react-link {
+	display: flex;
+	justify-content: stretch;
+}
