@@ -31,6 +31,39 @@
 	display: flex;
 }
 
+/* ------------------------ Navbar Bottom ------------------------ */
+
+.navbar-bottom {
+	min-width: calc(100% - 40px);
+	max-width: 200px;
+	position: fixed;
+	bottom: 20px;
+	left: 20px;
+	z-index: 999;
+	display: flex;
+
+	padding: 15px 25px;
+	background: var(--primary-grey);
+	border-radius: 10px;
+}
+@supports (backdrop-filter: blur(10px)) {
+	.navbar-bottom {
+		background: var(--opacity-grey--50);
+		backdrop-filter: blur(50px);
+	}
+}
+.navbar-bottom__container {
+	min-width: 100%;
+	max-width: 200px;
+	display: flex;
+	justify-content: space-between;
+}
+
+.navbar-bottom__container .navbar__icon-wrapper {
+	--size: 42px;
+	padding: 5px;
+}
+
 /* ------------------------ Navbar Page ------------------------ */
 
 .navbar-page {

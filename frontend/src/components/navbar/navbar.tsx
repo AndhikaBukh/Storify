@@ -1,6 +1,13 @@
-import React, { FC } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { BackIcon, BellIcon, MenuIcon } from '../icons';
+import { FC } from 'react';
+import {
+	BackIcon,
+	BellIcon,
+	ChatIcons,
+	HomeFilledIcons,
+	MenuIcon,
+	SearchIcon,
+	UserIcon,
+} from '../icons';
 import './navbar.css';
 
 interface NavbarProps {
@@ -17,8 +24,6 @@ interface NavbarProps {
 }
 
 export const Navbar: FC<NavbarProps> = props => {
-	const navigate = useNavigate();
-
 	const {
 		show = true,
 		type,
@@ -64,20 +69,18 @@ export const Navbar: FC<NavbarProps> = props => {
 				}
 			>
 				<div className="navbar-bottom__container">
-					<div className="navbar-bottom__wrapper">
-						<button className="navbar__icon-wrapper">
-							<BellIcon />
-						</button>
-						<button className="navbar__icon-wrapper">
-							<BellIcon />
-						</button>
-						<button className="navbar__icon-wrapper">
-							<BellIcon />
-						</button>
-						<button className="navbar__icon-wrapper">
-							<BellIcon />
-						</button>
-					</div>
+					<button className="navbar__icon-wrapper">
+						<HomeFilledIcons />
+					</button>
+					<button className="navbar__icon-wrapper">
+						<SearchIcon />
+					</button>
+					<button className="navbar__icon-wrapper">
+						<ChatIcons />
+					</button>
+					<button className="navbar__icon-wrapper">
+						<UserIcon />
+					</button>
 				</div>
 			</div>
 		) : (
