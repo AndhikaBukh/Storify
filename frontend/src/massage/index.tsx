@@ -1,12 +1,17 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Button } from '../components/button/button';
+import { ChatItem } from '../components/chatItem/chatItem';
+import { SearchIcon } from '../components/icons';
+import { Input } from '../components/input/input';
 import './index.css';
 
 export const Profile = () => {
 	return (
 		<div className="chat">
-			{/* HTML Goes here */}
+			<Input icon={<SearchIcon />} placeholder="Search . . ." />
+
+			<div className="chat__items-container">
+				<ChatItem />
+			</div>
 		</div>
 	);
 };
