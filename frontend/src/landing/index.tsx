@@ -14,7 +14,7 @@ export const Landing = () => {
 				<h4 className="landing__app-title">Project Sylly</h4>
 
 				<h1 className="landing__app-description">
-					Everything that you need just in your pocket!
+					Made by Developer for Developer.
 				</h1>
 			</div>
 

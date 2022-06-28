@@ -54,7 +54,9 @@ export const Login = () => {
 					<Seperator />
 				</div>
 
-				<Button type="bold">Continue With Google</Button>
+				<Link to="/home" className="react-link">
+					<Button type="bold">Continue With Google</Button>
+				</Link>
 			</div>
 
 			<div className="login__button-container">
