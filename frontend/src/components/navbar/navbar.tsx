@@ -3,7 +3,7 @@ import {
 	BackIcon,
 	BellIcon,
 	ChatIcons,
-	HomeFilledIcons,
+	HomeFilledIcon,
 	MenuIcon,
 	SearchIcon,
 	UserIcon,
@@ -70,7 +70,7 @@ export const Navbar: FC<NavbarProps> = props => {
 			>
 				<div className="navbar-bottom__container">
 					<button className="navbar__icon-wrapper">
-						<HomeFilledIcons />
+						<HomeFilledIcon />
 					</button>
 					<button className="navbar__icon-wrapper">
 						<SearchIcon />

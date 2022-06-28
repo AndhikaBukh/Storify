@@ -11,6 +11,11 @@ export const Profile = () => {
 
 			<div className="chat__items-container">
 				<ChatItem />
+				<ChatItem />
+				<ChatItem />
+				<ChatItem />
+				<ChatItem />
+				<ChatItem />
 			</div>
 		</div>
 	);

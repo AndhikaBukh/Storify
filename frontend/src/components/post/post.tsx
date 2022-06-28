@@ -2,6 +2,20 @@ import React from 'react';
 import { CommentIcon, HeartIcon, SendIcon, StarIcon } from '../icons';
 import './post.css';
 
+// interface PostProps {
+// 	id: number;
+// 	title: string;
+// 	description: string;
+// 	image: string;
+// 	likes: number;
+// 	comments: number;
+// 	stars: number;
+// 	user: {
+// 		name: string;
+// 		avatar: string;
+// 	};
+// }
+
 export const Post = () => {
 	return (
 		<div className="post">
