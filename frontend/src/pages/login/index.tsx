@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Button } from '../components/button/button';
-import { UserIcon, PassIcon, EyeIcon, EyeSlashIcon } from '../components/icons';
-import { Input } from '../components/input/input';
-import { Seperator } from '../components/seperator/seperator';
+import { Button } from '../../components/button/button';
+import {
+	UserIcon,
+	PassIcon,
+	EyeIcon,
+	EyeSlashIcon,
+} from '../../components/icons';
+import { Input } from '../../components/input/input';
+import { Seperator } from '../../components/seperator/seperator';
 import './index.css';
 
 export const Login = () => {

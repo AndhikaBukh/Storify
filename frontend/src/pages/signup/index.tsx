@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Button } from '../components/button/button';
+import { Button } from '../../components/button/button';
 import {
 	UserIcon,
 	PassIcon,
@@ -8,10 +8,10 @@ import {
 	EyeSlashIcon,
 	PenIcon,
 	InfoIcon,
-} from '../components/icons';
-import { Input } from '../components/input/input';
-import { Navbar } from '../components/navbar/navbar';
-import { Seperator } from '../components/seperator/seperator';
+} from '../../components/icons';
+import { Input } from '../../components/input/input';
+import { Navbar } from '../../components/navbar/navbar';
+import { Seperator } from '../../components/seperator/seperator';
 import './index.css';
 
 export const Signup = () => {
@@ -33,7 +33,7 @@ export const Signup = () => {
 				type="page"
 				pageTitle="Sign Up"
 				handlePageIconLeft={() => {
-					navigate('../login');
+					navigate('../../login');
 				}}
 				pageIconRight={<InfoIcon />}
 			/>

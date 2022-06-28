@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Home } from './home';
-import { Landing } from './landing';
-import { Login } from './login';
-import { Signup } from './signup';
+import { Home } from './pages/home';
+import { Landing } from './pages/landing';
+import { Login } from './pages/login';
+import { Signup } from './pages/signup';
 
 const root = ReactDOM.createRoot(
 	document.querySelector('.root') as HTMLElement
