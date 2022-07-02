@@ -27,6 +27,7 @@ html, body {
 *, *:before, *:after {
 	box-sizing: border-box;
 	font-family: 'Poppins';
+	color: white;
 }
 
 a, p, h1, h2, h3, h4, h5, h6 {
@@ -74,6 +75,7 @@ input {
 	min-height: 100vh;
 	background: var(--primary-black);
 	display: flex;
+	flex-direction: column;
 }
 
 .react-link {
