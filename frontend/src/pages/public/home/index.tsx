@@ -1,6 +1,6 @@
 import React from 'react';
-import { Navbar } from '../../components/navbar/navbar';
-import { Post } from '../../components/post/post';
+import { Navbar } from '../../../components/navbar/navbar';
+import { Post } from '../../../components/post/post';
 import './index.css';
 
 export const Home = () => {
