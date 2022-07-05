@@ -2,6 +2,8 @@
 
 ## Front-End Stack
 
+[![React](https://img.shields.io/badge/-ReactJs-61DAFB?logo=react)](https://reactjs.org/)
+
 1. React
 2. TypeScript
 3. EsLint `VS Code Pluggin Required`
