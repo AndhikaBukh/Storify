@@ -4,11 +4,11 @@
 
 1. React
 2. TypeScript
-3. EsLint [VS Code Pluggin Required]
-4. Prettier [VS Code Pluggin Required]
-5. Sass [After Beta]
-6. Next.JS [After Release]
-7. Material UI [Planned]
+3. EsLint `VS Code Pluggin Required`
+4. Prettier `VS Code Pluggin Required`
+5. Sass `After Beta`
+6. Next.JS `After Release
+7. Material UI `Planned`
 
 ## Back-End
 
