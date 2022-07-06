@@ -4,12 +4,12 @@ import { SearchIcon } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import './index.css';
 
-export const Profile = () => {
+export const MessegesPage = () => {
 	return (
-		<div className="chat">
+		<div className="Messeges">
 			<Input icon={<SearchIcon />} placeholder="Search . . ." />
 
-			<div className="chat__items-container">
+			<div className="Messeges__items-container">
 				<ChatItem />
 				<ChatItem />
 				<ChatItem />

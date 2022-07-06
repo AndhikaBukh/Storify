@@ -11,7 +11,7 @@ import { Input } from '../../../components/input/input';
 import { Seperator } from '../../../components/seperator/seperator';
 import './index.css';
 
-export const Login = () => {
+export const LoginPage = () => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [passwordIcon, setPasswordicon] = useState<JSX.Element>(
 		<EyeSlashIcon />
@@ -25,8 +25,6 @@ export const Login = () => {
 	return (
 		<div className="login">
 			<header className="login__header">
-				<img className="login__header-icon" src="/logo.png" alt="" />
-
 				<h1 className="login__header-title">
 					Hi There! <br />
 					Welcome Back.

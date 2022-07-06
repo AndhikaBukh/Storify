@@ -77,6 +77,10 @@ input {
 	display: flex;
 }
 
+.hide {
+	display: none;
+}
+
 .react-link {
 	display: flex;
 	justify-content: stretch;

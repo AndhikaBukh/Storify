@@ -14,7 +14,7 @@ import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
 import './index.css';
 
-export const Signup = () => {
+export const SignupPage = () => {
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [passwordIcon, setPasswordicon] = useState<JSX.Element>(
 		<EyeSlashIcon />

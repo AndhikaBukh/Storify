@@ -16,7 +16,8 @@
 	justify-content: center;
 }
 .landing__logo {
-	height: 40vmin;
+	width: 60vw;
+	max-height: 60vh;
 	pointer-events: none;
 }
 

@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import './index.css';
 
-export const Landing = () => {
+export const LandingPage = () => {
 	return (
 		<div className="landing">
 			<div className="landing__logo-container">
-				<img className="landing__logo" src="./logo.png" alt="" />
+				<img className="landing__logo" src="./logo.svg" alt="" />
 			</div>
 
 			<div className="landing__header">
