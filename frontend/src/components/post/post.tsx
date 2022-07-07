@@ -1,38 +1,49 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { CommentIcon, HeartIcon, SendIcon, StarIcon } from '../icons';
 import './post.css';
 
-// interface PostProps {
-// 	id: number;
-// 	title: string;
-// 	description: string;
-// 	image: string;
-// 	likes: number;
-// 	comments: number;
-// 	stars: number;
-// 	user: {
-// 		name: string;
-// 		avatar: string;
-// 	};
-// }
+interface PostProps {
+	id: number;
+	postData: postData;
+}
 
-export const Post = () => {
+interface postData {
+	author: string;
+	authorAvatar: string;
+	postImage: string;
+	description: string;
+	likes: number;
+	comments: number;
+	time: string;
+}
+
+export const Post: FC<PostProps> = ({ postData }) => {
+	const {
+		author = '',
+		authorAvatar,
+		postImage,
+		description,
+		likes = 0,
+		comments = 0,
+		time,
+	} = postData;
+
 	return (
 		<div className="post">
 			<div className="post__container">
 				<div className="post__author">
 					<img
 						className="post__author__avatar"
-						src="https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png"
+						src={authorAvatar}
 						alt=""
 					/>
-					<div className="post__author__name">AndhikaBukh</div>
+					<div className="post__author__name">{author}</div>
 				</div>
 
 				<div className="post__content">
 					<img
 						className="post__content-image"
-						src="https://cdn.discordapp.com/attachments/857487423201083403/992777424192413717/Project_Sylly_1.png"
+						src={postImage}
 						alt=""
 					/>
 
@@ -56,7 +67,7 @@ export const Post = () => {
 					<div className="post__content-text">
 						<div className="post__content-text__likes">
 							<div className="post__content-text__likes-amount">
-								69
+								{likes}
 							</div>
 							<div className="post__content-text__likes-text">
 								Likes
@@ -65,16 +76,14 @@ export const Post = () => {
 
 						<div className="post__content-text__container">
 							<div className="post__content-text__username">
-								AndhikaBukh
+								{author}
 							</div>
 							<div className="post__content-text__wrapper">
-								Next project is going to be big!
+								{description}
 							</div>
 						</div>
 
-						<div className="post__content-text__time">
-							1 hour ago
-						</div>
+						<div className="post__content-text__time">{time}</div>
 					</div>
 				</div>
 			</div>

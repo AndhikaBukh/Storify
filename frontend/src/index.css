@@ -70,7 +70,7 @@ input {
 	background: transparent;
 }
 
-.app {
+.root {
 	min-width: 100%;
 	min-height: 100vh;
 	background: var(--primary-black);
@@ -85,3 +85,4 @@ input {
 	display: flex;
 	justify-content: stretch;
 }
+

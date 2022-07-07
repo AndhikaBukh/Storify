@@ -4,46 +4,42 @@ import { Post } from '../../../components/post/post';
 import './index.css';
 
 export const HomePage = () => {
-	const renderStory = () => (
-		<div className="story-wrapper">
-			<div className="story-wrapper__avatar">
-				<img
-					className="story-wrapper__avatar__img"
-					src="https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png"
-					alt="story"
-				/>
-			</div>
-			<div className="story-wrapper__username">TejusLemonnn</div>
-		</div>
-	);
+	// const fetchStory = async () => {
+	// 	const response = await fetch('/api/story');
+	// 	const story = await response.json();
+	// 	return story;
+	// };
 
-	return (
-		<div className="home">
-			<Navbar type="top" />
+	// const renderStory = async () => {
+	// 	const story = await fetchStory();
+	// 	return (
+	// 		<div className="story-wrapper">
+	// 			<div className="story-wrapper__avatar">
+	// 				<img
+	// 					className="story-wrapper__avatar__img"
+	// 					src={require(story.avatar)}
+	// 					alt="story"
+	// 				/>
+	// 			</div>
+	// 			<div className="story-wrapper__username">
+	// 				{require(story.username)}
+	// 			</div>
+	// 		</div>
+	// 	);
+	// };
 
-			{/* Might be converted to componets */}
-			<div className="story-container">
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-				<div className="story-container__story">{renderStory()}</div>
-			</div>
+	// const fetchPosts = async () => {
+	// 	const response = await fetch('/api/posts');
+	// 	const posts = await response.json();
+	// 	return posts;
+	// };
 
-			<div className="home__container">
-				<Post />
-				<Post />
-				<Post />
-			</div>
+	// const renderContent = async () => {
+	// 	const posts = await fetchPosts();
+	// 	return posts.map((post: object) => (
+	// 		<Post key={post.id} postData={post} />
+	// 	));
+	// };
 
-			<Navbar type="bottom" />
-		</div>
-	);
+	return <div className="home"></div>;
 };

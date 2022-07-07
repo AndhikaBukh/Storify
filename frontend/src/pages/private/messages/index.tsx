@@ -1,8 +1,23 @@
 import React from 'react';
-import { ChatItem } from '../../../components/chatItem/chatItem';
 import { SearchIcon } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import './index.css';
+
+const renderMessageItem = () => {
+	return (
+		<div className="message-item">
+			<div className="message-item__image"></div>
+
+			<div className="message-item__content">
+				<div className="message-item__content__header">
+					<div className="message-item__content__header__username"></div>
+					<div className="message-item__content__header__time"></div>
+				</div>
+				<div className="message-item__massage-text"></div>
+			</div>
+		</div>
+	);
+};
 
 export const MessegesPage = () => {
 	return (
@@ -10,12 +25,7 @@ export const MessegesPage = () => {
 			<Input icon={<SearchIcon />} placeholder="Search . . ." />
 
 			<div className="Messeges__items-container">
-				<ChatItem />
-				<ChatItem />
-				<ChatItem />
-				<ChatItem />
-				<ChatItem />
-				<ChatItem />
+				{renderMessageItem()}
 			</div>
 		</div>
 	);
