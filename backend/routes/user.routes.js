@@ -2,13 +2,19 @@ const router = require('express').Router();
 const auth = require('../middleware/auth');
 const userCtrl = require('../controllers/user.controller');
 
-router.get('/search', auth, userCtrl.searchUser);
+const upload = require('../utils/multer');
 
-router.get('/user/:id', auth, userCtrl.getUser);
+router.get('/user/search', auth, userCtrl.searchUser); // search user // http://localhost:3000/api/user/search
 
-router.put('/user', auth, userCtrl.updateUser);
+router.get('/user/:id', auth, userCtrl.getUser); // get user // http://localhost:3000/api/user/:id
 
-router.put('/user/:id/follow', auth, userCtrl.followUser);
-router.put('/user/:id/unfollow', auth, userCtrl.unfollowUser);
+router.put('/user',
+    auth,
+    upload.single('image'),
+    userCtrl.updateUser,
+); // update user // http://localhost:3000/api/user
+
+router.put('/user/:id/follow', auth, userCtrl.followUser); // follow user // http://localhost:3000/api/user/:id/follow
+router.put('/user/:id/unfollow', auth, userCtrl.unfollowUser); // unfollow user // http://localhost:3000/api/user/:id/unfollow
 
 module.exports = router; 

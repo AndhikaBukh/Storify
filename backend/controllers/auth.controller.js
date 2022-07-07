@@ -4,7 +4,9 @@ const ErrorResponse = require('../utils/errorResponse');
 const session = require('express-session');
 
 exports.register = async (req, res, next) => {
+
     const {
+        avatar,
         name,
         username,
         email,
@@ -13,9 +15,16 @@ exports.register = async (req, res, next) => {
     } = req.body;
 
     try {
+
         const user = await User.create({
-            name, username, email, password, gender
+            avatar,
+            name,
+            username,
+            email,
+            password,
+            gender
         })
+
         sendToken(user, 201, res);
 
 

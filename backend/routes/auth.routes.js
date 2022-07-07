@@ -4,14 +4,14 @@ const router = express.Router();
 // Controllers
 const authCtrl = require("../controllers/auth.controller");
 
-router.post("/register", authCtrl.register);
+router.post("/auth/register", authCtrl.register); // http://localhost:3000/api/auth/register
 
-router.post("/login", authCtrl.login);
+router.post("/auth/login", authCtrl.login); // http://localhost:3000/api/auth/login
 
-router.post("/forgotpassword", authCtrl.forgotPassword);
+router.post("/auth/forgotpassword", authCtrl.forgotPassword); // http://localhost:3000/api/auth/forgotpassword
 
-router.put("/resetpassword/:resetToken", authCtrl.resetPassword);
+router.put("/auth/resetpassword/:resetToken", authCtrl.resetPassword); // http://localhost:3000/api/auth/resetpassword/:resetToken
 
-router.post("/logout", authCtrl.logout);
+router.post("/auth/logout", authCtrl.logout); // http://localhost:3000/api/auth/logout
 
 module.exports = router;

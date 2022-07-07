@@ -11,8 +11,8 @@ const errorHandler = require('./middleware/error');
 const connectDB = require('./config/db');
 connectDB();
 
-
 app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
@@ -25,8 +25,10 @@ app.use(session({
     }
 }))
 
-app.use("/api/auth", require('./routes/auth.routes'))
-app.use("/api", require('./routes/user.routes'))
+app.use("/api/", require('./routes/auth.routes'));
+app.use("/api/", require('./routes/user.routes'));
+app.use("/api/", require('./routes/post.routes'));
+app.use("/api/", require('./routes/comment.routes'));
 
 // error handler
 app.use(errorHandler);

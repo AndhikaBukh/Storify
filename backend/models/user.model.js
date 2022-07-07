@@ -41,7 +41,7 @@ const UserSchema = new mongoose.Schema({
     },
     avatar: {
         type: String,
-        default: "https://res.cloudinary.com/devatchannel/image/upload/v1602752402/avatar/avatar_cugq40.png"
+        default: 'https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png'
     },
     bio: {
         type: String,
@@ -56,6 +56,10 @@ const UserSchema = new mongoose.Schema({
     following: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
+    }],
+    post: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
     }],
 }, { timestamps: true });
 
