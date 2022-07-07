@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 
-// const cloudinary = require("../config/cloudinary");
-// const upload = require("../utils/multer");
+const cloudinary = require("../config/cloudinary");
+const upload = require("../utils/multer");
 
 
 const userController = {
