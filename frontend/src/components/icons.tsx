@@ -121,7 +121,7 @@ export const StarIcon: FC<IconProps> = ({ color }) => (
 	</svg>
 );
 
-export const ChatIcons: FC<IconProps> = ({ color }) => (
+export const MessageIcon: FC<IconProps> = ({ color }) => (
 	<svg viewBox="0 0 33 32">
 		<path
 			fill={color !== undefined ? color : 'white'}
@@ -159,7 +159,7 @@ export const HomeFilledIcon: FC<IconProps> = ({ color }) => (
 	</svg>
 );
 
-export const ChatFilledIcon: FC<IconProps> = ({ color }) => (
+export const messageFilledIcon: FC<IconProps> = ({ color }) => (
 	<svg viewBox="0 0 32 32">
 		<path
 			fill="#295ADB"

@@ -31,11 +31,13 @@ export const SignupPage = () => {
 		<div className="signup">
 			<Navbar
 				type="page"
-				pageTitle="Sign Up"
-				handlePageIconLeft={() => {
-					navigate('../../login');
+				pageNavbarAttributes={{
+					pageTitle: 'Sign Up',
+					handlePageIconLeft: () => {
+						navigate('../../login');
+					},
+					pageIconRight: <InfoIcon />,
 				}}
-				pageIconRight={<InfoIcon />}
 			/>
 
 			<div className="signup__input-container">

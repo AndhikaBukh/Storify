@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import { Navbar } from '../../../components/navbar/navbar';
+import { Seperator } from '../../../components/seperator/seperator';
 import './index.css';
 
 export const ProfilePage = () => {
@@ -35,6 +36,9 @@ export const ProfilePage = () => {
 								Posts
 							</div>
 						</div>
+
+						<Seperator type="vertical" />
+
 						<div className="profile__header__statistics-item">
 							<div className="profile__header__statistics-item__value">
 								0

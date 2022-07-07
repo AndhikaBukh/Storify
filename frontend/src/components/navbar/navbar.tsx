@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
 	BackIcon,
 	BellIcon,
-	ChatIcons,
+	MessageIcon,
 	HomeFilledIcon,
+	HomeIcon,
 	MenuIcon,
 	SearchIcon,
 	UserIcon,
@@ -14,13 +16,17 @@ interface NavbarProps {
 	show?: boolean;
 	type?: 'top' | 'bottom' | 'page';
 
+	pageNavbarAttributes?: PageNavbarProps;
+
+	className?: string;
+}
+
+interface PageNavbarProps {
 	pageTitle?: string;
 	pageIconLeft?: JSX.Element;
 	handlePageIconLeft?: () => void;
 	pageIconRight?: JSX.Element;
 	handlePageIconRight?: () => void;
-
-	className?: string;
 }
 
 export const Navbar: FC<NavbarProps> = props => {
@@ -28,14 +34,23 @@ export const Navbar: FC<NavbarProps> = props => {
 		show = true,
 		type,
 
-		pageTitle,
-		pageIconLeft = <BackIcon />,
-		handlePageIconLeft,
-		pageIconRight,
-		handlePageIconRight,
+		pageNavbarAttributes,
 
 		className,
 	} = props;
+
+	const {
+		pageTitle,
+		pageIconLeft,
+		handlePageIconLeft,
+		pageIconRight,
+		handlePageIconRight,
+	} = pageNavbarAttributes || {};
+
+	const [homePos, setHomeIcon] = useState<JSX.Element>(<HomeIcon />);
+	const [searchPos, setSearchIcon] = useState<JSX.Element>(<SearchIcon />);
+	const [messagePos, setBellIcon] = useState<JSX.Element>(<MessageIcon />);
+	const [userPos, setUserIcon] = useState<JSX.Element>(<UserIcon />);
 
 	return show && show ? (
 		type === 'top' ? (
@@ -69,18 +84,29 @@ export const Navbar: FC<NavbarProps> = props => {
 				}
 			>
 				<div className="navbar-bottom__container">
-					<button className="navbar__icon-wrapper">
-						<HomeFilledIcon />
-					</button>
-					<button className="navbar__icon-wrapper">
-						<SearchIcon />
-					</button>
-					<button className="navbar__icon-wrapper">
-						<ChatIcons />
-					</button>
-					<button className="navbar__icon-wrapper">
-						<UserIcon />
-					</button>
+					<Link to="/home">
+						<button className="navbar__icon-wrapper">
+							{homePos}
+						</button>
+					</Link>
+
+					<Link to="/search">
+						<button className="navbar__icon-wrapper">
+							{searchPos}
+						</button>
+					</Link>
+
+					<Link to="/message">
+						<button className="navbar__icon-wrapper">
+							{messagePos}
+						</button>
+					</Link>
+
+					<Link to="/AndhikaBukh">
+						<button className="navbar__icon-wrapper">
+							{userPos}
+						</button>
+					</Link>
 				</div>
 			</div>
 		) : (
