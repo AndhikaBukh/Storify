@@ -411,7 +411,7 @@ export const ArrowRightIcon: FC<IconProps> = ({ color }) => (
 	</svg>
 );
 
-export const DownCircleIcon: FC<IconProps> = ({ color }) => (
+export const ChevronCircleDownIcon: FC<IconProps> = ({ color }) => (
 	<svg viewBox="0 0 24 24">
 		<path
 			fill={color !== undefined ? color : 'white'}
