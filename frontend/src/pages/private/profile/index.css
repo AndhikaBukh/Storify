@@ -10,6 +10,15 @@
 	position: absolute;
 	z-index: 272727;
 }
+.profile--navbar__button {
+	--size: 40px;
+	min-width: var(--size);
+	min-height: var(--size);
+	max-width: var(--size);
+	max-height: var(--size);
+	padding: 8px;
+	display: flex;
+}
 
 .profile__header {
 	display: flex;
@@ -43,8 +52,8 @@
 	gap: 20px;
 	position: absolute;
 	top: 60px;
-	left: 30px;
-	right: 30px;
+	left: 20px;
+	right: 20px;
 }
 .profile__header__avatar {
 	--size: 100px;
@@ -69,11 +78,22 @@
 
 	padding-bottom: 10px;
 }
+.profile__header__statistics-items {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+}
 .profile__header__statistics-item {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 }
+.profile__header__statistics-item--seperator {
+	flex: 0;
+	min-height: 33px;
+	align-self: center;
+}
+
 .profile__header__statistics-item__value {
 	font-size: 1rem;
 	font-weight: 600;
@@ -87,4 +107,82 @@
 	display: grid;
 	place-items: center;
 	color: var(--opacity-white--50);
+}
+
+.profile__header__content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	color: var(--primary-white);
+	padding: 0 10px;
+
+	margin-top: 16px;
+}
+.profile__header__content__username {
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+.profile__header__content__valid-name {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--opacity-white--50);
+}
+.profile__header__content__bio {
+	font-size: 0.875rem;
+	font-weight: 500;
+
+	margin-top: 16px;
+}
+
+.profile__header__content__action {
+	display: flex;
+	gap: 6px;
+
+	margin-top: 32px;
+}
+.profile__header__content__action > * {
+	flex: 1;
+	display: flex;
+	min-height: 44px;
+	max-height: 44px;
+}
+.profile__header__content__action > * > * {
+	flex: 1;
+	padding: 0;
+	font-size: 0.875rem;
+}
+
+.profile__user-posts {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	padding: 0 20px;
+	background: #131628;
+	border-radius: 20px 20px 0 0;
+	margin-top: 24px;
+}
+.profile__user-posts__filter {
+	align-self: stretch;
+	display: flex;
+
+	min-height: 50px;
+}
+.profile__user-posts__filter__item {
+	max-height: 50px;
+
+	flex: 1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 12px 0;
+	cursor: pointer;
+}
+.profile__user-posts__filter__item--active::after {
+	content: "";
+	min-height: 3px;
+	min-width: 100%;
+	background: var(--primary-blue);
+	position: absolute;
+	bottom: 0;
 }
