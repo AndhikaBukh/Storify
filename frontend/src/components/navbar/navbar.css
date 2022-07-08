@@ -7,11 +7,23 @@
 	max-width: var(--size);
 	max-height: var(--size);
 	padding: 8px;
+	display: flex;
+}
+
+.navbar__button {
+	--size: 40px;
+	min-width: var(--size);
+	min-height: var(--size);
+	max-width: var(--size);
+	max-height: var(--size);
+	padding: 8px;
+	display: flex;
 }
 
 /* ------------------------ Navbar Top ------------------------ */
 
 .navbar-top {
+	min-height: 92px;
 	min-width: 100%;
 	max-width: 300px;
 	display: flex;
@@ -29,6 +41,11 @@
 
 .navbar-top__wrapper {
 	display: flex;
+	align-items: center;
+	gap: 14px;
+	color: var(--primary-white);
+	font-size: 1rem;
+	font-weight: 500;
 }
 
 /* ------------------------ Navbar Bottom ------------------------ */

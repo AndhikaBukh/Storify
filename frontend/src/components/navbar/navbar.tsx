@@ -1,5 +1,5 @@
-import { FC, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import {
 	BackIcon,
 	BellIcon,
@@ -9,6 +9,11 @@ import {
 	MenuIcon,
 	SearchIcon,
 	UserIcon,
+	UploadIcon,
+	PlusSquareIcon,
+	MessageFilledIcon,
+	PlusSquareFilledIcon,
+	UserFilledIcon,
 } from '../icons';
 import './navbar.css';
 
@@ -17,8 +22,15 @@ interface NavbarProps {
 	type?: 'top' | 'bottom' | 'page';
 
 	pageNavbarAttributes?: PageNavbarProps;
+	topNavbarAttributes?: TopNavbarProps;
+	activeState?: string;
 
 	className?: string;
+}
+
+interface TopNavbarProps {
+	leftContent?: React.ReactNode;
+	rightContent?: React.ReactNode;
 }
 
 interface PageNavbarProps {
@@ -35,9 +47,13 @@ export const Navbar: FC<NavbarProps> = props => {
 		type,
 
 		pageNavbarAttributes,
+		topNavbarAttributes,
+		activeState,
 
 		className,
 	} = props;
+
+	const { leftContent, rightContent } = topNavbarAttributes || {};
 
 	const {
 		pageTitle,
@@ -46,11 +62,6 @@ export const Navbar: FC<NavbarProps> = props => {
 		pageIconRight,
 		handlePageIconRight,
 	} = pageNavbarAttributes || {};
-
-	const [homePos, setHomeIcon] = useState<JSX.Element>(<HomeIcon />);
-	const [searchPos, setSearchIcon] = useState<JSX.Element>(<SearchIcon />);
-	const [messagePos, setBellIcon] = useState<JSX.Element>(<MessageIcon />);
-	const [userPos, setUserIcon] = useState<JSX.Element>(<UserIcon />);
 
 	return show && show ? (
 		type === 'top' ? (
@@ -63,15 +74,23 @@ export const Navbar: FC<NavbarProps> = props => {
 			>
 				<div className="navbar-top__container">
 					<div className="navbar-top__wrapper">
-						<button className="navbar__icon-wrapper">
-							<BellIcon />
-						</button>
+						{leftContent !== undefined ? (
+							leftContent
+						) : (
+							<button className="navbar__icon-wrapper">
+								<BellIcon />
+							</button>
+						)}
 					</div>
 
-					<div className="navbar-top__wrapper navbar-top__wrapper--align-right">
-						<button className="navbar__icon-wrapper">
-							<MenuIcon />
-						</button>
+					<div className="navbar-top__wrapper">
+						{rightContent !== undefined ? (
+							rightContent
+						) : (
+							<button className="navbar__icon-wrapper">
+								<MenuIcon />
+							</button>
+						)}
 					</div>
 				</div>
 			</div>
@@ -86,25 +105,51 @@ export const Navbar: FC<NavbarProps> = props => {
 				<div className="navbar-bottom__container">
 					<Link to="/home">
 						<button className="navbar__icon-wrapper">
-							{homePos}
+							{activeState === '/home' ? (
+								<HomeFilledIcon />
+							) : (
+								<HomeIcon />
+							)}
 						</button>
 					</Link>
 
 					<Link to="/search">
 						<button className="navbar__icon-wrapper">
-							{searchPos}
+							{activeState === '/search' ? (
+								<SearchIcon color="#295ADB" />
+							) : (
+								<SearchIcon />
+							)}
 						</button>
 					</Link>
 
-					<Link to="/message">
+					<Link to="/upload">
 						<button className="navbar__icon-wrapper">
-							{messagePos}
+							{activeState === '/upload' ? (
+								<PlusSquareFilledIcon />
+							) : (
+								<PlusSquareIcon />
+							)}
+						</button>
+					</Link>
+
+					<Link to="/messages">
+						<button className="navbar__icon-wrapper">
+							{activeState === '/messages' ? (
+								<MessageFilledIcon />
+							) : (
+								<MessageIcon />
+							)}
 						</button>
 					</Link>
 
 					<Link to="/AndhikaBukh">
 						<button className="navbar__icon-wrapper">
-							{userPos}
+							{activeState === '/AndhikaBukh' ? (
+								<UserFilledIcon />
+							) : (
+								<UserIcon />
+							)}
 						</button>
 					</Link>
 				</div>
@@ -123,7 +168,11 @@ export const Navbar: FC<NavbarProps> = props => {
 						className="navbar__icon-wrapper"
 						onClick={handlePageIconLeft}
 					>
-						{pageIconLeft}
+						{pageIconLeft === undefined ? (
+							<BackIcon />
+						) : (
+							pageIconLeft
+						)}
 					</button>
 
 					<div className="navbar-page__header">{pageTitle}</div>
