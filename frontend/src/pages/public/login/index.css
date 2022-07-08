@@ -4,41 +4,39 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
-	gap: 40px;
+	justify-content: space-between;
 	padding: 20px;
-	padding-top: 25vh;
-	overflow: hidden;
 }
 
-.login__header {
-	display: flex;
-	flex-direction: column;
-	gap: 16px;
-}
-
-.login__header-title {
-	font-size: 2rem;
-	color: var(--primary-white);
-}
-
-.login__input-container {
+.login__container {
 	display: flex;
 	flex-direction: column;
 	gap: 20px;
 }
-
-.login__input-seperator {
+.login__container__header {
 	display: flex;
-	align-items: center;
-	gap: 10px;
-	font-size: 1.125rem;
-	color: var(--primary-white);
-	min-height: 54px;
+	flex-direction: column;
+	gap: 16px;
 }
+.login__container__header-title {
+	font-size: 2rem;
+	color: var(--primary-white);
+}
+.login__container__forget-password {
+	display: flex;
+	gap: 1ch;
+	font-size: 0.875rem;
+}
+.login__container__forget-password__link {
+	color: var(--primary-purple);
+}
+.login__container__forget-password:hover {
+	text-decoration: underline;
+}
+
 
 .login__button-container {
 	max-width: 100%;
-	margin-top: auto;
 	display: flex;
 	flex-direction: column;
 	gap: 20px;

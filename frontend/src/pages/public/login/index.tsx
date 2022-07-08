@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
 	UserIcon,
@@ -8,6 +8,7 @@ import {
 	EyeSlashIcon,
 } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
+import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
 import './index.css';
 
@@ -22,16 +23,28 @@ export const LoginPage = () => {
 			? setPasswordicon(<EyeSlashIcon />)
 			: setPasswordicon(<EyeIcon />);
 
+	const navigate = useNavigate();
+
 	return (
 		<div className="login">
-			<header className="login__header">
-				<h1 className="login__header-title">
-					Hi There! <br />
-					Welcome Back.
-				</h1>
-			</header>
+			<Navbar
+				type="page"
+				pageNavbarAttributes={{
+					pageTitle: 'Login',
+					handlePageIconLeft: () => {
+						navigate('/');
+					},
+				}}
+			/>
 
-			<div className="login__input-container">
+			<div className="login__container">
+				<header className="login__container__header">
+					<h1 className="login__container__header-title">
+						Hi There! <br />
+						Welcome Back.
+					</h1>
+				</header>
+
 				<Input
 					show
 					icon={<UserIcon color="#776bf8" />}
@@ -51,15 +64,14 @@ export const LoginPage = () => {
 					type={showPassword !== true ? 'password' : 'text'}
 				/>
 
-				<div className="login__input-seperator">
-					<Seperator />
-					Or
-					<Seperator />
+				<div className="login__container__forget-password">
+					<Link
+						className="login__container__forget-password__link"
+						to="/forgot-password"
+					>
+						Forgot Your Password?
+					</Link>
 				</div>
-
-				<Link to="/home" className="react-link">
-					<Button type="bold">Continue With Google</Button>
-				</Link>
 			</div>
 
 			<div className="login__button-container">
