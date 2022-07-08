@@ -9,14 +9,14 @@ const postController = {
         try {
             const { images, caption } = req.body;
 
-            // const result = await cloudinary.uploader.upload(req.file.path, {
-            //     folder: "post",
-            //     width: 1080,
-            //     height: 1080,
-            // })
+            const result = await cloudinary.uploader.upload(req.file.path, {
+                folder: "post",
+                width: 1080,
+                height: 1080,
+            })
 
             const post = new Post({
-                images: images,
+                images: result.secure_url,
                 caption,
                 author: req.user._id,
             })
