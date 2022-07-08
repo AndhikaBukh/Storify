@@ -5,10 +5,18 @@ interface SeperatorProps {
 	type?: 'horizontal' | 'vertical';
 	show?: boolean;
 	className?: string;
+	borderWidth?: number;
+	fade?: boolean;
 }
 
 export const Seperator: FC<SeperatorProps> = props => {
-	const { show = true, className, type = 'horizontal' } = props;
+	const {
+		show = true,
+		className,
+		type = 'horizontal',
+		borderWidth,
+		fade,
+	} = props;
 
 	const handleClassname = () => {
 		return type === 'horizontal'
@@ -22,7 +30,16 @@ export const Seperator: FC<SeperatorProps> = props => {
 
 	return show && show ? (
 		<div className="seperator-container">
-			<div className={handleClassname()}></div>
+			<div
+				className={
+					handleClassname() + (fade ? ' seperator-element--fade' : '')
+				}
+				style={
+					type === 'vertical'
+						? { minWidth: borderWidth }
+						: { minHeight: borderWidth }
+				}
+			></div>
 		</div>
 	) : null;
 };

@@ -3,7 +3,7 @@ import './button.css';
 
 interface ButtonProps {
 	show?: boolean;
-	children: string;
+	children: string | JSX.Element | JSX.Element[];
 	type?: 'primary' | 'bold' | 'optional';
 	handleClick?: () => void;
 	className?: string;

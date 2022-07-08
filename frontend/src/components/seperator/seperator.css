@@ -8,14 +8,18 @@
 }
 
 .seperator-element {
-	min-height: 3px;
 	display: flex;
 	background: var(--primary-white);
 	border-radius: 4px;
 }
+.seperator-element--fade {
+	background: var(--opacity-white--50);
+}
 .seperator-element--horizontal {
+	min-height: 3px;
 	flex: 1;
 }
 .seperator-element--vertical {
+	min-width: 3px;
 	align-self: stretch;
 }

@@ -20,7 +20,7 @@
 	overflow: auto;
 }
 .input-container__element::placeholder {
-	color: var(--opacity-white--75);
+	color: var(--opacity-white--50);
 }
 .input-container:focus-within, .input-container:hover {
 	outline: 2px solid var(--primary-dark-blue);
