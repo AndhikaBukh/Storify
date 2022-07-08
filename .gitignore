@@ -1,3 +1,6 @@
+# Ignore Byproduct
+.vscode
+
 # Logs
 logs
 *.log
