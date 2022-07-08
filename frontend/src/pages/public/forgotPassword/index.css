@@ -1,0 +1,53 @@
+.forgot-password {
+	min-width: 100%;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	padding: 20px;
+}
+
+.forgot-password__container {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	gap: 20px;
+
+	color: var(--primary-white);
+}
+.forgot-password__container__header {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 16px;
+}
+.forgot-password__container__header__title {
+	font-size: 1.250rem;
+	font-weight: 600;
+	color: var(--primary-white);
+}
+.forgot-password__container__header__subtitle{
+	font-size: 0.875rem;
+	color: var(--opacity-white--75);
+}
+
+.forgot-password__container__help {
+	font-weight: 600;
+
+	display: flex;
+	justify-content: center;
+	gap: 1ch;
+}
+.forgot-password__container__help__link {
+	color: var(--primary-blue);
+	text-decoration: underline;
+}
+
+.forgot-password__button {
+	max-width: 100%;
+	
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
