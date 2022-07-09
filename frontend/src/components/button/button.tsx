@@ -5,7 +5,7 @@ interface ButtonProps {
 	show?: boolean;
 	children: string | JSX.Element | JSX.Element[];
 	type?: 'primary' | 'bold' | 'optional';
-	handleClick?: () => void;
+	onClick?: () => void;
 	className?: string;
 }
 
@@ -14,7 +14,7 @@ export const Button: FC<ButtonProps> = props => {
 		show = true,
 		children,
 		type = 'primary',
-		handleClick,
+		onClick,
 		className,
 	} = props;
 
@@ -25,7 +25,7 @@ export const Button: FC<ButtonProps> = props => {
 					? `button ${type} ${className}`
 					: `button ${type}`
 			}
-			onClick={() => handleClick}
+			onClick={onClick}
 		>
 			{children}
 		</button>

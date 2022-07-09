@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuth } from '../../utils/auth';
 import {
 	BackIcon,
 	BellIcon,
@@ -41,17 +42,18 @@ interface PageNavbarProps {
 	handlePageIconRight?: () => void;
 }
 
-export const Navbar: FC<NavbarProps> = props => {
-	const {
-		show = true,
-		type,
+export const Navbar: FC<NavbarProps> = ({
+	show = true,
+	type,
 
-		pageNavbarAttributes,
-		topNavbarAttributes,
-		activeState,
+	pageNavbarAttributes,
+	topNavbarAttributes,
+	activeState,
 
-		className,
-	} = props;
+	className,
+}) => {
+	// Handle Private Routes
+	const auth = useAuth();
 
 	const { leftContent, rightContent } = topNavbarAttributes || {};
 
@@ -113,7 +115,7 @@ export const Navbar: FC<NavbarProps> = props => {
 						</button>
 					</Link>
 
-					<Link to="/search">
+					<Link to={auth?.user !== null ? '/search' : '/login'}>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/search' ? (
 								<SearchIcon color="#295ADB" />
@@ -123,7 +125,7 @@ export const Navbar: FC<NavbarProps> = props => {
 						</button>
 					</Link>
 
-					<Link to="/upload">
+					<Link to={auth?.user !== null ? '/upload' : '/login'}>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/upload' ? (
 								<PlusSquareFilledIcon />
@@ -133,7 +135,7 @@ export const Navbar: FC<NavbarProps> = props => {
 						</button>
 					</Link>
 
-					<Link to="/messages">
+					<Link to={auth?.user !== null ? '/messages' : '/login'}>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/messages' ? (
 								<MessageFilledIcon />
@@ -143,7 +145,7 @@ export const Navbar: FC<NavbarProps> = props => {
 						</button>
 					</Link>
 
-					<Link to="/AndhikaBukh">
+					<Link to={auth?.user !== null ? '/AndhikaBukh' : '/login'}>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/AndhikaBukh' ? (
 								<UserFilledIcon />
