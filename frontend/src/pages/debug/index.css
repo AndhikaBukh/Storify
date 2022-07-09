@@ -1,0 +1,29 @@
+.debug {
+	min-width: 100%;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	z-index: 1;
+}
+
+.debug__content {
+	display: flex;
+	flex-direction: column;
+	gap: 32px;
+	padding: 0 10px;
+	padding-top: 32px;
+	margin-top: 10px;
+
+	color: white;
+}
+
+.debug__content__container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+
+.debug__content__input {
+	max-height: 54px;
+}

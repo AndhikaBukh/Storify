@@ -4,16 +4,40 @@
 		<!-- Meta Stuff -->
 		<meta charset="UTF-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 		<meta name="description" content="">
 		<meta name="keywords" content="">
 		<meta name="author" content="">
+
+		<!-- PWA Meta -->
+		<meta name="theme-color" content="#191c32">
 
 		<!-- CDN -->
 		
 
 		<!-- Page Settings -->
 		<title>Project Sylly</title>
+		<link rel="manifest" href="manifest.json">
+
+		<script>
+			const registerSW = async () => {
+				if ('serviceWorker' in navigator) {
+					try {
+					await navigator
+							.serviceWorker
+							.register('%PUBLIC_URL%/sw.js');
+					}
+					catch (e) {
+						console.log('SW registration failed');
+						console.log(e);
+					}
+				}
+			}
+
+			window.addEventListener('load', () => {
+				registerSW();
+			});
+		</script>
 	</head>
 
 	<body>

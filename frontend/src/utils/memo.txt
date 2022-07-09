@@ -1,0 +1,19 @@
+const userData = {
+	username:
+		'Andhika Bukhari',
+	validName:
+		'AndhikaBukh',
+	bio:
+		'Front-End Developer Student, At SMK Negeri 1 Surabaya',
+
+	posts: 0,
+	followers: 0,
+	following: 0,
+
+	profilePicture:
+		'https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png',
+	bannerPicture:
+		'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
+
+	isFollowed: false,
+};
