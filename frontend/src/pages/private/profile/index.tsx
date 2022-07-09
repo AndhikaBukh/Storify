@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
 	BackIcon,
@@ -7,47 +7,47 @@ import {
 	ImageIcon,
 	MenuIcon,
 	PackageIcon,
-	SettingsIcon,
 } from '../../../components/icons';
 import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
+import { useAuth } from '../../../utils/auth';
 import './index.css';
 
-interface userDataType {
-	id: number;
-	username: string;
-	validName: string;
-
-	posts: number;
-	followers: number;
-	following: number;
-
-	profilePicture: string;
-	bannerPicture: string;
-
-	isFollowed: boolean;
-}
-
 const userData = {
-	username: 'Andhika Bukhari',
-	validName: '@AndhikaBukh',
-	bio: 'Front-End Developer Student, At SMK Negeri 1 Surabaya',
+	username:
+		// 'Andhika Bukhari',
+		'',
+	validName:
+		// 'AndhikaBukh',
+		'',
+	bio:
+		// 'Front-End Developer Student, At SMK Negeri 1 Surabaya',
+		'',
 
 	posts: 0,
 	followers: 0,
 	following: 0,
 
 	profilePicture:
-		'https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png',
-	// '',
-	// undefined,
+		// 'https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png',
+		'',
 	bannerPicture:
-		'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
+		// 'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
+		'',
 
 	isFollowed: false,
 };
 
 export const ProfilePage = () => {
+	const navigate = useNavigate();
+	const auth = useAuth();
+
+	// Handle Private Routes
+
+	useEffect(() => {
+		console.log(auth?.userData);
+	}, []);
+
 	return (
 		<div className="profile">
 			<Navbar
@@ -56,11 +56,11 @@ export const ProfilePage = () => {
 				topNavbarAttributes={{
 					leftContent: (
 						<>
-							<Link to="-1" className="navbar__button">
+							<Link to="/home" className="navbar__button">
 								<BackIcon />
 							</Link>
 
-							{userData.username}
+							{userData.validName}
 						</>
 					),
 					rightContent: (
@@ -143,22 +143,44 @@ export const ProfilePage = () => {
 
 				<div className="profile__header__content">
 					<div className="profile__header__content__username">
-						{userData.username}
+						{userData.username === ''
+							? auth?.userData?.validName
+							: userData.username}
 					</div>
 					<div className="profile__header__content__valid-name">
-						{userData.validName}
+						{auth?.userData?.validName !== '' ||
+						auth?.userData?.validName !== undefined
+							? '@' + auth?.userData?.validName
+							: ''}
 					</div>
 					<div className="profile__header__content__bio">
-						{userData.bio}
+						{auth?.userData?.bio !== '' ? auth?.userData?.bio : ''}
 					</div>
 
 					<div className="profile__header__content__action">
-						<Link className="react-link" to="/profile/edit">
-							<Button>Message</Button>
-						</Link>
-						<Link className="react-link" to="/profile/edit">
-							<Button type="bold">Follow</Button>
-						</Link>
+						{auth?.userData?.validName === '' ||
+						auth?.userData?.validName === undefined ? (
+							<Link to="/login">
+								<Button>Login / Sign Up</Button>
+							</Link>
+						) : auth?.userData?.validName ? (
+							<Link
+								className="react-link"
+								// to={`/${auth?.userData?.validName}/edit`}
+								to="/login"
+							>
+								<Button>TEST AUTH SYSTEM</Button>
+							</Link>
+						) : (
+							<>
+								<Link className="react-link" to="/profile/edit">
+									<Button>Message</Button>
+								</Link>
+								<Link className="react-link" to="/profile/edit">
+									<Button type="bold">Follow</Button>
+								</Link>
+							</>
+						)}
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
 	UserIcon,
@@ -9,10 +9,31 @@ import {
 } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
-import { Seperator } from '../../../components/seperator/seperator';
+import { useAuth } from '../../../utils/auth';
 import './index.css';
 
 export const LoginPage = () => {
+	const navigate = useNavigate();
+	const auth = useAuth();
+
+	// Handle user login
+	const takeUsernameInput = useRef<HTMLInputElement>(null);
+
+	const handleLogin = () => {
+		auth?.login(takeUsernameInput.current?.value);
+
+		console.log(`elementData : ${takeUsernameInput.current?.value}`);
+		console.log(`componentData : ${takeUsernameInput.current?.value}`);
+		console.log(`authData : ${auth?.userData?.validName}`);
+
+		if (takeUsernameInput.current?.value !== '') {
+			navigate(`/${takeUsernameInput.current?.value}`);
+		} else {
+			console.log('Login failed - Input Value is Undefined or Empty');
+		}
+	};
+
+	// Handle show password
 	const [showPassword, setShowPassword] = useState<boolean>(false);
 	const [passwordIcon, setPasswordicon] = useState<JSX.Element>(
 		<EyeSlashIcon />
@@ -22,8 +43,6 @@ export const LoginPage = () => {
 		showPassword !== false
 			? setPasswordicon(<EyeSlashIcon />)
 			: setPasswordicon(<EyeIcon />);
-
-	const navigate = useNavigate();
 
 	return (
 		<div className="login">
@@ -46,12 +65,12 @@ export const LoginPage = () => {
 				</header>
 
 				<Input
-					show
 					icon={<UserIcon color="#776bf8" />}
 					placeholder="Email Address"
+					type="email"
+					refElement={takeUsernameInput}
 				/>
 				<Input
-					show
 					icon={<PassIcon color="#776bf8" />}
 					eventIcon={passwordIcon}
 					handleEventIcon={() => {
@@ -75,9 +94,7 @@ export const LoginPage = () => {
 			</div>
 
 			<div className="login__button-container">
-				<Link to="/home" className="react-link">
-					<Button>Log In</Button>
-				</Link>
+				<Button onClick={handleLogin}>Log In</Button>
 
 				<Link to="/signup" className="react-link">
 					<Button type="optional">Don’t have account? Sign Up</Button>

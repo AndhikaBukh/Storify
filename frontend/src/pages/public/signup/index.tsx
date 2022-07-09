@@ -7,7 +7,7 @@ import {
 	EyeIcon,
 	EyeSlashIcon,
 	PenIcon,
-	InfoIcon,
+	InfoCircleIcon,
 } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
@@ -36,7 +36,7 @@ export const SignupPage = () => {
 					handlePageIconLeft: () => {
 						navigate('../../login');
 					},
-					pageIconRight: <InfoIcon />,
+					pageIconRight: <InfoCircleIcon />,
 				}}
 			/>
 
@@ -50,12 +50,10 @@ export const SignupPage = () => {
 				<Input
 					icon={<PenIcon color="#776bf8" />}
 					placeholder="Username"
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
 					icon={<UserIcon color="#776bf8" />}
 					placeholder="Email Address"
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
 					icon={<PassIcon color="#776bf8" />}
@@ -68,7 +66,6 @@ export const SignupPage = () => {
 					}}
 					placeholder="Password"
 					type={showPassword !== true ? 'password' : 'text'}
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
 					icon={<PassIcon color="#776bf8" />}
@@ -81,7 +78,6 @@ export const SignupPage = () => {
 					}}
 					placeholder="Password"
 					type={showPassword !== true ? 'password' : 'text'}
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 
 				<Link to="/home" className="react-link">

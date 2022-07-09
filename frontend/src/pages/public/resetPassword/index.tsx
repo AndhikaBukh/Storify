@@ -56,7 +56,6 @@ export const ResetPasswordPage = () => {
 					}}
 					placeholder="Password"
 					type={showPassword !== true ? 'password' : 'text'}
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 				<Input
 					icon={<PassIcon color="#776bf8" />}
@@ -69,7 +68,6 @@ export const ResetPasswordPage = () => {
 					}}
 					placeholder="Password"
 					type={showPassword !== true ? 'password' : 'text'}
-					handleInputValue={ele => console.log(ele.value)}
 				/>
 			</div>
 

@@ -3,6 +3,39 @@ import { Navbar } from '../../../components/navbar/navbar';
 import { Post } from '../../../components/post/post';
 import './index.css';
 
+const userData = {
+	username: 'Andhika Bukhari',
+	validName: '@AndhikaBukh',
+	bio: 'Front-End Developer Student, At SMK Negeri 1 Surabaya',
+
+	posts: 0,
+	followers: 0,
+	following: 0,
+
+	profilePicture:
+		'https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png',
+	bannerPicture:
+		'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
+
+	isFollowed: false,
+};
+
+const postData = {
+	id: 1, // Ignore this, it's just for testing
+	postAuthor: userData.username,
+	postAuthorName: userData.validName,
+	profilePicture: userData.profilePicture,
+
+	postImage:
+		'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
+	postDescription: 'This is a test post',
+
+	isFollowed: userData.isFollowed,
+	isLiked: false,
+	likes: 0,
+	comments: 0,
+};
+
 export const HomePage = () => {
 	// const fetchStory = async () => {
 	// 	const response = await fetch('/api/story');
@@ -41,5 +74,13 @@ export const HomePage = () => {
 	// 	));
 	// };
 
-	return <div className="home"></div>;
+	return (
+		<div className="home">
+			<Navbar className="home--navbar" type="top" />
+
+			<div className="home__content-container">
+				{/* <Post id={0} postData={postData} /> */}
+			</div>
+		</div>
+	);
 };
