@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import { ChangeEventHandler, FC, RefObject, useRef } from 'react';
 import './input.css';
 
 interface InputProps {
@@ -8,22 +8,23 @@ interface InputProps {
 	icon?: JSX.Element;
 	eventIcon?: JSX.Element;
 	handleEventIcon?: () => void;
-	handleInputValue?: (param: HTMLInputElement) => void;
+	handleElement?:
+		| ChangeEventHandler<HTMLInputElement>
+		| ((element: any) => void);
+	refElement?: RefObject<HTMLInputElement>;
 	className?: string;
 }
 
-export const Input: FC<InputProps> = props => {
-	const {
-		show = true,
-		placeholder,
-		type,
-		icon,
-		eventIcon,
-		handleEventIcon = () => true,
-		handleInputValue = (e: Element) => e,
-		className,
-	} = props;
-
+export const Input: FC<InputProps> = ({
+	show = true,
+	placeholder,
+	type,
+	icon,
+	eventIcon,
+	handleEventIcon = () => true,
+	refElement = useRef<HTMLInputElement>(null),
+	className,
+}) => {
 	return show && show ? (
 		<div
 			className={
@@ -40,9 +41,7 @@ export const Input: FC<InputProps> = props => {
 				className="input-container__element"
 				type={type !== undefined ? type : 'text'}
 				placeholder={placeholder}
-				onBlur={(e: React.ChangeEvent<HTMLInputElement>) =>
-					handleInputValue(e.target)
-				}
+				ref={refElement}
 			/>
 
 			{eventIcon !== undefined ? (

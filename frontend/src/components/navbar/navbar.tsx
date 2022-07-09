@@ -115,7 +115,13 @@ export const Navbar: FC<NavbarProps> = ({
 						</button>
 					</Link>
 
-					<Link to={auth?.user !== null ? '/search' : '/login'}>
+					<Link
+						to={
+							auth?.userData?.validName !== ''
+								? '/search'
+								: '/login'
+						}
+					>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/search' ? (
 								<SearchIcon color="#295ADB" />
@@ -125,7 +131,13 @@ export const Navbar: FC<NavbarProps> = ({
 						</button>
 					</Link>
 
-					<Link to={auth?.user !== null ? '/upload' : '/login'}>
+					<Link
+						to={
+							auth?.userData?.validName !== ''
+								? '/upload'
+								: '/login'
+						}
+					>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/upload' ? (
 								<PlusSquareFilledIcon />
@@ -135,7 +147,13 @@ export const Navbar: FC<NavbarProps> = ({
 						</button>
 					</Link>
 
-					<Link to={auth?.user !== null ? '/messages' : '/login'}>
+					<Link
+						to={
+							auth?.userData?.validName !== ''
+								? '/messages'
+								: '/login'
+						}
+					>
 						<button className="navbar__icon-wrapper">
 							{activeState === '/messages' ? (
 								<MessageFilledIcon />
@@ -145,9 +163,15 @@ export const Navbar: FC<NavbarProps> = ({
 						</button>
 					</Link>
 
-					<Link to={auth?.user !== null ? '/AndhikaBukh' : '/login'}>
+					<Link
+						to={
+							auth?.userData?.validName !== ''
+								? `/${auth?.userData?.validName}`
+								: '/login'
+						}
+					>
 						<button className="navbar__icon-wrapper">
-							{activeState === '/AndhikaBukh' ? (
+							{activeState === `/${auth?.userData?.validName}` ? (
 								<UserFilledIcon />
 							) : (
 								<UserIcon />

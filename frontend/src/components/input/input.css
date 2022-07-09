@@ -14,7 +14,7 @@
 
 .input-container__element, .input-container__element::placeholder {
 	flex: 1;
-	font-size: 1.125rem;
+	font-size: 1rem;
 	font-weight: 600;
 	color: var(--primary-white);
 	overflow: auto;

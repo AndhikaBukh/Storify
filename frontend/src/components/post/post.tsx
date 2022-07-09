@@ -4,29 +4,43 @@ import './post.css';
 
 interface PostProps {
 	id: number;
-	postData: postData;
+	postData: postDataProps | undefined;
 }
 
-interface postData {
-	author: string;
-	authorAvatar: string;
+interface postDataProps {
+	postAuthor: string;
+	postAuthorName: string;
+	profilePicture: string;
+
 	postImage: string;
-	description: string;
-	likes: number;
-	comments: number;
-	time: string;
+	postDescription: string;
+	postTime: string;
+
+	isFollowed: boolean;
+	isLiked: boolean;
+	isSaved: boolean;
+
+	likes: 0;
+	comments: 0;
 }
 
 export const Post: FC<PostProps> = ({ postData }) => {
 	const {
-		author = '',
-		authorAvatar,
+		postAuthor,
+		postAuthorName,
+		profilePicture,
+
 		postImage,
-		description,
-		likes = 0,
-		comments = 0,
-		time,
-	} = postData;
+		postDescription,
+		postTime,
+
+		isFollowed,
+		isLiked,
+		isSaved,
+
+		likes,
+		comments,
+	} = postData || {};
 
 	return (
 		<div className="post">
@@ -34,10 +48,13 @@ export const Post: FC<PostProps> = ({ postData }) => {
 				<div className="post__author">
 					<img
 						className="post__author__avatar"
-						src={authorAvatar}
+						src={profilePicture}
 						alt=""
 					/>
-					<div className="post__author__name">{author}</div>
+					<div className="post__author__username">{postAuthor}</div>
+					<div className="post__author__valid-name">
+						{postAuthorName}
+					</div>
 				</div>
 
 				<div className="post__content">
@@ -76,14 +93,16 @@ export const Post: FC<PostProps> = ({ postData }) => {
 
 						<div className="post__content-text__container">
 							<div className="post__content-text__username">
-								{author}
+								{postAuthor}
 							</div>
 							<div className="post__content-text__wrapper">
-								{description}
+								{postDescription}
 							</div>
 						</div>
 
-						<div className="post__content-text__time">{time}</div>
+						<div className="post__content-text__time">
+							{postTime}
+						</div>
 					</div>
 				</div>
 			</div>

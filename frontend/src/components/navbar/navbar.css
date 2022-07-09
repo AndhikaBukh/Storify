@@ -23,12 +23,12 @@
 /* ------------------------ Navbar Top ------------------------ */
 
 .navbar-top {
-	min-height: 92px;
+	/* min-height: 92px; */
 	min-width: 100%;
 	max-width: 300px;
 	display: flex;
 
-	padding: 32px 20px 20px;
+	padding: 26px 20px 20px;
 	background: var(--primary-grey);
 	border-radius: 0 0 20px 20px;
 }
