@@ -15,7 +15,7 @@ router.route('/me') // http://localhost:3000/api/me
     ); // update user
 
 
-router.get('/user/search', auth, userCtrl.searchUser); // search user // http://localhost:3000/api/user/search
+router.get('/search', auth, userCtrl.searchUser); // search user // http://localhost:3000/api/search
 
 router.get('/user/:username', auth, userCtrl.getUserDetail); // deatil user by username // http://localhost:3000/api/user/:username
 
