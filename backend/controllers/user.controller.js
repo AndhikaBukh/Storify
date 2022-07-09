@@ -3,28 +3,13 @@ const User = require('../models/user.model');
 const cloudinary = require("../config/cloudinary");
 const upload = require("../utils/multer");
 
+const sendCookie = require('../utils/sendCookie');
 
 const userController = {
 
-    searchUser: async (req, res) => {
-        try {
-            const users = await User.find({
-                username: {
-                    $regex: `^${req.query.username}`,
-                }
-            }).limit(10).select('username avatar name');
-            res.json(users);
-        } catch (err) {
-            return res.status(500).json({
-                message: err.message
-            });
-        }
-    },
-
     getUser: async (req, res) => {
         try {
-            const user = await User.findById(req.params.id).select('-password')
-                .populate('followers following', '-password');
+            const user = await User.findById(req.params.id);
 
             if (!user) return res.status(404).json({ message: 'User not found' });
             res.json(user);
@@ -61,6 +46,78 @@ const userController = {
             return res.status(500).json({
                 message: err.message
             });
+        }
+    },
+
+    searchUser: async (req, res) => {
+        try {
+            const users = await User.find({
+                username: {
+                    $regex: `^${req.query.username}`,
+                }
+            }).limit(10).select('username avatar name');
+            res.json(users);
+        } catch (err) {
+            return res.status(500).json({
+                message: err.message
+            });
+        }
+    },
+
+    getMe: async (req, res) => {
+        try {
+            const user = await User.findById(req.user._id).populate({
+                path: 'post',
+                populate: {
+                    path: 'author'
+                }
+            });
+
+            res.status(200).json({
+                success: true,
+                user,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
+    getUserDetail: async (req, res) => {
+        try {
+            const user = await User.findOne({ username: req.params.username }).populate("followers following").populate({
+                path: 'post',
+                populate: {
+                    path: 'comments',
+                    populate: {
+                        path: 'user'
+                    }
+                },
+            }).populate({
+                path: 'post',
+                populate: {
+                    path: 'author'
+                }
+            }).populate({
+                path: 'saved',
+                populate: {
+                    path: 'comments',
+                    populate: {
+                        path: 'user'
+                    }
+                },
+            }).populate({
+                path: 'saved',
+                populate: {
+                    path: 'author'
+                }
+            })
+
+            res.status(200).json({
+                success: true,
+                user,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
         }
     },
 
@@ -123,6 +180,26 @@ const userController = {
             return res.status(500).json({
                 message: err.message
             });
+        }
+    },
+
+    updatePassword: async (req, res) => {
+        try {
+            const { oldPassword, newPassword } = req.body;
+
+            const user = await User.findById(req.user._id).select("+password");
+
+            const isPasswordMatched = await user.matchPasswords(oldPassword);
+
+            if (!isPasswordMatched) {
+                return next(new ErrorHandler("Invalid Old Password", 401));
+            }
+
+            user.password = newPassword;
+            await user.save();
+            sendCookie(user, 201, res);
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
         }
     }
 };

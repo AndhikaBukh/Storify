@@ -2,6 +2,7 @@ const User = require('../models/user.model')
 const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
 const session = require('express-session');
+const sendCookie = require('../utils/sendCookie');
 
 exports.register = async (req, res, next) => {
 
@@ -25,7 +26,7 @@ exports.register = async (req, res, next) => {
             gender
         })
 
-        sendToken(user, 201, res);
+        sendCookie(user, 201, res);
 
 
     } catch (error) {
@@ -55,13 +56,8 @@ exports.login = async (req, res, next) => {
         if (!isMatch) {
             return next(new ErrorResponse('Passowrd in Correct', 400));
         }
-        req.session.user = 1;
 
-        res.status(200).json({
-            success: true,
-            token: user.getSignedToken(),
-        })
-
+        sendCookie(user, 200, res);
     } catch (error) {
         next(error);
     }
@@ -133,7 +129,11 @@ exports.resetPassword = async (req, res, next) => {
 
 exports.logout = async (req, res, next) => {
     try {
-        req.session.destroy();
+        res.cookie('token', null, {
+            expires: new Date(Date.now()),
+            httpOnly: true,
+        });
+
         res.status(200).json({
             success: true,
             message: 'Logout Successfully'
@@ -143,8 +143,9 @@ exports.logout = async (req, res, next) => {
     }
 }
 
+
 const sendToken = (user, statusCode, res) => {
-    const token = user.getSignedToken();
+    const token = user.generateToken();
     res.status(statusCode).json({
         success: true,
         token,

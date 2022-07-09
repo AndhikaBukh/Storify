@@ -75,17 +75,6 @@ UserSchema.pre("save", async function (next) {
         next();
     }
 
-    // if useranme aleready exists
-    const user_name = await User.findOne({ username: this.username });
-    if (user_name) {
-        throw new Error("Username already exists");
-    }
-
-    const user_email = await User.findOne({ email: this.email });
-    if (user_email) {
-        throw new Error("Email already exists");
-    }
-
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
     next();
@@ -95,7 +84,7 @@ UserSchema.methods.matchPasswords = async function (password) {
     return await bcrypt.compare(password, this.password)
 }
 
-UserSchema.methods.getSignedToken = function () {
+UserSchema.methods.generateToken = function () {
     return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES,
     })

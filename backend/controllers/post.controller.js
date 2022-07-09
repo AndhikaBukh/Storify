@@ -7,6 +7,7 @@ const upload = require("../utils/multer");
 const postController = {
     createPost: async (req, res) => {
         try {
+
             const { images, caption } = req.body;
 
             const result = await cloudinary.uploader.upload(req.file.path, {
@@ -21,6 +22,12 @@ const postController = {
                 author: req.user._id,
             })
 
+            await User.findByIdAndUpdate(req.user._id, {
+                $push: {
+                    post: post._id,
+                },
+            })
+
             await post.save()
 
             res.status(200).json({
@@ -32,17 +39,11 @@ const postController = {
         }
     },
 
-    getPost: async (req, res) => {
+    getAllPost: async (req, res) => {
         try {
-            const post = await Post.find({
-                user: [...req.user.following, req.user._id]
-            }).sort({ createdAt: -1 })
-                .populate('user likes', 'avatar username')
+            const posts = await Post.find();
 
-            res.status(200).json({
-                message: 'Success get post!',
-                post: post.reverse()
-            })
+            res.json(posts);
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
@@ -50,25 +51,16 @@ const postController = {
 
     updatePost: async (req, res) => {
         try {
-            const { content, images } = req.body
+            const { caption } = req.body
 
-            const post = await Post.findOneAndUpdate({ _id: req.params.id }, {
-                content, images
-            }).populate("user likes", "avatar username name")
-                .populate({
-                    path: "comments",
-                    populate: {
-                        path: "user likes",
-                        select: "-password"
-                    }
-                })
+            const post = await Post.findOneAndUpdate(req.params._id, {
+                caption
+            })
 
             res.status(200).json({
                 message: 'Post updated successfully',
-                newPost: {
-                    ...post._doc,
-                    caption, images
-                }
+                post,
+                updateCaption: caption
             })
         } catch (error) {
             return res.status(500).json({ message: error.message });
@@ -161,7 +153,34 @@ const postController = {
         }
     },
 
+    saveUnsavePost: async (req, res) => {
+        try {
+            const user = await User.findById(req.user._id)
+            const post = await Post.findById(req.params.id)
 
+            if (!post) return next(new ErrorHandler("Post Not Found", 404));
+
+            if (user.saved.includes(post._id)) {
+                user.saved = user.saved.filter((p) => p.toString() !== post._id.toString())
+
+                await user.save()
+                return res.status(200).json({
+                    message: 'Post unsaved successfully'
+                })
+            }
+
+            user.saved.push(post._id)
+            await user.save()
+
+            return res.status(200).json({
+                message: 'Post saved successfully',
+                post
+            })
+
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    }
 };
 
 module.exports = postController;
