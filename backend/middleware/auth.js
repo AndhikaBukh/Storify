@@ -4,10 +4,11 @@ const ErrorResponse = require('../utils/errorResponse');
 
 const auth = async (req, res, next) => {
     try {
-        const token = req.header('Authorization');
+        const authHeader = req.headers.authorization; // Bearer <token>
+        const token = authHeader && authHeader.split(' ')[1];
 
         if (!token) return next(new ErrorResponse('Not authorized to access this route', 401));
-
+        // bearer
         const decoded = jwt.verify(token, process.env.JWT_SECRET); // Verify the token and get data
 
         const user = await User.findById(decoded.id); // Find user by id

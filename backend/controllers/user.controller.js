@@ -108,6 +108,22 @@ const userController = {
                 message: err.message
             });
         }
+    },
+
+    sugestUser: async (req, res) => {
+        try {
+            const users = await User.find(req.params._id)
+
+            const suggestedUsers = users.filter((u) => !u.followers.includes(req.user._id) && u._id.toString() !== req.user._id.toString()).slice(-5)
+
+            res.json({
+                Users: suggestedUsers
+            })
+        } catch (err) {
+            return res.status(500).json({
+                message: err.message
+            });
+        }
     }
 };
 
