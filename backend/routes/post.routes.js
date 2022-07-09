@@ -9,6 +9,7 @@ router.route('/post') // http://localhost:3000/api/post
     .get(auth, postCtrl.getAllPost); // get all post
 
 router.route('/post/:id') // http://localhost:3000/api/post/:id
+    .get(auth, postCtrl.getPostDetail) // get a post by id
     .post(auth, postCtrl.saveUnsavePost) // save or unsave a post
     .put(auth, postCtrl.updatePost) // update a post
     .delete(auth, postCtrl.deletePost); // delete a post

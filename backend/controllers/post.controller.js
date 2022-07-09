@@ -153,6 +153,28 @@ const postController = {
         }
     },
 
+    getPostDetail: async (req, res) => {
+        try {
+            const post = await Post.findById(req.params.id).populate("author likes").populate({
+                path: 'comments',
+                populate: {
+                    path: 'user'
+                }
+            });
+
+            if (!post) {
+                return next(new ErrorHandler("Post Not Found", 404));
+            }
+
+            res.status(200).json({
+                success: true,
+                post,
+            });
+        } catch (error) {
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
     saveUnsavePost: async (req, res) => {
         try {
             const user = await User.findById(req.user._id)
@@ -180,7 +202,8 @@ const postController = {
         } catch (error) {
             return res.status(500).json({ message: error.message });
         }
-    }
+    },
+
 };
 
 module.exports = postController;
