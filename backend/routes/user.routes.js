@@ -15,12 +15,12 @@ router.route('/me') // http://localhost:3000/api/me
     ); // update user
 
 
-router.get('/search', auth, userCtrl.searchUser); // search user // http://localhost:3000/api/search
+router.get('/search', userCtrl.searchUser); // search user // http://localhost:3000/api/search
 
-router.get('/user/:username', auth, userCtrl.getUserDetail); // deatil user by username // http://localhost:3000/api/user/:username
+router.get('/user/:username', userCtrl.getUserDetail); // deatil user by username // http://localhost:3000/api/user/:username
 
 // get user Detai by id
-router.get('/user/:id/detail', auth, userCtrl.getUserDetail); // http://localhost:3000/api/user/:id/detail
+router.get('/user/:id/detail', userCtrl.getUserDetail); // http://localhost:3000/api/user/:id/detail
 
 router.put('/user/:id/follow', auth, userCtrl.followUser); // follow user // http://localhost:3000/api/user/:id/follow
 router.put('/user/:id/unfollow', auth, userCtrl.unfollowUser); // unfollow user // http://localhost:3000/api/user/:id/unfollow
