@@ -10,7 +10,6 @@ import {
 	MenuIcon,
 	SearchIcon,
 	UserIcon,
-	UploadIcon,
 	PlusSquareIcon,
 	MessageFilledIcon,
 	PlusSquareFilledIcon,
@@ -105,79 +104,45 @@ export const Navbar: FC<NavbarProps> = ({
 				}
 			>
 				<div className="navbar-bottom__container">
-					<Link to="/home">
-						<button className="navbar__icon-wrapper">
-							{activeState === '/home' ? (
-								<HomeFilledIcon />
-							) : (
-								<HomeIcon />
-							)}
-						</button>
-					</Link>
+					<button className="navbar__icon-wrapper">
+						{activeState === '/home' ? (
+							<HomeFilledIcon />
+						) : (
+							<HomeIcon />
+						)}
+					</button>
 
-					<Link
-						to={
-							auth?.userData?.validName !== ''
-								? '/search'
-								: '/login'
-						}
-					>
-						<button className="navbar__icon-wrapper">
-							{activeState === '/search' ? (
-								<SearchIcon color="#295ADB" />
-							) : (
-								<SearchIcon />
-							)}
-						</button>
-					</Link>
+					<button className="navbar__icon-wrapper">
+						{activeState === '/search' ? (
+							<SearchIcon color="#295ADB" />
+						) : (
+							<SearchIcon />
+						)}
+					</button>
 
-					<Link
-						to={
-							auth?.userData?.validName !== ''
-								? '/upload'
-								: '/login'
-						}
-					>
-						<button className="navbar__icon-wrapper">
-							{activeState === '/upload' ? (
-								<PlusSquareFilledIcon />
-							) : (
-								<PlusSquareIcon />
-							)}
-						</button>
-					</Link>
+					<button className="navbar__icon-wrapper">
+						{activeState === '/upload' ? (
+							<PlusSquareFilledIcon />
+						) : (
+							<PlusSquareIcon />
+						)}
+					</button>
 
-					<Link
-						to={
-							auth?.userData?.validName !== ''
-								? '/messages'
-								: '/login'
-						}
-					>
-						<button className="navbar__icon-wrapper">
-							{activeState === '/messages' ? (
-								<MessageFilledIcon />
-							) : (
-								<MessageIcon />
-							)}
-						</button>
-					</Link>
+					<button className="navbar__icon-wrapper">
+						{activeState === '/messages' ? (
+							<MessageFilledIcon />
+						) : (
+							<MessageIcon />
+						)}
+					</button>
 
-					<Link
-						to={
-							auth?.userData?.validName !== ''
-								? `/${auth?.userData?.validName}`
-								: '/login'
-						}
-					>
-						<button className="navbar__icon-wrapper">
-							{activeState === `/${auth?.userData?.validName}` ? (
-								<UserFilledIcon />
-							) : (
-								<UserIcon />
-							)}
-						</button>
-					</Link>
+					<button className="navbar__icon-wrapper">
+						{activeState === `/${auth?.userData?.validName}` ? (
+							<UserFilledIcon />
+						) : (
+							<UserIcon />
+						)}
+					</button>
 				</div>
 			</div>
 		) : (
