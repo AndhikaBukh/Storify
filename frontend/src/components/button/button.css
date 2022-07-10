@@ -26,7 +26,7 @@
 	color: var(--primary-black);
 }
 .bold:hover {
-	outline: 2px solid var(--primary-dark-blue);
+	outline: 2px solid var(--primary-purple);
 }
 
 .optional {

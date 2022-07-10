@@ -5,11 +5,16 @@
 	display: flex;
 	align-items: center;
 	background: var(--primary-grey);
-	padding: 10px;
+	padding: 6px;
 	gap: 10px;
 	border-radius: 5px;
 	outline: 2px solid transparent;
 	transition: outline 200ms linear;
+
+	cursor: text;
+}
+.input-container--without-icon {
+	padding: 16px 12px;
 }
 
 .input-container__element, .input-container__element::placeholder {

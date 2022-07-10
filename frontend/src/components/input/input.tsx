@@ -12,6 +12,7 @@ interface InputProps {
 		| ChangeEventHandler<HTMLInputElement>
 		| ((element: any) => void);
 	refElement?: RefObject<HTMLInputElement>;
+	onChange?: (event: any) => void;
 	className?: string;
 }
 
@@ -23,6 +24,7 @@ export const Input: FC<InputProps> = ({
 	eventIcon,
 	handleEventIcon = () => true,
 	refElement = useRef<HTMLInputElement>(null),
+	onChange = e => e,
 	className,
 }) => {
 	return show && show ? (
@@ -30,11 +32,19 @@ export const Input: FC<InputProps> = ({
 			className={
 				className !== undefined
 					? `input-container ${className}`
-					: 'input-container'
+					: icon !== undefined
+					? 'input-container'
+					: 'input-container input-container--without-icon'
 			}
+			onClick={() => refElement.current?.focus()}
 		>
 			{icon !== undefined ? (
-				<div className="input-container__icon-wrapper">{icon}</div>
+				<div
+					className="input-container__icon-wrapper"
+					onClick={() => refElement.current?.focus()}
+				>
+					{icon}
+				</div>
 			) : null}
 
 			<input
@@ -42,11 +52,12 @@ export const Input: FC<InputProps> = ({
 				type={type !== undefined ? type : 'text'}
 				placeholder={placeholder}
 				ref={refElement}
+				onChange={e => onChange(e)}
 			/>
 
 			{eventIcon !== undefined ? (
 				<button
-					className="input-container__icon-wrapper"
+					className="input-container__icon-wrapper input-container__icon-wrapper--event"
 					onClick={handleEventIcon}
 				>
 					{eventIcon}
