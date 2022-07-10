@@ -1,9 +1,22 @@
 import { createContext, FC, useContext, useState } from 'react';
 
 interface IAuthContext {
+	// login: (user: any) => void;
+	// logout: () => void;
+
 	userData: userDataProps;
-	login: (user: any) => void;
-	logout: () => void;
+
+	signupHandler: (
+		_username: string | undefined,
+		_email: string | undefined,
+		_password: string | undefined,
+		_confirmPassword: string | undefined
+	) => void;
+
+	loginHandler: (
+		_username: string | undefined,
+		_password: string | undefined
+	) => void;
 }
 
 interface userDataProps {
@@ -26,9 +39,25 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-	const [userData, setUserData] = useState<userDataProps>({
+	// const login = (_validName: any) => {
+	// 	setUserData({
+	// 		...userData,
+	// 		validName: _validName,
+	// 	});
+	// };
+
+	// const logout = () => {
+	// 	setUserData({
+	// 		username: '',
+	// 	});
+	// };
+
+	// --------------------------------------------- TESTING GROUND WARNING ---------------------------------------------- //
+	const [userData, setUserData] = useState<any>({
 		username: '',
 		validName: '',
+		email: '',
+		password: '',
 		bio: '',
 
 		post: 0,
@@ -39,21 +68,21 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		bannerPicture: '',
 	});
 
-	const login = (_validName: any) => {
+	const signupHandler = ({ _username, _email, _password }: any) => {
 		setUserData({
 			...userData,
-			validName: _validName,
+			username: _username,
+			email: _email,
+			password: _password,
 		});
 	};
 
-	const logout = () => {
-		setUserData({
-			username: '',
-		});
+	const loginHandler = ({ _username, _password }: any) => {
+		console.log(_username, _password);
 	};
 
 	return (
-		<authContext.Provider value={{ userData, login, logout }}>
+		<authContext.Provider value={{ userData, signupHandler, loginHandler }}>
 			{children}
 		</authContext.Provider>
 	);
