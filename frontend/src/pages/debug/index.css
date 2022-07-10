@@ -11,8 +11,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 32px;
-	padding: 0 10px;
-	padding-top: 32px;
+	padding: 32px 10px 64px;
 	margin-top: 10px;
 
 	color: white;
@@ -22,8 +21,10 @@
 	display: flex;
 	flex-direction: column;
 	gap: 16px;
+
+	color: white;
 }
 
-.debug__content__input {
-	max-height: 54px;
+.debug--hide {
+	display: none;
 }

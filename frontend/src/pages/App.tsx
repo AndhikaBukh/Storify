@@ -17,6 +17,11 @@ import { ResetPasswordPage } from './public/resetPassword';
 import { SignupPage } from './public/signup';
 import { AuthProvider, useAuth } from '../utils/auth';
 import { DebugPage } from './debug';
+import { ReqAuth } from '../utils/reqAuth';
+import { FormConfig } from '../utils/form';
+import { ComponentsDebug } from './debug/components';
+import { LoginDebug } from './debug/login';
+import { SignupDebug } from './debug/signup';
 
 // Testing Data
 const userRoutes = ['/AndhikaBukh'];
@@ -52,9 +57,23 @@ export const App = () => {
 					<Route path="/" element={<DebugPage />} />
 
 					{/* ----------- Public Router ----------- */}
-					{/* <Route path="/" element={<LandingPage />} /> */}
-					<Route path="login" element={<LoginPage />} />
-					<Route path="signup" element={<SignupPage />} />
+					<Route path="landing" element={<LandingPage />} />
+					<Route
+						path="login"
+						element={
+							<FormConfig>
+								<LoginPage />
+							</FormConfig>
+						}
+					/>
+					<Route
+						path="signup"
+						element={
+							<FormConfig>
+								<SignupPage />
+							</FormConfig>
+						}
+					/>
 
 					{/* ----------- Optional Route ----------- */}
 					<Route
@@ -68,6 +87,7 @@ export const App = () => {
 
 					{/* ----------- Semi-Public Route ----------- */}
 					<Route path="/home" element={<HomePage />} />
+					<Route path="/search" element={<SearchPage />} />
 
 					{/* ----------- Users Profile Router ----------- */}
 					{/* {userRoutes.map((route, key) => (
@@ -78,13 +98,56 @@ export const App = () => {
 						/>
 					))} */}
 
-					<Route path={`/:username`} element={<ProfilePage />} />
+					<Route path={`/AndhikaBukh`} element={<ProfilePage />} />
 
 					{/* ----------- Private Route ----------- */}
-					<Route path="/messages" element={<MessegesPage />} />
-					<Route path="/search" element={<SearchPage />} />
-					<Route path="/settings" element={<SettingsPage />} />
-					<Route path="/upload" element={<UploadPage />} />
+					<Route
+						path="/messages"
+						element={
+							<ReqAuth>
+								<MessegesPage />
+							</ReqAuth>
+						}
+					/>
+					<Route
+						path="/settings"
+						element={
+							<ReqAuth>
+								<SettingsPage />
+							</ReqAuth>
+						}
+					/>
+					<Route
+						path="/upload"
+						element={
+							<ReqAuth>
+								<UploadPage />
+							</ReqAuth>
+						}
+					/>
+
+					{/* ----------- Debug Route ----------- */}
+					<Route
+						path="/components-debug"
+						element={<ComponentsDebug />}
+					/>
+					<Route
+						path="signup-debug"
+						element={
+							<FormConfig>
+								<SignupDebug />
+							</FormConfig>
+						}
+					/>
+
+					<Route
+						path="/login-debug"
+						element={
+							<FormConfig>
+								<LoginDebug />
+							</FormConfig>
+						}
+					/>
 				</Routes>
 
 				<Navbar
