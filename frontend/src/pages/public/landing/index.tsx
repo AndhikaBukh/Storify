@@ -6,26 +6,32 @@ import './index.css';
 export const LandingPage = () => {
 	return (
 		<div className="landing">
-			<div className="landing__logo-container">
-				<img className="landing__logo" src="./logo.svg" alt="" />
-			</div>
+			<div className="landing__container">
+				<div className="landing__logo-container">
+					<img className="landing__logo" src="./logo.svg" alt="" />
+				</div>
 
-			<div className="landing__header">
-				<h4 className="landing__app-title">Project Sylly</h4>
+				<div className="landing__content">
+					<div className="landing__header">
+						<h4 className="landing__header__title">
+							Project Sylly
+						</h4>
 
-				<h1 className="landing__app-description">
-					Made by Developer for Developer.
-				</h1>
-			</div>
+						<h1 className="landing__header__description">
+							Made by Developer for Developer.
+						</h1>
+					</div>
 
-			<div className="landing__buttons">
-				<Link to="../login" className="react-link">
-					<Button>Log In</Button>
-				</Link>
+					<div className="landing__buttons">
+						<Link to="../login" className="react-link">
+							<Button>Log In</Button>
+						</Link>
 
-				<Link to="../signup" className="react-link">
-					<Button type="bold">Sign Up</Button>
-				</Link>
+						<Link to="../signup" className="react-link">
+							<Button type="bold">Sign Up</Button>
+						</Link>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

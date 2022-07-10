@@ -2,11 +2,19 @@
 	min-width: 100%;
 	min-height: 100vh;
 	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.landing__container {
+	align-self: stretch;
+	display: flex;
 	flex-direction: column;
 	gap: 40px;
-
-	background-color: #0E101D;
 	padding: 40px 20px;
+	border-radius: 10px;
+
+	max-width: 700px;
 }
 
 .landing__logo-container {
@@ -17,8 +25,15 @@
 }
 .landing__logo {
 	width: 60vw;
-	max-height: 60vh;
+	max-width: 300px;
+	max-height: 300px;
 	pointer-events: none;
+}
+
+.landing__content {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
 }
 
 .landing__header {
@@ -26,12 +41,14 @@
 	flex-direction: column;
 	gap: 10px;
 }
-.landing__app-title {
-	font-size: calc(10px + 2vmin);
+.landing__header__title {
+	/* font-size: calc(10px + 2vmin); */
+	font-size: clamp(0.875rem, 0.75rem + 0.6667vw, 1.125rem);
 	color: #33A9FF;
 }
-.landing__header {
-	font-size: calc(10px + 2.4vmin);
+.landing__header__description {
+	/* font-size: calc(10px + 2.4vmin); */
+	font-size: clamp(1.75rem, 1.625rem + 0.6667vw, 2rem);
 	color: white;
 }
 
@@ -48,7 +65,7 @@
 	border-radius: 5px;
 	padding: 1.2rem 0;
 
-	font-size: calc(10px + 2vmin);
+	/* font-size: calc(10px + 2vmin); */
 	font-weight: 600;
 }
 .landing--login {
@@ -58,4 +75,32 @@
 .landing--signup {
 	background-color: white;
 	color: #0E101D;
+}
+
+@media (min-width: 700px) {
+	.landing {
+		background: var(--primary-grey);
+	}
+
+	.landing__container {
+		align-self: center;
+		flex-direction: row;
+		gap: 0;
+
+		min-height: auto;
+		max-width: 560px;
+
+		margin: 4vh 4vw;
+		padding: 40px;
+		background: var(--primary-black);
+	}
+
+	.landing__logo-container {
+		display: none;
+	}
+
+	.landing__content {
+		justify-content: space-between;
+		gap: 20vh;
+	}
 }
