@@ -13,40 +13,8 @@ import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
 import './index.css';
 
-const userData = {
-	username:
-		// 'Andhika Bukhari',
-		'',
-	validName:
-		// 'AndhikaBukh',
-		'',
-	bio:
-		// 'Front-End Developer Student, At SMK Negeri 1 Surabaya',
-		'',
-
-	posts: 0,
-	followers: 0,
-	following: 0,
-
-	profilePicture:
-		// 'https://cdn.discordapp.com/attachments/938793007833047080/938795503322292274/Master_Image.png',
-		'',
-	bannerPicture:
-		// 'https://cdn.discordapp.com/attachments/938793007833047080/993527689614999593/Project_Sylly_2.png',
-		'',
-
-	isFollowed: false,
-};
-
 export const ProfilePage = () => {
-	const navigate = useNavigate();
 	const auth = useAuth();
-
-	// Handle Private Routes
-
-	useEffect(() => {
-		console.log(auth?.userData);
-	}, []);
 
 	return (
 		<div className="profile">
@@ -60,7 +28,7 @@ export const ProfilePage = () => {
 								<BackIcon />
 							</Link>
 
-							{userData.validName}
+							{auth?.userData?.validName}
 						</>
 					),
 					rightContent: (
@@ -75,7 +43,7 @@ export const ProfilePage = () => {
 				<div
 					className="profile__header__banner"
 					style={{
-						backgroundImage: `url(${userData.bannerPicture})`,
+						backgroundImage: `url(${auth?.userData?.bannerPicture})`,
 					}}
 				></div>
 
@@ -85,10 +53,10 @@ export const ProfilePage = () => {
 						style={{
 							backgroundImage: `
 								${
-									userData.profilePicture === '' ||
-									userData.profilePicture === undefined
+									auth?.userData?.profilePicture === '' ||
+									auth?.userData?.profilePicture === undefined
 										? 'url(https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png)'
-										: `url(${userData.profilePicture})`
+										: `url(${auth?.userData?.profilePicture})`
 								}
 							`,
 						}}
@@ -97,7 +65,7 @@ export const ProfilePage = () => {
 						<div className="profile__header__statistics-items">
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{userData.posts}
+									{auth?.userData?.post}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Posts
@@ -114,7 +82,7 @@ export const ProfilePage = () => {
 
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{userData.followers}
+									{auth?.userData?.followers}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Followers
@@ -131,7 +99,7 @@ export const ProfilePage = () => {
 
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{userData.following}
+									{auth?.userData?.following}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Following
@@ -143,9 +111,9 @@ export const ProfilePage = () => {
 
 				<div className="profile__header__content">
 					<div className="profile__header__content__username">
-						{userData.username === ''
+						{auth?.userData?.username === ''
 							? auth?.userData?.validName
-							: userData.username}
+							: auth?.userData?.username}
 					</div>
 					<div className="profile__header__content__valid-name">
 						{auth?.userData?.validName !== '' ||
@@ -169,7 +137,7 @@ export const ProfilePage = () => {
 								// to={`/${auth?.userData?.validName}/edit`}
 								to="/login"
 							>
-								<Button>TEST AUTH SYSTEM</Button>
+								<Button>Edit Profile</Button>
 							</Link>
 						) : (
 							<>
