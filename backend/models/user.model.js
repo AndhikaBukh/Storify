@@ -8,7 +8,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         trim: true,
         maxlength: 30,
-        required: [true, "Name is required"],
     },
     username: {
         type: String,
@@ -21,7 +20,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: [true, "Please fill a Email"],
         unique: true,
-        trim: true,
         match: [
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
             "Please fill a valid email"
