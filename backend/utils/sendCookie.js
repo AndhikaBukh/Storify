@@ -14,6 +14,7 @@ const sendCookie = (user = {}, statusCode, res) => {
         success: true,
         expires: options.expires,
         user,
+        token
     });
 }
 
