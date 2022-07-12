@@ -55,7 +55,7 @@ const userController = {
                 username: {
                     $regex: `^${req.query.username}`,
                 }
-            }).limit(10).select('username avatar name');
+            }).select('username avatar name');
             res.json(users);
         } catch (err) {
             return res.status(500).json({
@@ -171,7 +171,7 @@ const userController = {
         try {
             const users = await User.find(req.params._id)
 
-            const suggestedUsers = users.filter((u) => !u.followers.includes(req.user._id) && u._id.toString() !== req.user._id.toString()).slice(-5)
+            const suggestedUsers = users.filter((u) => !u.followers.includes(req.user._id) && u._id.toString() !== req.user._id.toString()).slice(-10)
 
             res.json({
                 Users: suggestedUsers
