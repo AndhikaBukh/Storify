@@ -50,4 +50,4 @@ This will install all the dependencies that is required for the project.
 
 - [@AndhikaBukh](https://github.com/AndhikaBukh) - Front-End Developer & UI / UX Designer
 - [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer & API Developer
-- [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, UI / UX Contributor
+- [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, & UI / UX Contributor
