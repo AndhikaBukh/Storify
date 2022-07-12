@@ -40,6 +40,6 @@ This will install all the dependencies that is required for the project.
 
 ## 💠 Contributors
 
-- @AndhikaBukh
-- @TejusLemonnn
-- @Bandfal
+- [@AndhikaBukh](https://github.com/AndhikaBukh) - Front-End Developer & UI / UX Designer
+- [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer
+- [@Bandfal](https://github.com/Bandfal) - Helpers & UI / UX Contributor
