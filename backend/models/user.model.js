@@ -33,10 +33,6 @@ const UserSchema = new mongoose.Schema({
     },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
-    role: {
-        type: String,
-        default: "user"
-    },
     avatar: {
         type: String,
         default: 'https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png'
