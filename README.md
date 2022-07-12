@@ -6,6 +6,14 @@ Project Sylly is a social media app built with [React](https://reactjs.org/). We
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed, and then run the following command:
 
+### 📂 In /frontend/
+
+```bash
+npm install
+```
+
+### 📂 In /backend/
+
 ```bash
 npm install
 ```
@@ -41,5 +49,5 @@ This will install all the dependencies that is required for the project.
 ## 💠 Contributors
 
 - [@AndhikaBukh](https://github.com/AndhikaBukh) - Front-End Developer & UI / UX Designer
-- [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer
-- [@Bandfal](https://github.com/Bandfal) - Helpers & UI / UX Contributor
+- [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer & API Developer
+- [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, UI / UX Contributor
