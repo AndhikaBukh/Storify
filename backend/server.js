@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,8 @@ app.use(session({
         maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     }
 }))
+app.use(cookieParser());
+
 
 app.use("/api/", require('./routes/auth.routes'));
 app.use("/api/", require('./routes/user.routes'));
