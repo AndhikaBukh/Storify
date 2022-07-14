@@ -17,7 +17,7 @@ const userController = {
 
             const result = await cloudinary.uploader.upload(req.file.path, {
                 width: 300,
-                folder: "user",
+                folder: "avatar",
                 crop: "fill",
                 public_id: `user/${req.user._id}`,
                 secure_url: true
