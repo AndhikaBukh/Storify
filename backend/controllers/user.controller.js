@@ -13,15 +13,17 @@ const userController = {
 
             const { avatar, username, bio, gender } = req.body;
 
-            await cloudinary.uploader.destroy(user.avatar);
+            await cloudinary.uploader.destroy(`user/${req.user._id}`, user.avatar);
 
             const result = await cloudinary.uploader.upload(req.file.path, {
                 width: 300,
                 folder: "user",
                 crop: "fill",
+                public_id: `user/${req.user._id}`,
+                secure_url: true
             });
 
-            await User.findOneAndUpdate({
+            await User.findOneAndUpdate({ _id: req.user._id }, {
                 avatar: result.secure_url,
                 username,
                 bio,
