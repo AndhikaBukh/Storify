@@ -9,7 +9,7 @@ const userController = {
 
     updateUser: async (req, res) => {
         try {
-            let user = await User.findById(req.params.id);
+            let user = await User.findById(req.user._id);
 
             const { avatar, username, bio, gender } = req.body;
 
@@ -28,7 +28,11 @@ const userController = {
                 gender
             })
 
-            res.json({ message: "Update Succes!" })
+            res.json({
+                message: "Update Succes!",
+                user
+            })
+
         } catch (err) {
             return res.status(500).json({
                 message: err.message
