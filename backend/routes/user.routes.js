@@ -4,9 +4,6 @@ const userCtrl = require('../controllers/user.controller');
 
 const upload = require('../utils/multer');
 
-
-router.get('/user/:id', auth, userCtrl.getUser); // get user // http://localhost:3000/api/user/:id
-
 router.route('/me') // http://localhost:3000/api/me
     .get(auth, userCtrl.getMe) // get user
     .put(auth,

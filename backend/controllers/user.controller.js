@@ -7,19 +7,6 @@ const sendCookie = require('../utils/sendCookie');
 
 const userController = {
 
-    getUser: async (req, res) => {
-        try {
-            const user = await User.findById(req.params.id);
-
-            if (!user) return res.status(404).json({ message: 'User not found' });
-            res.json(user);
-        } catch (err) {
-            return res.status(500).json({
-                message: err.message
-            });
-        }
-    },
-
     updateUser: async (req, res) => {
         try {
             let user = await User.findById(req.params.id);
