@@ -10,7 +10,6 @@ exports.register = async (req, res, next) => {
 
     try {
         const {
-            avatar,
             name,
             username,
             email,
@@ -34,7 +33,6 @@ exports.register = async (req, res, next) => {
         if (password !== confirmPassword) return next(new ErrorResponse("Password doesn't match", 400));
 
         const user = await User.create({
-            avatar,
             name,
             username,
             email,
