@@ -5,7 +5,7 @@ const auth = require('../middleware/auth');
 const upload = require('../utils/multer');
 
 router.route('/post') // http://localhost:3000/api/post
-    .post(auth, upload.single('image'), postCtrl.createPost) // create a post
+    .post(auth, upload.single('images'), postCtrl.createPost) // create a post
     .get(auth, postCtrl.getAllPost); // get all post
 
 router.route('/post/:id') // http://localhost:3000/api/post/:id

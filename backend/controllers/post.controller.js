@@ -10,10 +10,15 @@ const postController = {
 
             const { images, caption } = req.body;
 
+            // random token 
+            const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
             const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: "post",
                 width: 1080,
                 height: 1080,
+                public_id: `${token}`,
+                secure_url: true
             })
 
             const post = new Post({
@@ -22,7 +27,7 @@ const postController = {
                 author: req.user._id,
             })
 
-            await User.findByIdAndUpdate(req.user._id, {
+            await User.findByIdAndUpdate({ _id: req.user._id }, {
                 $push: {
                     post: post._id,
                 },
@@ -71,13 +76,18 @@ const postController = {
         try {
             const post = await Post.findById(req.params.id);
 
-            await cloudinary.uploader.destroy(post.images);
+            await cloudinary.uploader.destroy(`post/${post.images.split('/')[8].split('.')[0]}`, post.images);
 
-            await post.remove();
+            await User.findByIdAndUpdate(req.user._id, {
+                $pull: { post: req.params.id },
+            });
+
+            post.remove();
 
             res.status(200).json({
                 message: 'Post deleted successfully',
-                post
+                post,
+                id: req.params.id
             })
         } catch (error) {
             return res.status(500).json({ message: error.message });
