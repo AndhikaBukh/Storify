@@ -1,4 +1,4 @@
-import { ChangeEventHandler, FC, RefObject, useRef } from 'react';
+import { ChangeEventHandler, FC, RefObject, useEffect, useRef } from 'react';
 import './input.css';
 
 interface InputProps {
@@ -13,6 +13,7 @@ interface InputProps {
 		| ((element: any) => void);
 	refElement?: RefObject<HTMLInputElement>;
 	onChange?: (event: any) => void;
+	isHighlighted?: boolean;
 	className?: string;
 }
 
@@ -20,22 +21,20 @@ export const Input: FC<InputProps> = ({
 	show = true,
 	placeholder,
 	type,
-	icon,
+	icon = undefined,
 	eventIcon,
 	handleEventIcon = () => true,
 	refElement = useRef<HTMLInputElement>(null),
 	onChange = e => e,
-	className,
+	isHighlighted = false,
+	className = '',
 }) => {
+	const handleClassName = `input-container ${className ? className : ''}${
+		icon === undefined ? ' input-container--without-icon' : ''
+	} ${isHighlighted ? 'input-container--highlighted' : ''}`;
 	return show && show ? (
 		<div
-			className={
-				className !== undefined
-					? `input-container ${className}`
-					: icon !== undefined
-					? 'input-container'
-					: 'input-container input-container--without-icon'
-			}
+			className={handleClassName}
 			onClick={() => refElement.current?.focus()}
 		>
 			{icon !== undefined ? (

@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import {
 	BackIcon,
@@ -51,8 +51,10 @@ export const Navbar: FC<NavbarProps> = ({
 
 	className,
 }) => {
-	// Handle Private Routes
 	const auth = useAuth();
+	const location = useLocation();
+	const navigate = useNavigate();
+	const [userProfile, setUserProfile] = useState<string>('pleaceholder');
 
 	const { leftContent, rightContent } = topNavbarAttributes || {};
 
@@ -63,6 +65,24 @@ export const Navbar: FC<NavbarProps> = ({
 		pageIconRight,
 		handlePageIconRight,
 	} = pageNavbarAttributes || {};
+
+	const toProfile = () => {
+		auth?.requestMe()
+			.then((res: any) => {
+				setUserProfile(res?.data?.user?.username);
+				navigate(`/${res?.data?.user?.username}`);
+				document.title = `Project Sylly - ${res?.data?.user?.username}`;
+			})
+			.catch(err => {
+				navigate('/login');
+			});
+	};
+
+	useEffect(() => {
+		auth?.requestMe().then((res: any) => {
+			setUserProfile(res?.data?.user?.username);
+		});
+	}, []);
 
 	return show && show ? (
 		type === 'top' ? (
@@ -104,15 +124,21 @@ export const Navbar: FC<NavbarProps> = ({
 				}
 			>
 				<div className="navbar-bottom__container">
-					<button className="navbar__icon-wrapper">
-						{activeState === '/home' ? (
+					<button
+						className="navbar__icon-wrapper"
+						onClick={() => navigate('/')}
+					>
+						{activeState === '/' ? (
 							<HomeFilledIcon />
 						) : (
 							<HomeIcon />
 						)}
 					</button>
 
-					<button className="navbar__icon-wrapper">
+					<button
+						className="navbar__icon-wrapper"
+						onClick={() => navigate('/search')}
+					>
 						{activeState === '/search' ? (
 							<SearchIcon color="#295ADB" />
 						) : (
@@ -120,7 +146,10 @@ export const Navbar: FC<NavbarProps> = ({
 						)}
 					</button>
 
-					<button className="navbar__icon-wrapper">
+					<button
+						className="navbar__icon-wrapper"
+						onClick={() => navigate('/upload')}
+					>
 						{activeState === '/upload' ? (
 							<PlusSquareFilledIcon />
 						) : (
@@ -128,7 +157,10 @@ export const Navbar: FC<NavbarProps> = ({
 						)}
 					</button>
 
-					<button className="navbar__icon-wrapper">
+					<button
+						className="navbar__icon-wrapper"
+						onClick={() => navigate('/messages')}
+					>
 						{activeState === '/messages' ? (
 							<MessageFilledIcon />
 						) : (
@@ -136,8 +168,11 @@ export const Navbar: FC<NavbarProps> = ({
 						)}
 					</button>
 
-					<button className="navbar__icon-wrapper">
-						{activeState === `/${auth?.userData?.validName}` ? (
+					<button
+						className="navbar__icon-wrapper"
+						onClick={toProfile}
+					>
+						{activeState === `/${userProfile}` ? (
 							<UserFilledIcon />
 						) : (
 							<UserIcon />

@@ -23,7 +23,6 @@
 /* ------------------------ Navbar Top ------------------------ */
 
 .navbar-top {
-	/* min-height: 92px; */
 	min-width: 100%;
 	max-width: 300px;
 	display: flex;
@@ -60,12 +59,12 @@
 	display: flex;
 
 	padding: 15px 25px;
-	background: var(--primary-grey);
+	background: var(--secondary-black);
 	border-radius: 10px;
 }
 @supports (backdrop-filter: blur(10px)) {
 	.navbar-bottom {
-		background: var(--opacity-grey--50);
+		background: var(--opacity-secondary-black--50);
 		backdrop-filter: blur(50px);
 	}
 }

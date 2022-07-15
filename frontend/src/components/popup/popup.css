@@ -1,0 +1,79 @@
+.pop-up {
+	background: var(--primary-grey);
+	display: flex;
+
+	padding: 14px;
+	border-radius: 6px;
+	transition: all 0.3s ease-in-out;
+
+	transform: translateX(-40px);
+	opacity: 0;
+}
+/* ----------------- PopUp Type ----------------- */
+
+.pop-up--error {
+	color: var(--error);
+	border: var(--error) 2px solid;
+}
+.pop-up--success {
+	color: var(--success);
+	border: var(--success) 2px solid;
+}
+.pop-up--warning {
+	color: var(--warning);
+	border: var(--warning) 2px solid;
+}
+.pop-up--info {
+	color: var(--info);
+	border: var(--info) 2px solid;
+}
+
+/* ----------------- PopUp Variant ----------------- */
+
+.pop-up--alert  {
+	flex: 1;
+	align-self: stretch;
+	align-items: center;
+	gap: 14px;
+}
+
+/* ----------------- General Styling ----------------- */
+
+.pop-up--show {
+	transform: translateX(0);
+	opacity: 1;
+}
+
+.pop-up__icon {
+	/* align-self: stretch; */
+	width: clamp(36px, 36px, 36px);
+	height: clamp(36px, 36px, 36px);
+	display: flex;
+}
+
+.pop-up__wrapper {
+	align-self: stretch;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+.pop-up__header {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--primary-white);
+}
+.pop-up__content {
+	font-size: 0.875rem;
+	font-weight: 400;
+	color: var(--opacity-white--50);
+}
+
+.pop-up__button-container {
+	align-self: flex-start;
+	display: flex;
+	gap: 20px;
+}
+.pop-up__button-container__button {
+	width: clamp(24px, 24px, 24px);
+	height: clamp(24px, 24px, 24px);
+}

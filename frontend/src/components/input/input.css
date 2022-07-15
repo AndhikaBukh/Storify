@@ -1,4 +1,4 @@
-@import url("../../styles/colors.css");
+@import url('../../styles/colors.css');
 
 .input-container {
 	flex: 1;
@@ -17,7 +17,8 @@
 	padding: 16px 12px;
 }
 
-.input-container__element, .input-container__element::placeholder {
+.input-container__element,
+.input-container__element::placeholder {
 	flex: 1;
 	font-size: 1rem;
 	font-weight: 600;
@@ -27,8 +28,12 @@
 .input-container__element::placeholder {
 	color: var(--opacity-white--50);
 }
-.input-container:focus-within, .input-container:hover {
+.input-container:focus-within,
+.input-container:hover {
 	outline: 2px solid var(--primary-dark-blue);
+}
+.input-container--highlighted {
+	outline: 2px solid var(--error) !important;
 }
 
 .login__input-container {
@@ -52,4 +57,3 @@
 	padding: 10px;
 	gap: 10px;
 }
-
