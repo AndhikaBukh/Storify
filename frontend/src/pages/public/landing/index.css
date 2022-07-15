@@ -1,6 +1,6 @@
 .landing {
 	min-width: 100%;
-	min-height: 100vh;
+	min-height: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -87,7 +87,6 @@
 		flex-direction: row;
 		gap: 0;
 
-		min-height: auto;
 		max-width: 560px;
 
 		margin: 4vh 4vw;

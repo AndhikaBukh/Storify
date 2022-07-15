@@ -73,7 +73,9 @@ export const ResetPasswordPage = () => {
 
 			<div className="reset-password__button-container">
 				<Link to="/home" className="react-link">
-					<Button type="bold">Sumbit</Button>
+					<Button type="submit" variant="bold">
+						Submit
+					</Button>
 				</Link>
 			</div>
 		</div>

@@ -7,7 +7,7 @@ import { HomePage } from './private/home';
 import { SearchPage } from './private/search';
 import { SettingsPage } from './private/settings';
 import { UploadPage } from './private/upload';
-import { ProfilePage } from './private/profile';
+import { ProfilePage } from './public/profile';
 import { MessegesPage } from './private/messages';
 import { useEffect, useState } from 'react';
 import { ForgotPasswordPage } from './public/forgotPassword';
@@ -15,147 +15,96 @@ import { LandingPage } from './public/landing';
 import { LoginPage } from './public/login';
 import { ResetPasswordPage } from './public/resetPassword';
 import { SignupPage } from './public/signup';
-import { AuthProvider, useAuth } from '../utils/auth';
-import { DebugPage } from './debug';
-import { ReqAuth } from '../utils/reqAuth';
+import { useAuth } from '../utils/auth';
 import { FormConfig } from '../utils/form';
-import { ComponentsDebug } from './debug/components';
-import { LoginDebug } from './debug/login';
-import { SignupDebug } from './debug/signup';
+import { DebugPage } from './debug';
+import { EditProfilePage } from './private/editProfile';
 
-// Testing Data
-const userRoutes = ['/AndhikaBukh'];
-
-const allowNavbar = ['/home', '/search', '/upload', '/messages', userRoutes];
+const hideNavbar = [
+	'/404', // hide on 404 page
+	'/landing',
+	'/forgotPassword',
+	'/login',
+	'/resetPassword',
+	'/signup',
+	'/settings',
+];
 
 export const App = () => {
-	const location = useLocation();
 	const auth = useAuth();
+	const location = useLocation();
 
 	// Handle Navbar Icon Highliting
-	const [currentPosition, setCurrentPosition] = useState('/home');
+	const [currentPosition, setCurrentPosition] = useState('/');
 
 	// Handle Navbar visibility
 	const [showBottomNavbar, setShowBottomNavbar] = useState(false);
 
 	useEffect(() => {
+		auth?.requestMe()?.catch(() => {
+			setShowBottomNavbar(false);
+		});
+
 		// Change icon highlight based on current page
 		setCurrentPosition(location.pathname);
 
-		// Checks if the current page is in the allowNavbar array
-		allowNavbar.includes(location.pathname) ||
-		userRoutes.includes(location.pathname)
-			? setShowBottomNavbar(true)
-			: setShowBottomNavbar(false);
+		// Checks if the current page is in the hideNavbar array
+		hideNavbar.includes(location.pathname)
+			? setShowBottomNavbar(false)
+			: setShowBottomNavbar(true);
 	}, [location.pathname]);
 
 	return (
 		<div className="app">
-			<AuthProvider>
-				<Routes>
-					{/* ----------- Debug Page ----------- */}
-					<Route path="/" element={<DebugPage />} />
-
-					{/* ----------- Public Router ----------- */}
-					<Route path="landing" element={<LandingPage />} />
-					<Route
-						path="login"
-						element={
-							<FormConfig>
-								<LoginPage />
-							</FormConfig>
-						}
-					/>
-					<Route
-						path="signup"
-						element={
-							<FormConfig>
-								<SignupPage />
-							</FormConfig>
-						}
-					/>
-
-					{/* ----------- Optional Route ----------- */}
-					<Route
-						path="/forgot-password"
-						element={<ForgotPasswordPage />}
-					/>
-					<Route
-						path="/reset-password/:id"
-						element={<ResetPasswordPage />}
-					/>
-
-					{/* ----------- Semi-Public Route ----------- */}
-					<Route path="/home" element={<HomePage />} />
-					<Route path="/search" element={<SearchPage />} />
-
-					{/* ----------- Users Profile Router ----------- */}
-					{/* {userRoutes.map((route, key) => (
-						<Route
-							key={key}
-							path={route}
-							element={<ProfilePage />}
-						/>
-					))} */}
-
-					<Route path={`/AndhikaBukh`} element={<ProfilePage />} />
-
-					{/* ----------- Private Route ----------- */}
-					<Route
-						path="/messages"
-						element={
-							<ReqAuth>
-								<MessegesPage />
-							</ReqAuth>
-						}
-					/>
-					<Route
-						path="/settings"
-						element={
-							<ReqAuth>
-								<SettingsPage />
-							</ReqAuth>
-						}
-					/>
-					<Route
-						path="/upload"
-						element={
-							<ReqAuth>
-								<UploadPage />
-							</ReqAuth>
-						}
-					/>
-
-					{/* ----------- Debug Route ----------- */}
-					<Route
-						path="/components-debug"
-						element={<ComponentsDebug />}
-					/>
-					<Route
-						path="signup-debug"
-						element={
-							<FormConfig>
-								<SignupDebug />
-							</FormConfig>
-						}
-					/>
-
-					<Route
-						path="/login-debug"
-						element={
-							<FormConfig>
-								<LoginDebug />
-							</FormConfig>
-						}
-					/>
-				</Routes>
-
-				<Navbar
-					show={showBottomNavbar}
-					type="bottom"
-					activeState={currentPosition}
+			<Routes>
+				{/* ----------- Public Router ----------- */}
+				<Route path="/" element={<DebugPage />} />
+				<Route path="landing" element={<LandingPage />} />
+				<Route
+					path="login"
+					element={
+						<FormConfig>
+							<LoginPage />
+						</FormConfig>
+					}
 				/>
-			</AuthProvider>
+				<Route
+					path="signup"
+					element={
+						<FormConfig>
+							<SignupPage />
+						</FormConfig>
+					}
+				/>
+
+				{/* ----------- Optional Route ----------- */}
+				<Route
+					path="/forgot-password"
+					element={<ForgotPasswordPage />}
+				/>
+				<Route
+					path="/reset-password/:id"
+					element={<ResetPasswordPage />}
+				/>
+
+				{/* ----------- Semi-Public Route ----------- */}
+				<Route path="/search" element={<SearchPage />} />
+
+				<Route path={'/:username'} element={<ProfilePage />} />
+
+				{/* ----------- Private Route ----------- */}
+				<Route path="/" element={<HomePage />} />
+				<Route path="/messages" element={<MessegesPage />} />
+				<Route path="/settings" element={<SettingsPage />} />
+				<Route path="/upload" element={<UploadPage />} />
+				<Route path="/edit-profile" element={<EditProfilePage />} />
+			</Routes>
+
+			<Navbar
+				show={showBottomNavbar}
+				type="bottom"
+				activeState={currentPosition}
+			/>
 		</div>
 	);
 };

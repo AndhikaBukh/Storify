@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MenuIcon, SearchIcon } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
+import { useAuth } from '../../../utils/auth';
 import './index.css';
 
 const userData = {
@@ -65,6 +66,14 @@ const renderMessageItem = () => {
 };
 
 export const MessegesPage = () => {
+	const auth = useAuth();
+
+	useEffect(() => {
+		auth?.requireLogin();
+
+		document.title = 'Project Sylly - Messeges';
+	}, []);
+
 	return (
 		<div className="messeges">
 			<Navbar

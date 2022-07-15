@@ -16,7 +16,8 @@
 	Position Order : T - R - B - L	or	TB - RL
 */
 
-html, body {
+html,
+body {
 	height: 100%;
 	width: 100%;
 	margin: 0;
@@ -24,28 +25,39 @@ html, body {
 	box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
 	box-sizing: border-box;
-/* apple font */
+	/* apple font */
 	font-family: 'Noto Sans';
 }
 
-a, p, h1, h2, h3, h4, h5, h6 {
+a,
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
 	margin: 0;
 }
 
-a, button {
+a,
+button {
 	text-decoration: none;
 	cursor: pointer;
 }
 
-.nosel, img {
-	-webkit-touch-callout: none;	/* iOS Safari */
-	-webkit-user-select: none;		/* Safari */
-	-khtml-user-select: none;		/* Konqueror HTML */
-	-moz-user-select: none;			/* Old versions of Firefox */
-	-ms-user-select: none;			/* Internet Explorer/Edge */
-	user-select: none;				/* Non-prefixed version, currently 
+.nosel,
+img {
+	-webkit-touch-callout: none; /* iOS Safari */
+	-webkit-user-select: none; /* Safari */
+	-khtml-user-select: none; /* Konqueror HTML */
+	-moz-user-select: none; /* Old versions of Firefox */
+	-ms-user-select: none; /* Internet Explorer/Edge */
+	user-select: none; /* Non-prefixed version, currently 
 									supported by Chrome, Edge, Opera and Firefox */
 }
 
@@ -86,3 +98,11 @@ input {
 	justify-content: stretch;
 }
 
+/* --------------- Style Scrollbar --------------- */
+
+html::-webkit-scrollbar {
+	width: 0;
+}
+html {
+	scrollbar-width: none;
+}

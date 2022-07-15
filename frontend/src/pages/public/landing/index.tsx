@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import './index.css';
 
 export const LandingPage = () => {
+	useEffect(() => {
+		document.title = 'Project Sylly - Landing Page';
+	}, []);
+
 	return (
 		<div className="landing">
 			<div className="landing__container">
@@ -28,7 +32,7 @@ export const LandingPage = () => {
 						</Link>
 
 						<Link to="../signup" className="react-link">
-							<Button type="bold">Sign Up</Button>
+							<Button variant="bold">Sign Up</Button>
 						</Link>
 					</div>
 				</div>

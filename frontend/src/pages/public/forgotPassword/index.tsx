@@ -54,7 +54,7 @@ export const ForgotPasswordPage = () => {
 			</div>
 
 			<div className="forgot-password__button">
-				<Button>Send Verivication Code</Button>
+				<Button type="submit">Send Verivication Code</Button>
 			</div>
 		</div>
 	);

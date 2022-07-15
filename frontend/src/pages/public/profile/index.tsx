@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
 	BackIcon,
@@ -7,14 +7,82 @@ import {
 	ImageIcon,
 	MenuIcon,
 	PackageIcon,
+	SliderIcon,
 } from '../../../components/icons';
 import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
 import './index.css';
 
+interface userDataInterface {
+	name: string;
+	username: string;
+	email: string;
+	bio: string;
+
+	followers: string[];
+	following: string[];
+	post: string[];
+
+	avatar: string;
+	bannerPicture: string;
+}
+
 export const ProfilePage = () => {
 	const auth = useAuth();
+	const navigate = useNavigate();
+	const location = useLocation();
+
+	const [userData, setUserData] = useState<userDataInterface>({
+		name: '',
+		username: '',
+		email: '',
+		bio: '',
+
+		followers: [],
+		following: [],
+		post: [],
+
+		avatar: '',
+		bannerPicture: '',
+	});
+
+	const _username = location.pathname.split('/')[1];
+	const allowProfileEdit = auth?.requestMe()?.then((res: any) => {
+		return res?.data?.user?.username === _username;
+	});
+
+	const handleMessageButton = () => {
+		navigate(`/message/${_username}`);
+	};
+
+	const handleFollowButton = () => {
+		console.log('follow button clicked');
+	};
+
+	const handleUnauthorized = (_action: any) => {
+		auth?.requestMe()
+			?.catch(() => {
+				navigate('/login');
+			})
+			?.then((res: any) => {
+				if (res?.data?.user?.username !== _username) {
+					_action();
+				}
+			});
+	};
+
+	useEffect(() => {
+		auth?.requestUser(_username)
+			.then((res: any) => {
+				setUserData(res?.data?.user);
+			})
+			.catch(() => {
+				navigate('/404-page');
+			});
+
+		document.title = `Project Sylly - ${_username}`;
+	}, []);
 
 	return (
 		<div className="profile">
@@ -24,18 +92,18 @@ export const ProfilePage = () => {
 				topNavbarAttributes={{
 					leftContent: (
 						<>
-							<Link to="/home" className="navbar__button">
+							<Link to="/" className="navbar__button">
 								<BackIcon />
 							</Link>
 
-							{auth?.userData?.validName}
+							{_username}
 						</>
 					),
-					rightContent: (
-						<button className="navbar__button">
-							<MenuIcon />
-						</button>
-					),
+					rightContent: auth ? (
+						<Link to="/settings" className="navbar__button">
+							<SliderIcon />
+						</Link>
+					) : null,
 				}}
 			/>
 
@@ -43,7 +111,7 @@ export const ProfilePage = () => {
 				<div
 					className="profile__header__banner"
 					style={{
-						backgroundImage: `url(${auth?.userData?.bannerPicture})`,
+						backgroundImage: `url(${userData?.bannerPicture})`,
 					}}
 				></div>
 
@@ -53,10 +121,10 @@ export const ProfilePage = () => {
 						style={{
 							backgroundImage: `
 								${
-									auth?.userData?.profilePicture === '' ||
-									auth?.userData?.profilePicture === undefined
+									userData?.avatar === '' ||
+									userData?.avatar === undefined
 										? 'url(https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png)'
-										: `url(${auth?.userData?.profilePicture})`
+										: `url(${userData?.avatar})`
 								}
 							`,
 						}}
@@ -65,7 +133,7 @@ export const ProfilePage = () => {
 						<div className="profile__header__statistics-items">
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{auth?.userData?.post}
+									{userData?.post.length}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Posts
@@ -82,7 +150,7 @@ export const ProfilePage = () => {
 
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{auth?.userData?.followers}
+									{userData?.followers.length}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Followers
@@ -99,7 +167,7 @@ export const ProfilePage = () => {
 
 							<div className="profile__header__statistics-item">
 								<div className="profile__header__statistics-item__value">
-									{auth?.userData?.following}
+									{userData?.following.length}
 								</div>
 								<div className="profile__header__statistics-item__description">
 									Following
@@ -110,43 +178,52 @@ export const ProfilePage = () => {
 				</div>
 
 				<div className="profile__header__content">
+					{/* Normal Username - Custom Username ignoring availability */}
+
 					<div className="profile__header__content__username">
-						{auth?.userData?.username === ''
-							? auth?.userData?.validName
-							: auth?.userData?.username}
+						{userData?.username === ''
+							? userData?.username
+							: userData?.username}
 					</div>
+
+					{/* Valid Username - Username that is only valid when not taken by someone else */}
 					<div className="profile__header__content__valid-name">
-						{auth?.userData?.validName !== '' ||
-						auth?.userData?.validName !== undefined
-							? '@' + auth?.userData?.validName
+						{userData?.username !== '' ||
+						userData?.username !== undefined
+							? '@' + userData?.username
 							: ''}
 					</div>
 					<div className="profile__header__content__bio">
-						{auth?.userData?.bio !== '' ? auth?.userData?.bio : ''}
+						{userData?.bio !== '' ? userData?.bio : ''}
 					</div>
 
 					<div className="profile__header__content__action">
-						{auth?.userData?.validName === '' ||
-						auth?.userData?.validName === undefined ? (
-							<Link to="/login">
-								<Button>Login / Sign Up</Button>
-							</Link>
-						) : auth?.userData?.validName ? (
-							<Link
-								className="react-link"
-								// to={`/${auth?.userData?.validName}/edit`}
-								to="/login"
+						{allowProfileEdit ? (
+							<Button
+								onClick={() => {
+									if (localStorage.getItem('authToken'))
+										navigate('/edit-profile');
+								}}
 							>
-								<Button>Edit Profile</Button>
-							</Link>
+								Edit Profile
+							</Button>
 						) : (
 							<>
-								<Link className="react-link" to="/profile/edit">
-									<Button>Message</Button>
-								</Link>
-								<Link className="react-link" to="/profile/edit">
-									<Button type="bold">Follow</Button>
-								</Link>
+								<Button
+									onClick={() =>
+										handleUnauthorized(handleMessageButton)
+									}
+								>
+									Message
+								</Button>
+								<Button
+									variant="bold"
+									onClick={() =>
+										handleUnauthorized(handleFollowButton)
+									}
+								>
+									Follow
+								</Button>
 							</>
 						)}
 					</div>

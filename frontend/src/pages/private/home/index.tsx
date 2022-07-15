@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Navbar } from '../../../components/navbar/navbar';
 import { Post } from '../../../components/post/post';
+import { useAuth } from '../../../utils/auth';
 import './index.css';
 
 const userData = {
@@ -73,6 +75,14 @@ export const HomePage = () => {
 	// 		<Post key={post.id} postData={post} />
 	// 	));
 	// };
+
+	const auth = useAuth();
+
+	useEffect(() => {
+		auth?.requireLogin();
+
+		document.title = 'Project Sylly - Home';
+	}, []);
 
 	return (
 		<div className="home">

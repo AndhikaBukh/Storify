@@ -74,7 +74,7 @@
 	flex: 1;
 	display: flex;
 	align-items: flex-end;
-	color: white;
+	color: var(--primary-white);
 
 	padding-bottom: 10px;
 }
@@ -147,6 +147,7 @@
 	display: flex;
 	min-height: 44px;
 	max-height: 44px;
+	padding: 0;
 }
 .profile__header__content__action > * > * {
 	flex: 1;
@@ -160,7 +161,7 @@
 	flex-direction: column;
 
 	padding: 0 20px;
-	background: #131628;
+	background: var(--primary-grey);
 	border-radius: 20px 20px 0 0;
 	margin-top: 24px;
 }
