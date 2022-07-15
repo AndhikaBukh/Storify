@@ -6,16 +6,19 @@ const sendCookie = require('../utils/sendCookie');
 
 exports.register = async (req, res, next) => {
 
-    const {
-        avatar,
-        name,
-        username,
-        email,
-        password,
-        gender
-    } = req.body;
 
     try {
+        const {
+            avatar,
+            name,
+            username,
+            email,
+            password,
+            confirmPassword,
+        } = req.body;
+
+        if (!confirmPassword) return next(new ErrorResponse('Confirm Password is required', 400));
+        if (password !== confirmPassword) return next(new ErrorResponse("Password doesn't match", 400));
 
         const user = await User.create({
             avatar,
@@ -23,7 +26,6 @@ exports.register = async (req, res, next) => {
             username,
             email,
             password,
-            gender
         })
 
         sendCookie(user, 201, res);
@@ -40,7 +42,7 @@ exports.login = async (req, res, next) => {
     } = req.body;
 
     if (!email || !password) {
-        return next(new ErrorResponse('Please provide an email and password', 400));
+        return next(new ErrorResponse('Email or Password is wrong!', 400));
     }
 
     try {
@@ -49,7 +51,7 @@ exports.login = async (req, res, next) => {
         }).select('+password');
 
         if (!user) {
-            return next(new ErrorResponse('Please Provide a valid email', 400));
+            return next(new ErrorResponse('Email or Password is wrong!', 400));
         }
 
         const isMatch = await user.matchPasswords(password);

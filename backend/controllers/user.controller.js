@@ -77,7 +77,7 @@ const userController = {
 
     getUserDetail: async (req, res) => {
         try {
-            const user = await User.findOne({ username: req.params.username }).populate("followers following").populate({
+            const user = await User.findOne({ username: req.params.username.toLowerCase() }).populate("followers following").populate({
                 path: 'post',
                 populate: {
                     path: 'comments',

@@ -15,7 +15,8 @@ const UserSchema = new mongoose.Schema({
         required: [true, "Please fill a Username"],
         unique: true,
         minlength: [3, "Username must be at least 3 characters"],
-        trim: true
+        trim: true,
+        lowercase: true,
     },
     email: {
         type: String,
@@ -25,7 +26,8 @@ const UserSchema = new mongoose.Schema({
         match: [
             /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i,
             "Please fill a valid email"
-        ]
+        ],
+        lowercase: true,
     },
     password: {
         type: String,
@@ -64,6 +66,11 @@ const UserSchema = new mongoose.Schema({
             ref: "Post",
         }
     ],
+    role: {
+        type: String,
+        enum: ["user", "admin"],
+        default: "user"
+    }
 }, { timestamps: true });
 
 UserSchema.pre("save", async function (next) {
