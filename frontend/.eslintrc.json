@@ -25,6 +25,8 @@
 		"prettier/prettier": ["error", {}, { "usePrettierrc": true }],
 		"react/react-in-jsx-scope": "off",
 		"react/prop-types": "off",
-		"no-console": "warn"
+		"no-console": "warn",
+		"no-mixed-spaces-and-tabs": ["warn", "smart-tabs"],
+		"prefer-const": "warn"
 	}
 }
