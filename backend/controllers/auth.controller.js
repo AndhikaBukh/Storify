@@ -151,12 +151,3 @@ exports.logout = async (req, res, next) => {
         next(error);
     }
 }
-
-
-const sendToken = (user, statusCode, res) => {
-    const token = user.generateToken();
-    res.status(statusCode).json({
-        success: true,
-        token,
-    });
-}
