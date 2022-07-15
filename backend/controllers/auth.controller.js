@@ -1,7 +1,6 @@
 const User = require('../models/user.model')
 const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
-const session = require('express-session');
 const sendCookie = require('../utils/sendCookie');
 const sendEmail = require('../utils/sendEmail');
 
@@ -17,30 +16,29 @@ exports.register = async (req, res, next) => {
             confirmPassword,
         } = req.body;
 
-        if (!username) {
-            return next(new ErrorResponse('Please provide a username', 400));
+        !username && next(new ErrorResponse('Please provide username', 400));
+
+        username.length < 5 && next(new ErrorResponse('Username must be at least 5 characters', 400));
+
+        !email && next(new ErrorResponse('Please provide a email', 400));
+        !email.includes('@') && next(new ErrorResponse('Please provide a valid email', 400));
+
+        !password && next(new ErrorResponse('Please provide a password', 400));
+
+        !confirmPassword && next(new ErrorResponse('Please confirm your password', 400));
+
+        if (password !== confirmPassword) {
+            next(new ErrorResponse('Password and Confirm Password must be same', 400));
+        } else {
+            const user = await User.create({
+                name,
+                username,
+                email,
+                password,
+            })
+
+            sendCookie(user, 201, res);
         }
-
-        if (!email) {
-            return next(new ErrorResponse('Please provide an email', 400));
-        }
-
-        if (!password) {
-            return next(new ErrorResponse('Please provide a password', 400));
-        }
-
-        if (!confirmPassword) return next(new ErrorResponse('Confirm Password is required', 400));
-        if (password !== confirmPassword) return next(new ErrorResponse("Password doesn't match", 400));
-
-        const user = await User.create({
-            name,
-            username,
-            email,
-            password,
-        })
-
-        sendCookie(user, 201, res);
-
 
     } catch (error) {
         next(new ErrorResponse(error.message, 400));
@@ -52,23 +50,19 @@ exports.login = async (req, res, next) => {
         password
     } = req.body;
 
-    if (!email || !password) {
-        return next(new ErrorResponse('Email or Password is wrong!', 400));
-    }
+    !email || !password && next(new ErrorResponse('Email or Password is wrong!', 400));
+
+    !email.includes('@') && next(new ErrorResponse('Please provide a valid email', 400));
 
     try {
         const user = await User.findOne({
             email
         }).select('+password');
 
-        if (!user) {
-            return next(new ErrorResponse('Email or Password is wrong!', 400));
-        }
+        !user && next(new ErrorResponse('Email or Password is wrong!', 400));
 
         const isMatch = await user.matchPasswords(password);
-        if (!isMatch) {
-            return next(new ErrorResponse('Passowrd in Correct', 400));
-        }
+        !isMatch && next(new ErrorResponse('Password is wrong!', 400));
 
         sendCookie(user, 200, res);
     } catch (error) {
@@ -81,9 +75,7 @@ exports.forgotPassword = async (req, res, next) => {
     try {
         const user = await User.findOne({ email });
 
-        if (!user) {
-            return next(new ErrorResponse('No user with this email', 404));
-        }
+        !user && next(new ErrorResponse('No user with this email', 404));
 
         const resetToken = user.getResetPasswordToken();
 
@@ -127,9 +119,7 @@ exports.resetPassword = async (req, res, next) => {
             resetPasswordExpire: { $gt: Date.now() }
         })
 
-        if (!user) {
-            return next(new ErrorResponse('Invalid Reset Token', 400));
-        }
+        !user && next(new ErrorResponse('Invalid Token', 400));
 
         user.password = req.body.password;
         user.resetPasswordToken = undefined;
