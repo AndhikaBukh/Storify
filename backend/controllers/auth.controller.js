@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
 const session = require('express-session');
 const sendCookie = require('../utils/sendCookie');
+const sendEmail = require('../utils/sendEmail');
 
 exports.register = async (req, res, next) => {
 
@@ -83,9 +84,15 @@ exports.forgotPassword = async (req, res, next) => {
         const message = `Forgot your password? Go to ${resetURL} to reset it.`;
 
         try {
+            await sendEmail({
+                to: user.email,
+                subject: 'Password Reset',
+                text: message
+            });
+
             res.status(200).json({
                 success: true,
-                message: message,
+                message: 'Check Your Email for Password Reset Link'
             })
 
         } catch (error) {
