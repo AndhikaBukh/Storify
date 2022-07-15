@@ -18,6 +18,18 @@ exports.register = async (req, res, next) => {
             confirmPassword,
         } = req.body;
 
+        if (!username) {
+            return next(new ErrorResponse('Please provide a username', 400));
+        }
+
+        if (!email) {
+            return next(new ErrorResponse('Please provide an email', 400));
+        }
+
+        if (!password) {
+            return next(new ErrorResponse('Please provide a password', 400));
+        }
+
         if (!confirmPassword) return next(new ErrorResponse('Confirm Password is required', 400));
         if (password !== confirmPassword) return next(new ErrorResponse("Password doesn't match", 400));
 
