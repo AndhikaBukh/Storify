@@ -1,35 +1,27 @@
-import { createContext, FC, useContext, useState } from 'react';
+import React, { createContext, FC, useContext } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 interface IAuthContext {
-	// login: (user: any) => void;
-	// logout: () => void;
+	requireLogin: () => void;
 
-	userData: userDataProps;
-
-	signupHandler: (
-		_username: string | undefined,
+	trySignup: (
+		_name: string | undefined,
 		_email: string | undefined,
 		_password: string | undefined,
 		_confirmPassword: string | undefined
-	) => void;
+	) => Promise<unknown>;
 
-	loginHandler: (
-		_username: string | undefined,
+	tryLogin: (
+		_email: string | undefined,
 		_password: string | undefined
-	) => void;
-}
+	) => Promise<unknown>;
 
-interface userDataProps {
-	username?: string;
-	validName?: string;
-	bio?: string;
+	tryLogout: () => Promise<unknown>;
 
-	post?: number;
-	following?: number;
-	followers?: number;
-
-	profilePicture?: string;
-	bannerPicture?: string;
+	requestMe: () => Promise<unknown>;
+	requestUser: (_username: string) => Promise<unknown>;
+	uploadAvatar: (_file: File | string) => Promise<unknown>;
 }
 
 const authContext = createContext<IAuthContext | null>(null);
@@ -39,50 +31,147 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
-	// const login = (_validName: any) => {
-	// 	setUserData({
-	// 		...userData,
-	// 		validName: _validName,
-	// 	});
-	// };
+	const navigate = useNavigate();
 
-	// const logout = () => {
-	// 	setUserData({
-	// 		username: '',
-	// 	});
-	// };
+	const requireLogin = () => {
+		if (!localStorage.getItem('authToken')) {
+			navigate('/login');
+		}
+	};
 
-	// --------------------------------------------- TESTING GROUND WARNING ---------------------------------------------- //
-	const [userData, setUserData] = useState<any>({
-		username: '',
-		validName: '',
-		email: '',
-		password: '',
-		bio: '',
+	const config: object = {
+		headers: {
+			'Content-Type': 'application/json',
+			authorization: `Bearer ${localStorage.getItem('authToken')}`,
+		},
+	};
 
-		post: 0,
-		followers: 0,
-		following: 0,
-
-		profilePicture: '',
-		bannerPicture: '',
-	});
-
-	const signupHandler = ({ _username, _email, _password }: any) => {
-		setUserData({
-			...userData,
-			username: _username,
+	const trySignup = async (
+		_name: string | undefined,
+		_email: string | undefined,
+		_password: string | undefined,
+		_confirmPassword: string | undefined
+	) => {
+		const body = {
+			username: _name,
 			email: _email,
 			password: _password,
+			confirmPassword: _confirmPassword,
+		};
+
+		return new Promise((resolve, reject) => {
+			axios
+				.post('http://localhost:3000/api/auth/register', body, config)
+				.then(res => {
+					localStorage.setItem('authToken', res.data.token);
+					navigate('/');
+					resolve('Successfully registered!');
+				})
+				.catch(error => {
+					reject(error);
+				});
 		});
 	};
 
-	const loginHandler = ({ _username, _password }: any) => {
-		console.log(_username, _password);
+	const tryLogin = async (
+		_email: string | undefined,
+		_password: string | undefined
+	) => {
+		const body = {
+			email: _email,
+			password: _password,
+		};
+
+		return new Promise((resolve, reject) => {
+			axios
+				.post('http://localhost:3000/api/auth/login', body, config)
+				.then(response => {
+					localStorage.setItem('authToken', response.data.token);
+					navigate('/');
+					resolve('Success');
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const tryLogout = () => {
+		localStorage.removeItem('authToken');
+
+		return new Promise((resolve, reject) => {
+			axios
+				.post('http://localhost:3000/api/auth/logout', {}, config)
+				.then(() => {
+					navigate('/landing');
+					resolve('Success');
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const requestMe = async () => {
+		return new Promise((resolve, reject) => {
+			axios
+				.get('http://localhost:3000/api/me', config)
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const requestUser = async (_username: string) => {
+		return new Promise((resolve, reject) => {
+			axios
+				.get(`http://localhost:3000/api/user/${_username}`, config)
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const uploadAvatar = async (_avatar: File | string) => {
+		return new Promise((resolve, reject) => {
+			const data = new FormData();
+			data.append('avatar', _avatar);
+			axios
+				.put('http://localhost:3000/api/me', data, {
+					headers: {
+						// 'Content-Type': 'multipart/form-data',
+						authorization: `Bearer ${localStorage.getItem(
+							'authToken'
+						)}`,
+					},
+				})
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
 	};
 
 	return (
-		<authContext.Provider value={{ userData, signupHandler, loginHandler }}>
+		<authContext.Provider
+			value={{
+				requireLogin,
+				trySignup,
+				tryLogin,
+				tryLogout,
+				requestMe,
+				requestUser,
+				uploadAvatar,
+			}}
+		>
 			{children}
 		</authContext.Provider>
 	);

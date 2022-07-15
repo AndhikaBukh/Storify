@@ -8,13 +8,21 @@
 	--primary-dark-blue: #295adb;
 	--primary-blue: #0494fc;
 
-	--primary-white-blue: #b8e1ff;
+	--secondary-black: #131628;
+
+	--success: #16C79A;
+	--error: #F05454;
+	--warning: #FFC453;
+	--info: var(--primary-blue);
 
 	--opacity-white--75: #ffffffbf;
 	--opacity-white--50: #ffffff80;
 
 	--opacity-black--75: #0e101dbf;
 	--opacity-black--50: #0e101d80;
+
+	--opacity-secondary-black--75: #131628bf;
+	--opacity-secondary-black--50: #13162880;
 
 	--opacity-grey--75: #191c32bf;
 	--opacity-grey--50: #191c3280;
