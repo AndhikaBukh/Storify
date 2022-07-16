@@ -35,8 +35,6 @@ This will install all the dependencies that is required for the project.
 [![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](http://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 
-- Node JS Design Patterns: <https://blog.logrocket.com/design-patterns-in-node-js/>
-
 ## 📦 Required Extensions
 
 [![ESLint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
