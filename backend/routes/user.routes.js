@@ -7,7 +7,16 @@ const upload = require('../utils/multer');
 router.route('/me') // http://localhost:3000/api/me
     .get(auth, userCtrl.getMe) // get user
     .put(auth,
-        upload.single('avatar'),
+        upload.fields([
+            {
+                name: "avatar",
+                maxCount: 1
+            },
+            {
+                name:"banner",
+                maxCount: 1
+            }
+        ]),
         userCtrl.updateUser,
     ); // update user
 

@@ -11,14 +11,13 @@ const userController = {
         try {
             const user = await User.findById(req.user._id);
 
-            const { avatar, name, username, bio, gender } = req.body;
+            const {name, username, bio, gender} = req.body;
 
-            if (req.file.path) {
-                const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-
+            // Edit Avatar
+            if (req.files.avatar) {
                 await cloudinary.uploader.destroy(`avatar/${user.email.split('@')[0]}`, user.avatar);
 
-                const result = await cloudinary.uploader.upload(req.file.path, {
+                const resultAvatar = await cloudinary.uploader.upload(req.files.avatar[0].path , {
                     width: 300,
                     folder: "sylly",
                     crop: "fill",
@@ -27,13 +26,28 @@ const userController = {
                 });
 
                 await User.findOneAndUpdate({ _id: req.user._id }, {
-                    avatar: result.secure_url,
-                    name,
-                    username,
-                    bio,
-                    gender
+                    avatar: resultAvatar.secure_url,
                 })
             }
+
+            // Edit Banner
+            if (req.files.banner) {
+                await cloudinary.uploader.destroy(`banner/${user.email.split('@')[0]}`, user.banner);
+
+                const resultBanner = await cloudinary.uploader.upload(req.files.banner[0].path , {
+                    width: 1500,
+                    heigth: 800,
+                    folder: "sylly",
+                    crop: "fill",
+                    public_id: `banner/${user.email.split('@')[0]}`,
+                    secure_url: true
+                });
+
+                await User.findOneAndUpdate({ _id: req.user._id }, {
+                    banner: resultBanner.secure_url,
+                })
+            }
+            
 
             await User.findOneAndUpdate({ _id: req.user._id }, {
                 name,

@@ -46,6 +46,10 @@ const UserSchema = new mongoose.Schema({
         type: String,
         default: 'https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png'
     },
+    banner: {
+        type: String,
+        default: ''
+    },
     bio: {
         type: String,
         default: "",
@@ -64,7 +68,7 @@ const UserSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "Post"
     }],
-
+    
     saved: [
         {
             type: mongoose.Schema.Types.ObjectId,
