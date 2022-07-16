@@ -11,35 +11,19 @@ exports.register = async (req, res, next) => {
 
         !username && next(new ErrorResponse("Please provide username", 400));
 
-        username.length < 5 &&
-            next(
-                new ErrorResponse("Username must be at least 5 characters", 400)
-            );
+        !username && next(new ErrorResponse('USERNAME&Please provide username', 400));
 
-        !email && next(new ErrorResponse("Please provide a email", 400));
-        !email.includes("@") &&
-            next(new ErrorResponse("Please provide a valid email", 400));
+        username.length < 5 && next(new ErrorResponse('USERNAME&Username must be at least 5 characters', 400));
 
-        !password && next(new ErrorResponse("Please provide a password", 400));
+        !email && next(new ErrorResponse('EMAIL&Please provide a email', 400));
+        !email.includes('@') && next(new ErrorResponse('EMAIL&Please provide a valid email', 400));
 
-        !confirmPassword &&
-            next(new ErrorResponse("Please confirm your password", 400));
+        !password && next(new ErrorResponse('PASSWORD&Please provide a password', 400));
 
-        // Search email
-        (await User.findOne({ email: email })) != null &&
-            next(new ErrorResponse("Email already exist", 400));
-
-        // Search username
-        (await User.findOne({ username: username })) != null &&
-            next(new ErrorResponse("Username already exist", 400));
+        !confirmPassword && next(new ErrorResponse('PASSWORDCONFIRM&Please confirm your password', 400));
 
         if (password !== confirmPassword) {
-            next(
-                new ErrorResponse(
-                    "Password and Confirm Password must be same",
-                    400
-                )
-            );
+            next(new ErrorResponse('PASSWORDMATCH&Password and Confirm Password must be same', 400));
         } else {
             const user = await User.create({
                 name,
