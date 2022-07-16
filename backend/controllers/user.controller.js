@@ -9,18 +9,20 @@ const userController = {
 
     updateUser: async (req, res) => {
         try {
-            let user = await User.findById(req.user._id);
+            const user = await User.findById(req.user._id);
 
             const { avatar, name, username, bio, gender } = req.body;
 
             if (req.file.path) {
-                await cloudinary.uploader.destroy(`user/${req.user._id}`, user.avatar);
+                const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+
+                await cloudinary.uploader.destroy(`avatar/${user.email.split('@')[0]}`, user.avatar);
 
                 const result = await cloudinary.uploader.upload(req.file.path, {
                     width: 300,
-                    folder: "avatar",
+                    folder: "sylly",
                     crop: "fill",
-                    public_id: `user/${req.user._id}`,
+                    public_id: `avatar/${user.email.split('@')[0]}`,
                     secure_url: true
                 });
 

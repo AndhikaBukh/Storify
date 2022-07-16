@@ -14,10 +14,10 @@ const postController = {
             const token = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
             const result = await cloudinary.uploader.upload(req.file.path, {
-                folder: "post",
+                folder: "sylly",
                 width: 1080,
                 height: 1080,
-                public_id: `${token}`,
+                public_id: `post/${token}`,
                 secure_url: true
             })
 
@@ -76,7 +76,7 @@ const postController = {
         try {
             const post = await Post.findById(req.params.id);
 
-            await cloudinary.uploader.destroy(`post/${post.images.split('/')[8].split('.')[0]}`, post.images);
+            await cloudinary.uploader.destroy(`sylly/post/${post.images.split('/')[9].split('.')[0]}`, post.images);
 
             await User.findByIdAndUpdate(req.user._id, {
                 $pull: { post: req.params.id },
