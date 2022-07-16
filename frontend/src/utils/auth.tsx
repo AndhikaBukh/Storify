@@ -21,7 +21,18 @@ interface IAuthContext {
 
 	requestMe: () => Promise<unknown>;
 	requestUser: (_username: string) => Promise<unknown>;
-	uploadAvatar: (_file: File | string) => Promise<unknown>;
+	updateAvatar: (_file: File | string) => Promise<unknown>;
+
+	updateProfile: (
+		_name: string | undefined,
+		_username: string,
+		_bio: string | undefined,
+
+		_avatar: File | string,
+		_banner: File | string,
+
+		_gender: string
+	) => Promise<unknown>;
 }
 
 const authContext = createContext<IAuthContext | null>(null);
@@ -33,17 +44,19 @@ interface AuthProviderProps {
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const navigate = useNavigate();
 
-	const requireLogin = () => {
-		if (!localStorage.getItem('authToken')) {
-			navigate('/login');
-		}
-	};
+	const API = 'localhost:3000/api';
 
 	const config: object = {
 		headers: {
 			'Content-Type': 'application/json',
 			authorization: `Bearer ${localStorage.getItem('authToken')}`,
 		},
+	};
+
+	const requireLogin = () => {
+		return axios.get(`http://${API}/me`, config).catch(() => {
+			navigate('/login');
+		});
 	};
 
 	const trySignup = async (
@@ -61,7 +74,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post('http://localhost:3000/api/auth/register', body, config)
+				.post(`http://${API}/auth/register`, body, config)
 				.then(res => {
 					localStorage.setItem('authToken', res.data.token);
 					navigate('/');
@@ -84,7 +97,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post('http://localhost:3000/api/auth/login', body, config)
+				.post(`http://${API}/auth/login`, body, config)
 				.then(response => {
 					localStorage.setItem('authToken', response.data.token);
 					navigate('/');
@@ -101,7 +114,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post('http://localhost:3000/api/auth/logout', {}, config)
+				.post(`http://${API}/auth/logout`, {}, config)
 				.then(() => {
 					navigate('/landing');
 					resolve('Success');
@@ -115,7 +128,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestMe = async () => {
 		return new Promise((resolve, reject) => {
 			axios
-				.get('http://localhost:3000/api/me', config)
+				.get(`http://${API}/me`, config)
 				.then(res => {
 					resolve(res);
 				})
@@ -128,7 +141,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestUser = async (_username: string) => {
 		return new Promise((resolve, reject) => {
 			axios
-				.get(`http://localhost:3000/api/user/${_username}`, config)
+				.get(`http://${API}/user/${_username}`, config)
 				.then(res => {
 					resolve(res);
 				})
@@ -138,12 +151,12 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
-	const uploadAvatar = async (_avatar: File | string) => {
+	const updateAvatar = async (_avatar: File | string) => {
 		return new Promise((resolve, reject) => {
 			const data = new FormData();
 			data.append('avatar', _avatar);
 			axios
-				.put('http://localhost:3000/api/me', data, {
+				.put(`http://${API}/me`, data, {
 					headers: {
 						// 'Content-Type': 'multipart/form-data',
 						authorization: `Bearer ${localStorage.getItem(
@@ -160,16 +173,42 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
+	const updateProfile = async (
+		_name: string | undefined,
+		_username: string,
+		_bio: string | undefined,
+
+		_avatar: File | string,
+		_banner: File | string,
+
+		_gender: string
+	) => {
+		return new Promise((resolve, reject) => {
+			axios
+				.put(`http://${API}/me`, { username: _username }, config)
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
 	return (
 		<authContext.Provider
 			value={{
 				requireLogin,
+
 				trySignup,
 				tryLogin,
 				tryLogout,
+
 				requestMe,
 				requestUser,
-				uploadAvatar,
+
+				updateAvatar,
+				updateProfile,
 			}}
 		>
 			{children}
