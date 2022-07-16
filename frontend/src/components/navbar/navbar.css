@@ -1,4 +1,4 @@
-@import url("../../styles/colors.css");
+@import url('../../styles/colors.css');
 
 .navbar__icon-wrapper {
 	--size: 40px;
@@ -24,8 +24,8 @@
 
 .navbar-top {
 	min-width: 100%;
-	max-width: 300px;
 	display: flex;
+	justify-content: center;
 
 	padding: 26px 20px 20px;
 	background: var(--primary-grey);
@@ -33,9 +33,17 @@
 }
 
 .navbar-top__container {
-	min-width: 100%;
+	min-width: 600px;
 	display: flex;
 	justify-content: space-between;
+
+	max-width: 600px;
+}
+@media (max-width: 640px) {
+	.navbar-top__container {
+		min-width: 100%;
+		max-width: 100%;
+	}
 }
 
 .navbar-top__wrapper {
@@ -49,13 +57,27 @@
 
 /* ------------------------ Navbar Bottom ------------------------ */
 
-.navbar-bottom {
-	min-width: calc(100% - 40px);
-	max-width: 200px;
+.navbar-bottom-container {
+	min-width: 100%;
+	display: flex;
+	justify-content: center;
 	position: fixed;
-	bottom: 20px;
-	left: 20px;
+	bottom: 0;
+	left: 0;
 	z-index: 999;
+
+	padding: 20px;
+	transition: all 0.5s ease;
+}
+@media (min-width: 620px) {
+	.navbar-bottom-container {
+		bottom: -100%;
+	}
+}
+
+.navbar-bottom {
+	min-width: 100%;
+	max-width: 100%;
 	display: flex;
 
 	padding: 15px 25px;
@@ -70,7 +92,6 @@
 }
 .navbar-bottom__container {
 	min-width: 100%;
-	max-width: 200px;
 	display: flex;
 	justify-content: space-between;
 }
@@ -98,5 +119,3 @@
 	font-weight: 600;
 	color: var(--primary-white);
 }
-
-

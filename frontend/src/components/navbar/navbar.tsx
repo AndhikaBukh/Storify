@@ -116,68 +116,70 @@ export const Navbar: FC<NavbarProps> = ({
 				</div>
 			</div>
 		) : type === 'bottom' ? (
-			<div
-				className={
-					className !== undefined
-						? `navbar-bottom ${className}`
-						: 'navbar-bottom'
-				}
-			>
-				<div className="navbar-bottom__container">
-					<button
-						className="navbar__icon-wrapper"
-						onClick={() => navigate('/')}
-					>
-						{activeState === '/' ? (
-							<HomeFilledIcon />
-						) : (
-							<HomeIcon />
-						)}
-					</button>
+			<div className="navbar-bottom-container">
+				<div
+					className={
+						className !== undefined
+							? `navbar-bottom ${className}`
+							: 'navbar-bottom'
+					}
+				>
+					<div className="navbar-bottom__container">
+						<button
+							className="navbar__icon-wrapper"
+							onClick={() => navigate('/')}
+						>
+							{activeState === '/' ? (
+								<HomeFilledIcon />
+							) : (
+								<HomeIcon />
+							)}
+						</button>
 
-					<button
-						className="navbar__icon-wrapper"
-						onClick={() => navigate('/search')}
-					>
-						{activeState === '/search' ? (
-							<SearchIcon color="#295ADB" />
-						) : (
-							<SearchIcon />
-						)}
-					</button>
+						<button
+							className="navbar__icon-wrapper"
+							onClick={() => navigate('/search')}
+						>
+							{activeState === '/search' ? (
+								<SearchIcon color="#295ADB" />
+							) : (
+								<SearchIcon />
+							)}
+						</button>
 
-					<button
-						className="navbar__icon-wrapper"
-						onClick={() => navigate('/upload')}
-					>
-						{activeState === '/upload' ? (
-							<PlusSquareFilledIcon />
-						) : (
-							<PlusSquareIcon />
-						)}
-					</button>
+						<button
+							className="navbar__icon-wrapper"
+							onClick={() => navigate('/upload')}
+						>
+							{activeState === '/upload' ? (
+								<PlusSquareFilledIcon />
+							) : (
+								<PlusSquareIcon />
+							)}
+						</button>
 
-					<button
-						className="navbar__icon-wrapper"
-						onClick={() => navigate('/messages')}
-					>
-						{activeState === '/messages' ? (
-							<MessageFilledIcon />
-						) : (
-							<MessageIcon />
-						)}
-					</button>
+						<button
+							className="navbar__icon-wrapper"
+							onClick={() => navigate('/messages')}
+						>
+							{activeState === '/messages' ? (
+								<MessageFilledIcon />
+							) : (
+								<MessageIcon />
+							)}
+						</button>
 
-					<button
-						className="navbar__icon-wrapper"
-						onClick={toProfile}
-					>
-						{activeState === `/${userProfile}` ? (
-							<UserFilledIcon />
-						) : (
-							<UserIcon />
-						)}
-					</button>
+						<button
+							className="navbar__icon-wrapper"
+							onClick={toProfile}
+						>
+							{activeState === `/${userProfile}` ? (
+								<UserFilledIcon />
+							) : (
+								<UserIcon />
+							)}
+						</button>
+					</div>
 				</div>
 			</div>
 		) : (

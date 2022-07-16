@@ -1,4 +1,12 @@
-import { ChangeEventHandler, FC, RefObject, useEffect, useRef } from 'react';
+import { isDisabled } from '@testing-library/user-event/dist/utils';
+import {
+	ChangeEventHandler,
+	FC,
+	RefObject,
+	useEffect,
+	useRef,
+	useState,
+} from 'react';
 import './input.css';
 
 interface InputProps {
@@ -14,28 +22,42 @@ interface InputProps {
 	refElement?: RefObject<HTMLInputElement>;
 	onChange?: (event: any) => void;
 	isHighlighted?: boolean;
+	value?: string;
+	disabled?: boolean;
 	className?: string;
 }
 
 export const Input: FC<InputProps> = ({
 	show = true,
 	placeholder,
-	type,
+	type = 'text',
 	icon = undefined,
 	eventIcon,
 	handleEventIcon = () => true,
 	refElement = useRef<HTMLInputElement>(null),
 	onChange = e => e,
 	isHighlighted = false,
+	value,
+	disabled = false,
 	className = '',
 }) => {
 	const handleClassName = `input-container ${className ? className : ''}${
 		icon === undefined ? ' input-container--without-icon' : ''
 	} ${isHighlighted ? 'input-container--highlighted' : ''}`;
-	return show && show ? (
+
+	const [inputValue, setInputValue] = useState(value);
+
+	useEffect(() => {
+		setInputValue(value);
+	}, [value]);
+
+	return show && type !== 'textarea' ? (
 		<div
 			className={handleClassName}
 			onClick={() => refElement.current?.focus()}
+			style={{
+				cursor: disabled ? 'not-allowed' : 'text',
+			}}
 		>
 			{icon !== undefined ? (
 				<div
@@ -48,10 +70,16 @@ export const Input: FC<InputProps> = ({
 
 			<input
 				className="input-container__element"
-				type={type !== undefined ? type : 'text'}
+				type={type}
 				placeholder={placeholder}
 				ref={refElement}
-				onChange={e => onChange(e)}
+				value={inputValue}
+				onChange={e => {
+					setInputValue(e.target.value);
+					onChange(e);
+					console.log(e.target.value);
+				}}
+				disabled={disabled ? disabled : false}
 			/>
 
 			{eventIcon !== undefined ? (
@@ -63,5 +91,16 @@ export const Input: FC<InputProps> = ({
 				</button>
 			) : null}
 		</div>
+	) : show && type === 'textarea' ? (
+		<textarea
+			className="input-container__element input-container__element--textarea"
+			placeholder={placeholder}
+			value={inputValue}
+			onChange={e => {
+				setInputValue(e.target.value);
+				onChange(e);
+			}}
+			disabled={disabled ? disabled : false}
+		/>
 	) : null;
 };
