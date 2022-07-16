@@ -14,7 +14,20 @@ exports.sendForgotPassword = async (username, email, resetUrl) => {
             html: ViewEmail.forgotPass(username, resetUrl)
         });
     }
-    catch(err){
+    catch (err) {
+        next(new ErrorResponse(err.message, 400));
+    }
+};
+
+exports.verifyEmail = async (email, token) => {
+    try {
+        await sendEmail({
+            to: email,
+            subject: 'Verify Email',
+            html: ViewEmail.verifyEmail(email, token)
+        });
+    }
+    catch (err) {
         next(new ErrorResponse(err.message, 400));
     }
 }

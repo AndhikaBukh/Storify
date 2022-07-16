@@ -6,6 +6,8 @@ const authCtrl = require("../controllers/auth.controller");
 
 router.post("/auth/register", authCtrl.register); // http://localhost:3000/api/auth/register
 
+router.post('/auth/verify', authCtrl.verifyEmail); // http://localhost:3000/api/auth/verify
+
 router.post("/auth/login", authCtrl.login); // http://localhost:3000/api/auth/login
 
 router.post("/auth/forgotpassword", authCtrl.forgotPassword); // http://localhost:3000/api/auth/forgotpassword

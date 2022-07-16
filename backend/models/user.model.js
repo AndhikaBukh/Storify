@@ -35,6 +35,11 @@ const UserSchema = new mongoose.Schema({
         minlength: [6, "Password must be at least 6 characters"],
         select: false
     },
+    verified: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
     avatar: {
@@ -85,6 +90,10 @@ UserSchema.pre("save", async function (next) {
 
 UserSchema.methods.matchPasswords = async function (password) {
     return await bcrypt.compare(password, this.password)
+}
+
+UserSchema.methods.verifyEmail = async function (req, res) {
+
 }
 
 UserSchema.methods.generateToken = function () {

@@ -11,20 +11,30 @@ const userController = {
         try {
             let user = await User.findById(req.user._id);
 
-            const { avatar, username, bio, gender } = req.body;
+            const { avatar, name, username, bio, gender } = req.body;
 
-            await cloudinary.uploader.destroy(`user/${req.user._id}`, user.avatar);
+            if (avatar) {
+                await cloudinary.uploader.destroy(`user/${req.user._id}`, user.avatar);
 
-            const result = await cloudinary.uploader.upload(req.file.path, {
-                width: 300,
-                folder: "avatar",
-                crop: "fill",
-                public_id: `user/${req.user._id}`,
-                secure_url: true
-            });
+                const result = await cloudinary.uploader.upload(req.file.path, {
+                    width: 300,
+                    folder: "avatar",
+                    crop: "fill",
+                    public_id: `user/${req.user._id}`,
+                    secure_url: true
+                });
+
+                await User.findOneAndUpdate({ _id: req.user._id }, {
+                    avatar: result.secure_url,
+                    name,
+                    username,
+                    bio,
+                    gender
+                })
+            }
 
             await User.findOneAndUpdate({ _id: req.user._id }, {
-                avatar: result.secure_url,
+                name,
                 username,
                 bio,
                 gender

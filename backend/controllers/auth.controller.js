@@ -3,6 +3,7 @@ const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
 const sendCookie = require('../utils/sendCookie');
 const EmailCtrl = require('./email.controller');
+const VerifyToken = require('../models/verifyToken.model');
 
 exports.register = async (req, res, next) => {
     try {
@@ -35,6 +36,22 @@ exports.register = async (req, res, next) => {
                 password,
             })
 
+            const generateOTP = () => {
+                let otp = '';
+                for (let i = 0; i < 4; i++) {
+                    otp += Math.floor(Math.random() * 9);
+                }
+                return otp;
+            }
+
+            const verifyToken = await VerifyToken.create({
+                userId: user._id,
+                token: generateOTP()
+            })
+
+            EmailCtrl.verifyEmail(email, generateOTP());
+
+            await verifyToken.save();
             sendCookie(user, 201, res);
         }
 
@@ -42,6 +59,29 @@ exports.register = async (req, res, next) => {
         next(new ErrorResponse(error.message, 400));
     }
 };
+
+exports.verifyEmail = async (req, res, next) => {
+
+    try {
+        const { token } = req.body;
+
+        const user = await User.findOne({ email: req.query.email });
+        const verifyToken = await VerifyToken.findOne({ userId: user._id });
+
+        !user && next(new ErrorResponse('No user with this email', 404));
+        !verifyToken && next(new ErrorResponse('Invalid Token', 400));
+        user.verified && next(new ErrorResponse('Email already verified', 400));
+
+        user.verified = true;
+        await user.save();
+        await verifyToken.remove();
+        sendCookie(user, 200, res);
+
+    } catch (error) {
+        next(new ErrorResponse(error.message, 400));
+    }
+};
+
 exports.login = async (req, res, next) => {
     const {
         email,
@@ -84,7 +124,7 @@ exports.forgotPassword = async (req, res, next) => {
         const resetURL = `${req.protocol}://${req.get('host')}/auth/resetpassword/${resetToken}`; //localhost:5000/resetpassword/resetToken fetch
 
         try {
-            EmailCtrl.sendForgotPassword(user.username, email , resetURL);
+            EmailCtrl.sendForgotPassword(user.username, email, resetURL);
 
             res.status(200).json({
                 success: true,
