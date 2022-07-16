@@ -28,6 +28,7 @@ const hideNavbar = [
 	'/resetPassword',
 	'/signup',
 	'/settings',
+	'/edit-profile',
 ];
 
 export const App = () => {
@@ -42,7 +43,7 @@ export const App = () => {
 
 	useEffect(() => {
 		auth?.requestMe()?.catch(() => {
-			setShowBottomNavbar(false);
+			// setShowBottomNavbar(false);
 		});
 
 		// Change icon highlight based on current page

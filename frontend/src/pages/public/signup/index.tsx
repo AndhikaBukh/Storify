@@ -15,6 +15,27 @@ import { useAuth } from '../../../utils/auth';
 import { useForm } from '../../../utils/form';
 import './index.css';
 
+const _errorMessage = [
+	'Username must be at least 5 characters',
+	'Please provide a valid email',
+	'Password must be at least 5 characters',
+	'Password and Confirm Password must be same',
+];
+
+const handleIncorrect = (
+	_setter: any,
+	_element: any = null,
+	_disable = false
+) => {
+	if (_disable) {
+		_setter(false);
+		return;
+	} else {
+		_setter(true);
+		_element.current?.focus();
+	}
+};
+
 export const SignupPage = () => {
 	const auth = useAuth();
 	const form = useForm();
@@ -33,43 +54,47 @@ export const SignupPage = () => {
 	const [hightlightConfirmPassword, setHightlightConfirmPassword] =
 		useState(false);
 
-	const handleIncorrect = (_setter: any, _element: any) => {
-		_setter(true);
-		_element?.focus();
-	};
-
-	const handleHighlighting = () => {
-		if (takeUsername.current?.value === '') {
-			handleIncorrect(setHightlightUsername, takeUsername.current);
+	const handleHighlighting = (_error: unknown | string) => {
+		if (takeUsername.current?.value === '' || _error === 'USERNAME') {
+			handleIncorrect(setHightlightUsername, takeUsername);
 			return;
 		} else setHightlightUsername(false);
-		if (takeEmail.current?.value === '') {
-			handleIncorrect(setHightlightEmail, takeEmail.current);
+		if (takeEmail.current?.value === '' || _error === 'EMAIL') {
+			handleIncorrect(setHightlightEmail, takeEmail);
 			return;
 		} else setHightlightEmail(false);
-		if (takePassword.current?.value === '') {
-			handleIncorrect(setHightlightPassword, takePassword.current);
+		if (takePassword.current?.value === '' || _error === 'PASSWORD') {
+			handleIncorrect(setHightlightPassword, takePassword);
 			return;
 		} else setHightlightPassword(false);
-		if (takeConfirmPassword.current?.value === '') {
-			handleIncorrect(
-				setHightlightConfirmPassword,
-				takeConfirmPassword.current
-			);
+		if (
+			takeConfirmPassword.current?.value === '' ||
+			_error === 'PASSWORDCONFIRM'
+		) {
+			handleIncorrect(setHightlightConfirmPassword, takeConfirmPassword);
 			return;
 		} else setHightlightConfirmPassword(false);
+
+		if (_error === 'PASSWORDMATCH') {
+			handleIncorrect(setHightlightPassword, takePassword);
+			handleIncorrect(setHightlightConfirmPassword);
+			return;
+		} else {
+			setHightlightPassword(false);
+			setHightlightConfirmPassword(false);
+		}
 	};
 
 	const handleSignup = () => {
 		auth?.trySignup(
-			takeUsername.current?.value.toLocaleLowerCase(),
+			takeUsername.current?.value.toLowerCase(),
 			takeEmail.current?.value.toLowerCase(),
 			takePassword.current?.value,
 			takeConfirmPassword.current?.value
 		).catch(error => {
-			handleHighlighting();
-			setAlertContent(error.response?.data?.error);
+			setAlertContent(error.response?.data?.error.split('&')[1]);
 			setShowAlert(true);
+			handleHighlighting(error.response?.data?.error.split('&')[0]);
 		});
 	};
 

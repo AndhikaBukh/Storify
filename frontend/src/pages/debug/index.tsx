@@ -28,7 +28,7 @@ export const DebugPage = () => {
 	}, []);
 
 	const handleSpecificRoute = () => {
-		navigate(`/${getRoutesRef.current?.value}`);
+		navigate(`/${getRoutesRef.current?.value.toLowerCase()}`);
 	};
 
 	// Debug PopUp Component
@@ -88,7 +88,7 @@ export const DebugPage = () => {
 						onClick={() => {
 							console.log(fileUpload);
 							handleUpload();
-							auth?.uploadAvatar(fileUpload);
+							auth?.updateAvatar(fileUpload);
 						}}
 					>
 						Upload File

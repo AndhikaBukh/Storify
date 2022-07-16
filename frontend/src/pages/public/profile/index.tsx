@@ -25,7 +25,7 @@ interface userDataInterface {
 	post: string[];
 
 	avatar: string;
-	bannerPicture: string;
+	banner: string;
 }
 
 export const ProfilePage = () => {
@@ -44,7 +44,7 @@ export const ProfilePage = () => {
 		post: [],
 
 		avatar: '',
-		bannerPicture: '',
+		banner: '',
 	});
 
 	const _username = location.pathname.split('/')[1];
@@ -106,20 +106,20 @@ export const ProfilePage = () => {
 					) : null,
 				}}
 			/>
-
-			<div className="profile__header">
-				<div
-					className="profile__header__banner"
-					style={{
-						backgroundImage: `url(${userData?.bannerPicture})`,
-					}}
-				></div>
-
-				<div className="profile__header__container">
+			<div className="profile__wrapper">
+				<div className="profile__header">
 					<div
-						className="profile__header__avatar"
+						className="profile__header__banner"
 						style={{
-							backgroundImage: `
+							backgroundImage: `url(${userData?.banner})`,
+						}}
+					></div>
+
+					<div className="profile__header__container">
+						<div
+							className="profile__header__avatar"
+							style={{
+								backgroundImage: `
 								${
 									userData?.avatar === '' ||
 									userData?.avatar === undefined
@@ -127,124 +127,129 @@ export const ProfilePage = () => {
 										: `url(${userData?.avatar})`
 								}
 							`,
-						}}
-					></div>
-					<div className="profile__header__statistics">
-						<div className="profile__header__statistics-items">
-							<div className="profile__header__statistics-item">
-								<div className="profile__header__statistics-item__value">
-									{userData?.post.length}
+							}}
+						></div>
+						<div className="profile__header__statistics">
+							<div className="profile__header__statistics-items">
+								<div className="profile__header__statistics-item">
+									<div className="profile__header__statistics-item__value">
+										{userData?.post.length}
+									</div>
+									<div className="profile__header__statistics-item__description">
+										Posts
+									</div>
 								</div>
-								<div className="profile__header__statistics-item__description">
-									Posts
-								</div>
-							</div>
 
-							<div className="profile__header__statistics-item profile__header__statistics-item--seperator">
-								<Seperator
-									type="vertical"
-									borderWidth={2}
-									fade={true}
-								/>
-							</div>
-
-							<div className="profile__header__statistics-item">
-								<div className="profile__header__statistics-item__value">
-									{userData?.followers.length}
+								<div className="profile__header__statistics-item profile__header__statistics-item--seperator">
+									<Seperator
+										type="vertical"
+										borderWidth={2}
+										fade={true}
+									/>
 								</div>
-								<div className="profile__header__statistics-item__description">
-									Followers
-								</div>
-							</div>
 
-							<div className="profile__header__statistics-item profile__header__statistics-item--seperator">
-								<Seperator
-									type="vertical"
-									borderWidth={2}
-									fade={true}
-								/>
-							</div>
-
-							<div className="profile__header__statistics-item">
-								<div className="profile__header__statistics-item__value">
-									{userData?.following.length}
+								<div className="profile__header__statistics-item">
+									<div className="profile__header__statistics-item__value">
+										{userData?.followers.length}
+									</div>
+									<div className="profile__header__statistics-item__description">
+										Followers
+									</div>
 								</div>
-								<div className="profile__header__statistics-item__description">
-									Following
+
+								<div className="profile__header__statistics-item profile__header__statistics-item--seperator">
+									<Seperator
+										type="vertical"
+										borderWidth={2}
+										fade={true}
+									/>
+								</div>
+
+								<div className="profile__header__statistics-item">
+									<div className="profile__header__statistics-item__value">
+										{userData?.following.length}
+									</div>
+									<div className="profile__header__statistics-item__description">
+										Following
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<div className="profile__header__content">
-					{/* Normal Username - Custom Username ignoring availability */}
+					<div className="profile__header__content">
+						{/* Normal Username - Custom Username ignoring availability */}
 
-					<div className="profile__header__content__username">
-						{userData?.username === ''
-							? userData?.username
-							: userData?.username}
-					</div>
+						<div className="profile__header__content__username">
+							{userData?.username === ''
+								? userData?.username
+								: userData?.username}
+						</div>
 
-					{/* Valid Username - Username that is only valid when not taken by someone else */}
-					<div className="profile__header__content__valid-name">
-						{userData?.username !== '' ||
-						userData?.username !== undefined
-							? '@' + userData?.username
-							: ''}
-					</div>
-					<div className="profile__header__content__bio">
-						{userData?.bio !== '' ? userData?.bio : ''}
-					</div>
+						{/* Valid Username - Username that is only valid when not taken by someone else */}
+						<div className="profile__header__content__valid-name">
+							{userData?.username !== '' ||
+							userData?.username !== undefined
+								? '@' + userData?.username
+								: ''}
+						</div>
+						<div className="profile__header__content__bio">
+							{userData?.bio !== '' ? userData?.bio : ''}
+						</div>
 
-					<div className="profile__header__content__action">
-						{allowProfileEdit ? (
-							<Button
-								onClick={() => {
-									if (localStorage.getItem('authToken'))
-										navigate('/edit-profile');
-								}}
-							>
-								Edit Profile
-							</Button>
-						) : (
-							<>
+						<div className="profile__header__content__action">
+							{allowProfileEdit ? (
 								<Button
-									onClick={() =>
-										handleUnauthorized(handleMessageButton)
-									}
+									onClick={() => {
+										if (localStorage.getItem('authToken'))
+											navigate('/edit-profile');
+									}}
 								>
-									Message
+									Edit Profile
 								</Button>
-								<Button
-									variant="bold"
-									onClick={() =>
-										handleUnauthorized(handleFollowButton)
-									}
-								>
-									Follow
-								</Button>
-							</>
-						)}
+							) : (
+								<>
+									<Button
+										onClick={() =>
+											handleUnauthorized(
+												handleMessageButton
+											)
+										}
+									>
+										Message
+									</Button>
+									<Button
+										variant="bold"
+										onClick={() =>
+											handleUnauthorized(
+												handleFollowButton
+											)
+										}
+									>
+										Follow
+									</Button>
+								</>
+							)}
+						</div>
 					</div>
 				</div>
-			</div>
 
-			<div className="profile__user-posts">
-				<div className="profile__user-posts__filter">
-					<div className="profile__user-posts__filter__item profile__user-posts__filter__item--active">
-						<ImageIcon />
+				<div className="profile__user-posts">
+					<div className="profile__user-posts__filter">
+						<div className="profile__user-posts__filter__item profile__user-posts__filter__item--active">
+							<ImageIcon />
+						</div>
+						<div className="profile__user-posts__filter__item">
+							<PackageIcon />
+						</div>
+						<div className="profile__user-posts__filter__item">
+							<BookmarkIcon />
+						</div>
 					</div>
-					<div className="profile__user-posts__filter__item">
-						<PackageIcon />
-					</div>
-					<div className="profile__user-posts__filter__item">
-						<BookmarkIcon />
-					</div>
-				</div>
 
-				<div className="profile__user-posts__container">
-					<div className="profile__user-posts__container__item"></div>
+					<div className="profile__user-posts__container">
+						<div className="profile__user-posts__container__item"></div>
+					</div>
 				</div>
 			</div>
 		</div>

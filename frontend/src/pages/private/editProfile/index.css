@@ -1,0 +1,241 @@
+.edit-profile {
+	min-width: 100%;
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.edit-profile--navbar {
+	position: absolute;
+	z-index: 272727;
+}
+.edit-profile--navbar__button {
+	--size: 40px;
+	min-width: var(--size);
+	min-height: var(--size);
+	max-width: var(--size);
+	max-height: var(--size);
+	padding: 8px;
+	display: flex;
+}
+
+.edit-profile__wrapper {
+	flex: 1;
+	/* align-self: stretch; */
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	z-index: 1;
+
+	/* experimental */
+	min-width: 600px;
+	max-width: 600px;
+}
+@media (max-width: 600px) {
+	.edit-profile__wrapper {
+		min-width: 100%;
+		max-width: 100%;
+	}
+}
+
+.edit-profile__header {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	z-index: 1;
+
+	margin-top: 66px;
+}
+.edit-profile__header__banner {
+	min-width: 100%;
+	aspect-ratio: 34 / 9;
+
+	border-radius: 0 0 10px 10px;
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-color: var(--primary-blue);
+}
+
+.edit-profile__header__container {
+	display: flex;
+	gap: 6px;
+
+	padding: 0 20px;
+	margin-top: calc(-50px - 1vw);
+}
+.edit-profile__header__avatar {
+	width: clamp(50px, 20vw, 125px);
+	height: clamp(50px, 20vw, 125px);
+
+	border-radius: 50%;
+	background-color: var(--primary-grey);
+	border: 8px solid var(--primary-black);
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+}
+.edit-profile__header__statistics {
+	flex: 1;
+	display: flex;
+	align-items: flex-end;
+	color: var(--primary-white);
+}
+.edit-profile__header__statistics-items {
+	flex: 1;
+	display: flex;
+	justify-content: center;
+}
+.edit-profile__header__statistics-item {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+.edit-profile__header__statistics-item--seperator {
+	flex: 0;
+	min-height: 33px;
+	align-self: center;
+}
+
+.edit-profile__header__statistics-item__value {
+	/* font-size: 1rem; */
+	font-size: clamp(0.875rem, 0.7917rem + 0.4444vw, 1.125rem);
+	font-weight: 600;
+	display: grid;
+	place-items: center;
+	color: var(--primary-white);
+}
+.edit-profile__header__statistics-item__description {
+	/* font-size: 0.875rem; */
+	font-size: clamp(0.75rem, 0.6667rem + 0.4444vw, 1rem);
+	font-weight: 500;
+	display: grid;
+	place-items: center;
+	color: var(--opacity-white--50);
+}
+
+.edit-profile__header__content {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	color: var(--primary-white);
+	padding: 0 20px;
+
+	margin-top: 16px;
+}
+.edit-profile__header__content__username {
+	font-size: 1.25rem;
+	font-weight: 600;
+}
+.edit-profile__header__content__valid-name {
+	font-size: 0.875rem;
+	font-weight: 500;
+	color: var(--opacity-white--50);
+}
+.edit-profile__header__content__bio {
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	font-size: 0.875rem;
+	font-weight: 500;
+
+	margin-top: 16px;
+}
+
+.edit-profile__header__content__action {
+	display: flex;
+	gap: 6px;
+
+	margin-top: 32px;
+}
+.edit-profile__header__content__action > * {
+	flex: 1;
+	display: flex;
+	min-height: 44px;
+	max-height: 44px;
+	padding: 0;
+}
+.edit-profile__header__content__action > * > * {
+	flex: 1;
+	padding: 0;
+	font-size: 0.875rem;
+}
+
+.edit-profile__user-posts {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	padding: 0 20px;
+	background: var(--primary-grey);
+	border-radius: 20px 20px 0 0;
+	margin-top: 24px;
+}
+.edit-profile__user-posts__filter {
+	align-self: stretch;
+	display: flex;
+
+	min-height: 50px;
+}
+.edit-profile__user-posts__filter__item {
+	max-height: 50px;
+
+	flex: 1;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	padding: 12px 0;
+	cursor: pointer;
+}
+.edit-profile__user-posts__filter__item--active::after {
+	content: '';
+	min-height: 3px;
+	min-width: 100%;
+	background: var(--primary-blue);
+	position: absolute;
+	bottom: 0;
+}
+
+.edit-profile__body {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+	padding: 20px;
+
+	padding-bottom: 80px; /* Void Padding */
+
+	font-size: 0.75rem;
+	font-weight: 500;
+	color: var(--opacity-white--50);
+}
+.edit-profile__body__description {
+	width: clamp(70%, 100%, 70%);
+}
+.edit-profile__body__title {
+	font-size: 1.25rem;
+	font-weight: 600;
+	color: var(--primary-white);
+}
+
+.edit-profile__body__container {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
+.edit-profile__body__container__item {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+.edit-profile__body__container__title {
+	font-size: 1rem;
+	font-weight: 600;
+	color: var(--primary-white);
+}
+.edit-profile__body__container__description {
+	font-size: 0.75rem;
+	width: clamp(80%, 100%, 80%);
+}
