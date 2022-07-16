@@ -13,7 +13,7 @@ const userController = {
 
             const { avatar, name, username, bio, gender } = req.body;
 
-            if (avatar) {
+            if (req.file.path) {
                 await cloudinary.uploader.destroy(`user/${req.user._id}`, user.avatar);
 
                 const result = await cloudinary.uploader.upload(req.file.path, {
