@@ -2,11 +2,9 @@ const User = require('../models/user.model')
 const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
 const sendCookie = require('../utils/sendCookie');
-const sendEmail = require('../utils/sendEmail');
+const EmailCtrl = require('./email.controller');
 
 exports.register = async (req, res, next) => {
-
-
     try {
         const {
             name,
@@ -69,6 +67,8 @@ exports.login = async (req, res, next) => {
         next(error);
     }
 };
+
+// Forgot Password
 exports.forgotPassword = async (req, res, next) => {
     const { email } = req.body;
 
@@ -81,16 +81,10 @@ exports.forgotPassword = async (req, res, next) => {
 
         await user.save();
 
-        const resetURL = `${req.protocol}://${req.get('host')}/resetpassword/${resetToken}`; //localhost:5000/resetpassword/resetToken fetch
-
-        const message = `Forgot your password? Go to ${resetURL} to reset it.`;
+        const resetURL = `${req.protocol}://${req.get('host')}/auth/resetpassword/${resetToken}`; //localhost:5000/resetpassword/resetToken fetch
 
         try {
-            await sendEmail({
-                to: user.email,
-                subject: 'Password Reset',
-                text: message
-            });
+            EmailCtrl.sendForgotPassword(user.username, email , resetURL);
 
             res.status(200).json({
                 success: true,

@@ -20,7 +20,7 @@ const sendEmail = async (options) => {
             from: `"${process.env.EMAIL_USER}" <${process.env.EMAIL_USER}>`,
             to: options.to,
             subject: options.subject,
-            text: options.text
+            html: options.html,
         }
 
         transporter.sendMail(mailOptions, (err, data) => {
