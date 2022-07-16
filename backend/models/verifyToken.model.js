@@ -9,21 +9,17 @@ const tokenSchema = new mongoose.Schema({
         unique: true,
     },
     token: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now, expires: 3600 },
+    createdAt: { type: Date, default: Date.now, expires: 300 },
 });
 
-tokenSchema.pre("save", async function (next) {
-    if (!this.isModified("token")) {
-        const hash = await bcrypt.hash(this.token, 8);
-        this.token = hash;
-    }
-    next();
-})
+// tokenSchema.pre("save", async function (next) {
+//     if (!this.isModified("token")) {
+//         const hash = await bcrypt.hash(this.token, 8);
+//         this.token = hash;
+//     }
+//     next();
+// })
 
-tokenSchema.methods.compareToken = async (token) => {
-    const result = await bcrypt.compareSync(token, this.token);
-    return result;
-}
 
 
 module.exports = mongoose.model("VerifyToken", tokenSchema);

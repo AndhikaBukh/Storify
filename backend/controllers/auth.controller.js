@@ -26,6 +26,12 @@ exports.register = async (req, res, next) => {
 
         !confirmPassword && next(new ErrorResponse('Please confirm your password', 400));
 
+        // Search email
+        await User.findOne({email: email}) != null && next(new ErrorResponse('Email already exist', 400));
+        
+        // Search username
+        await User.findOne({username: username}) != null && next(new ErrorResponse('Username already exist', 400));
+
         if (password !== confirmPassword) {
             next(new ErrorResponse('Password and Confirm Password must be same', 400));
         } else {
@@ -36,22 +42,15 @@ exports.register = async (req, res, next) => {
                 password,
             })
 
-            const generateOTP = () => {
-                let otp = '';
-                for (let i = 0; i < 4; i++) {
-                    otp += Math.floor(Math.random() * 9);
-                }
-                return otp;
-            }
+            const otp = EmailCtrl.generateOTP();
 
             const verifyToken = await VerifyToken.create({
                 userId: user._id,
-                token: generateOTP()
+                token: otp
             })
 
-            EmailCtrl.verifyEmail(email, generateOTP());
+            EmailCtrl.verifyEmail(email, otp);
 
-            await verifyToken.save();
             sendCookie(user, 201, res);
         }
 
@@ -59,6 +58,40 @@ exports.register = async (req, res, next) => {
         next(new ErrorResponse(error.message, 400));
     }
 };
+
+
+exports.resendOTP = async(req,res,next) => {
+    try{
+        const user = await User.findOne({
+            email: req.body.email
+        });
+
+        const verifyToken = await VerifyToken.findOne({
+            userId: user._id
+        })
+
+        verifyToken.remove()
+
+        const otp = EmailCtrl.generateOTP()
+
+        await VerifyToken.create({
+            userId: user._id,
+            token: otp
+        })
+
+        EmailCtrl.verifyEmail(req.body.email, otp );
+
+
+        res.status(200).json({
+            message: "See your email now"
+        })
+
+    }catch (error){
+        next(new ErrorResponse(error.message, 400));
+    }
+}
+
+
 
 exports.verifyEmail = async (req, res, next) => {
 
@@ -71,11 +104,17 @@ exports.verifyEmail = async (req, res, next) => {
         !user && next(new ErrorResponse('No user with this email', 404));
         !verifyToken && next(new ErrorResponse('Invalid Token', 400));
         user.verified && next(new ErrorResponse('Email already verified', 400));
+        verifyToken.token != token && next(new ErrorResponse('Blok', 400));
 
-        user.verified = true;
-        await user.save();
-        await verifyToken.remove();
-        sendCookie(user, 200, res);
+
+        if (verifyToken.token == token){
+            user.verified = true;
+            await user.save();
+            await verifyToken.remove();
+            sendCookie(user, 200, res);
+        }
+
+
 
     } catch (error) {
         next(new ErrorResponse(error.message, 400));

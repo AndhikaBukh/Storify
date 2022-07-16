@@ -16,4 +16,6 @@ router.put("/auth/resetpassword/:resetToken", authCtrl.resetPassword); // http:/
 
 router.post("/auth/logout", authCtrl.logout); // http://localhost:3000/api/auth/logout
 
+router.put("/auth/resend", authCtrl.resendOTP); // http://localhost:3000/api/auth/resend
+
 module.exports = router;

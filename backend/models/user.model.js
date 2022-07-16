@@ -13,7 +13,7 @@ const UserSchema = new mongoose.Schema({
     username: {
         type: String,
         required: [true, "Please fill a Username"],
-        unique: true,
+        unique: [true, "udah ada"],
         minlength: [5, "Username must be at least 5 characters"],
         trim: true,
         lowercase: true,
