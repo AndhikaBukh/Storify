@@ -68,7 +68,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const assignUser = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return await axios.get(`${API}/me`, config).then((res: any) => {
+		return await axios.get(`${API}/me`, config).then(res => {
 			setUser(res.data.user);
 		});
 	};
@@ -177,40 +177,32 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestFollow = async (_username: string) => {
-		return new Promise((resolve, reject) => {
+		return new Promise(() => {
 			axios.get(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
-					axios
-						.put(
-							`${API}/user/${uid}/follow`,
-							res?.data?.user,
-							config
-						)
-						.catch(error => {
-							reject(error);
-						});
+					axios.put(
+						`${API}/user/${uid}/follow`,
+						res?.data?.user,
+						config
+					);
 				}
 			});
 		});
 	};
 
 	const requestUnfollow = async (_username: string) => {
-		return new Promise((resolve, reject) => {
+		return new Promise(() => {
 			axios.get(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
-					axios
-						.put(
-							`${API}/user/${uid}/unfollow`,
-							res?.data?.user,
-							config
-						)
-						.catch(error => {
-							reject(error);
-						});
+					axios.put(
+						`${API}/user/${uid}/unfollow`,
+						res?.data?.user,
+						config
+					);
 				}
 			});
 		});
