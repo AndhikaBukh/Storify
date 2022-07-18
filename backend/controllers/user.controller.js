@@ -1,5 +1,4 @@
 const User = require("../models/user.model");
-const ErrorResponse = require("../utils/errorResponse");
 
 const cloudinary = require("../config/cloudinary");
 const upload = require("../utils/multer");
@@ -120,7 +119,7 @@ const userController = {
         }
     },
 
-    getUserDetail: async (req, res, next) => {
+    getUserDetail: async (req, res) => {
         try {
             const user = await User.findOne({
                 username: req.params.username.toLowerCase(),
@@ -157,9 +156,14 @@ const userController = {
                     },
                 });
 
-            user == null && next(new ErrorResponse("User not found!", 400));
+            if (user == null) {
+                return res.status(404).json({
+                    success: false,
+                    error: "User not found!",
+                });
+            }
 
-            res.status(200).json({
+            return res.status(200).json({
                 success: true,
                 user,
             });
