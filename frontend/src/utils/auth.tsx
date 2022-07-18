@@ -1,8 +1,17 @@
-import React, { createContext, FC, useContext } from 'react';
+import React, { createContext, FC, useContext, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
+interface userInterface {
+	name: string;
+	username: string;
+	email: string;
+	bio: string;
+}
+
 interface IAuthContext {
+	user: userInterface | undefined;
+	assignUser: () => void;
 	requireLogin: () => void;
 
 	trySignup: (
@@ -21,11 +30,12 @@ interface IAuthContext {
 
 	requestMe: () => Promise<unknown>;
 	requestUser: (_username: string) => Promise<unknown>;
-	updateAvatar: (_file: File | string) => Promise<unknown>;
+	requestFollow: (_username: string) => Promise<unknown>;
+	requestUnfollow: (_username: string) => Promise<unknown>;
 
+	updateAvatar: (_file: File | string) => Promise<unknown>;
 	updateProfile: (
 		_name: string | undefined,
-		_username: string,
 		_bio: string | undefined,
 
 		_avatar: File | string,
@@ -42,9 +52,11 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
+	const [user, setUser] = useState<userInterface>();
+
 	const navigate = useNavigate();
 
-	const API = 'localhost:3000/api';
+	const API = 'http://localhost:3000/api';
 
 	const config: object = {
 		headers: {
@@ -53,8 +65,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		},
 	};
 
-	const requireLogin = () => {
-		return axios.get(`http://${API}/me`, config).catch(() => {
+	const assignUser = async () => {
+		if (!localStorage.getItem('authToken')) return;
+
+		return await axios.get(`${API}/me`, config).then((res: any) => {
+			setUser(res.data.user);
+		});
+	};
+
+	const requireLogin = async () => {
+		return axios.get(`${API}/me`, config).catch(() => {
 			navigate('/login');
 		});
 	};
@@ -74,9 +94,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post(`http://${API}/auth/register`, body, config)
+				.post(`${API}/auth/register`, body, config)
 				.then(res => {
 					localStorage.setItem('authToken', res.data.token);
+					setUser(res.data.user);
 					navigate('/');
 					resolve('Successfully registered!');
 				})
@@ -97,9 +118,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post(`http://${API}/auth/login`, body, config)
+				.post(`${API}/auth/login`, body, config)
 				.then(response => {
 					localStorage.setItem('authToken', response.data.token);
+					setUser(response.data.user);
 					navigate('/');
 					resolve('Success');
 				})
@@ -114,8 +136,9 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		return new Promise((resolve, reject) => {
 			axios
-				.post(`http://${API}/auth/logout`, {}, config)
+				.post(`${API}/auth/logout`, {}, config)
 				.then(() => {
+					setUser(undefined);
 					navigate('/landing');
 					resolve('Success');
 				})
@@ -126,9 +149,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestMe = async () => {
+		if (!localStorage.getItem('authToken')) return;
+
 		return new Promise((resolve, reject) => {
 			axios
-				.get(`http://${API}/me`, config)
+				.get(`${API}/me`, config)
 				.then(res => {
 					resolve(res);
 				})
@@ -141,7 +166,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestUser = async (_username: string) => {
 		return new Promise((resolve, reject) => {
 			axios
-				.get(`http://${API}/user/${_username}`, config)
+				.get(`${API}/user/${_username}`, config)
 				.then(res => {
 					resolve(res);
 				})
@@ -151,12 +176,52 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
+	const requestFollow = async (_username: string) => {
+		return new Promise((resolve, reject) => {
+			axios.get(`${API}/user/${_username}`, config).then(res => {
+				const uid = res?.data?.user?._id;
+
+				if (uid) {
+					axios
+						.put(
+							`${API}/user/${uid}/follow`,
+							res?.data?.user,
+							config
+						)
+						.catch(error => {
+							reject(error);
+						});
+				}
+			});
+		});
+	};
+
+	const requestUnfollow = async (_username: string) => {
+		return new Promise((resolve, reject) => {
+			axios.get(`${API}/user/${_username}`, config).then(res => {
+				const uid = res?.data?.user?._id;
+
+				if (uid) {
+					axios
+						.put(
+							`${API}/user/${uid}/unfollow`,
+							res?.data?.user,
+							config
+						)
+						.catch(error => {
+							reject(error);
+						});
+				}
+			});
+		});
+	};
+
 	const updateAvatar = async (_avatar: File | string) => {
 		return new Promise((resolve, reject) => {
 			const data = new FormData();
 			data.append('avatar', _avatar);
 			axios
-				.put(`http://${API}/me`, data, {
+				.put(`${API}/me`, data, {
 					headers: {
 						// 'Content-Type': 'multipart/form-data',
 						authorization: `Bearer ${localStorage.getItem(
@@ -175,7 +240,6 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 	const updateProfile = async (
 		_name: string | undefined,
-		_username: string,
 		_bio: string | undefined,
 
 		_avatar: File | string,
@@ -183,9 +247,19 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 		_gender: string
 	) => {
+		const body = {
+			name: _name,
+			bio: _bio,
+
+			avatar: _avatar,
+			banner: _banner,
+
+			gender: _gender,
+		};
+
 		return new Promise((resolve, reject) => {
 			axios
-				.put(`http://${API}/me`, { username: _username }, config)
+				.put(`${API}/me`, body, config)
 				.then(res => {
 					resolve(res);
 				})
@@ -198,6 +272,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	return (
 		<authContext.Provider
 			value={{
+				user,
+				assignUser,
 				requireLogin,
 
 				trySignup,
@@ -206,6 +282,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 				requestMe,
 				requestUser,
+				requestFollow,
+				requestUnfollow,
 
 				updateAvatar,
 				updateProfile,
