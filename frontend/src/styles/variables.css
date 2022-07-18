@@ -10,9 +10,9 @@
 
 	--secondary-black: #131628;
 
-	--success: #16C79A;
-	--error: #F05454;
-	--warning: #FFC453;
+	--success: #16c79a;
+	--error: #f05454;
+	--warning: #ffc453;
 	--info: var(--primary-blue);
 
 	--opacity-white--75: #ffffffbf;
@@ -34,4 +34,10 @@
 	--opacity-light-blue--75: #33a9ffbf;
 	--opacity-light-blue--50: #33a9ff80;
 	--opacity-light-blue--25: #33a9ff40;
+
+	/* Font Styles */
+	--font-size--large: clamp(1.125rem, 1.0417rem + 0.4444vw, 1.375rem);
+	--font-size--medium: clamp(1rem, 0.9167rem + 0.4444vw, 1.25rem);
+	--font-size--small: clamp(0.875rem, 0.8333rem + 0.2222vw, 1rem);
+	--font-size--tiny: clamp(0.75rem, 0.6667rem + 0.4444vw, 1rem);
 }
