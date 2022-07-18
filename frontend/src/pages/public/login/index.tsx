@@ -111,7 +111,7 @@ export const LoginPage = () => {
 					<div className="login__container__forget-password">
 						<Link
 							className="login__container__forget-password__link"
-							to="/forgot-password"
+							to="/accounts/password/forgot"
 						>
 							Forgot Your Password?
 						</Link>

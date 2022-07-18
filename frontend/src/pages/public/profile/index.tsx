@@ -1,88 +1,70 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
 	BackIcon,
 	BookmarkIcon,
 	ImageIcon,
-	MenuIcon,
 	PackageIcon,
 	SliderIcon,
 } from '../../../components/icons';
 import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
+import { userDataInterface } from '../../../utils/types';
 import './index.css';
-
-interface userDataInterface {
-	name: string;
-	username: string;
-	email: string;
-	bio: string;
-
-	followers: string[];
-	following: string[];
-	post: string[];
-
-	avatar: string;
-	banner: string;
-}
 
 export const ProfilePage = () => {
 	const auth = useAuth();
 	const navigate = useNavigate();
 	const location = useLocation();
 
-	const [userData, setUserData] = useState<userDataInterface>({
-		name: '',
-		username: '',
-		email: '',
-		bio: '',
+	const [userData, setUserData] = useState<userDataInterface>();
+	const _username = location.pathname.split('/')[1].toLowerCase();
+	const [countFollowers, setCountFollowers] = useState(
+		userData?.followers.length ?? 0
+	);
 
-		followers: [],
-		following: [],
-		post: [],
-
-		avatar: '',
-		banner: '',
+	const getIsFollowing: any = userData?.followers.find((follower: any) => {
+		return follower?.username === auth?.user?.username ?? '';
 	});
 
-	const _username = location.pathname.split('/')[1];
-	const allowProfileEdit = auth?.requestMe()?.then((res: any) => {
-		return res?.data?.user?.username === _username;
-	});
+	const isFollowing = getIsFollowing?.username === auth?.user?.username;
+
+	const [allowFollow, setAllowFollow] = useState(isFollowing);
 
 	const handleMessageButton = () => {
-		navigate(`/message/${_username}`);
+		// navigate(`/message/${_username}`);
+		console.log('message button clicked');
 	};
 
 	const handleFollowButton = () => {
-		console.log('follow button clicked');
+		auth?.requireLogin();
+		auth?.requestFollow(_username);
+		setAllowFollow(true);
+		setCountFollowers(countFollowers + 1);
 	};
 
-	const handleUnauthorized = (_action: any) => {
-		auth?.requestMe()
-			?.catch(() => {
-				navigate('/login');
-			})
-			?.then((res: any) => {
-				if (res?.data?.user?.username !== _username) {
-					_action();
-				}
-			});
+	const handleUnFollowButton = () => {
+		auth?.requireLogin();
+		auth?.requestUnfollow(_username);
+		setAllowFollow(false);
+		setCountFollowers(countFollowers - 1);
 	};
 
 	useEffect(() => {
 		auth?.requestUser(_username)
 			.then((res: any) => {
 				setUserData(res?.data?.user);
+				setCountFollowers(res?.data?.user?.followers.length);
 			})
-			.catch(() => {
-				navigate('/404-page');
+			.catch(error => {
+				console.log(error);
+				navigate('/404');
 			});
 
 		document.title = `Project Sylly - ${_username}`;
-	}, []);
+	}, [location.pathname]);
 
 	return (
 		<div className="profile">
@@ -96,7 +78,7 @@ export const ProfilePage = () => {
 								<BackIcon />
 							</Link>
 
-							{_username}
+							{userData?.username}
 						</>
 					),
 					rightContent: auth ? (
@@ -133,7 +115,7 @@ export const ProfilePage = () => {
 							<div className="profile__header__statistics-items">
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{userData?.post.length}
+										{userData?.post.length || 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
 										Posts
@@ -150,10 +132,10 @@ export const ProfilePage = () => {
 
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{userData?.followers.length}
+										{userData?.following?.length || 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
-										Followers
+										Following
 									</div>
 								</div>
 
@@ -167,10 +149,10 @@ export const ProfilePage = () => {
 
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{userData?.following.length}
+										{userData?.followers?.length || 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
-										Following
+										Followers
 									</div>
 								</div>
 							</div>
@@ -178,15 +160,11 @@ export const ProfilePage = () => {
 					</div>
 
 					<div className="profile__header__content">
-						{/* Normal Username - Custom Username ignoring availability */}
-
 						<div className="profile__header__content__username">
 							{userData?.username === ''
 								? userData?.username
-								: userData?.username}
+								: userData?.name}
 						</div>
-
-						{/* Valid Username - Username that is only valid when not taken by someone else */}
 						<div className="profile__header__content__valid-name">
 							{userData?.username !== '' ||
 							userData?.username !== undefined
@@ -198,36 +176,39 @@ export const ProfilePage = () => {
 						</div>
 
 						<div className="profile__header__content__action">
-							{allowProfileEdit ? (
+							{_username === auth?.user?.username ? (
 								<Button
 									onClick={() => {
-										if (localStorage.getItem('authToken'))
-											navigate('/edit-profile');
+										navigate('/accounts/edit');
 									}}
 								>
 									Edit Profile
 								</Button>
 							) : (
 								<>
-									<Button
-										onClick={() =>
-											handleUnauthorized(
-												handleMessageButton
-											)
-										}
-									>
+									<Button onClick={handleMessageButton}>
 										Message
 									</Button>
-									<Button
-										variant="bold"
-										onClick={() =>
-											handleUnauthorized(
-												handleFollowButton
-											)
-										}
-									>
-										Follow
-									</Button>
+
+									{!allowFollow && isFollowing ? (
+										<Button
+											variant="optional"
+											onClick={() => {
+												handleUnFollowButton();
+											}}
+										>
+											Unfollow
+										</Button>
+									) : (
+										<Button
+											variant="bold"
+											onClick={() => {
+												handleFollowButton();
+											}}
+										>
+											Follow
+										</Button>
+									)}
 								</>
 							)}
 						</div>

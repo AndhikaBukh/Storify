@@ -20,16 +20,7 @@ import { FormConfig } from '../utils/form';
 import { DebugPage } from './debug';
 import { EditProfilePage } from './private/editProfile';
 
-const hideNavbar = [
-	'/404', // hide on 404 page
-	'/landing',
-	'/forgotPassword',
-	'/login',
-	'/resetPassword',
-	'/signup',
-	'/settings',
-	'/edit-profile',
-];
+const hideNavbar = ['/landing', '/accounts/', '/login', '/signup', '/settings'];
 
 export const App = () => {
 	const auth = useAuth();
@@ -41,11 +32,11 @@ export const App = () => {
 	// Handle Navbar visibility
 	const [showBottomNavbar, setShowBottomNavbar] = useState(false);
 
-	useEffect(() => {
-		auth?.requestMe()?.catch(() => {
-			// setShowBottomNavbar(false);
-		});
+	auth?.requestMe()?.catch(() => {
+		setShowBottomNavbar(false);
+	});
 
+	useEffect(() => {
 		// Change icon highlight based on current page
 		setCurrentPosition(location.pathname);
 
@@ -55,14 +46,19 @@ export const App = () => {
 			: setShowBottomNavbar(true);
 	}, [location.pathname]);
 
+	useEffect(() => {
+		auth?.assignUser();
+	}, []);
+
 	return (
 		<div className="app">
 			<Routes>
 				{/* ----------- Public Router ----------- */}
 				<Route path="/" element={<DebugPage />} />
-				<Route path="landing" element={<LandingPage />} />
+				<Route path="/landing" element={<LandingPage />} />
+				<Route path="/404" element={<LoginPage />} />
 				<Route
-					path="login"
+					path="/login"
 					element={
 						<FormConfig>
 							<LoginPage />
@@ -70,7 +66,7 @@ export const App = () => {
 					}
 				/>
 				<Route
-					path="signup"
+					path="/signup"
 					element={
 						<FormConfig>
 							<SignupPage />
@@ -80,11 +76,11 @@ export const App = () => {
 
 				{/* ----------- Optional Route ----------- */}
 				<Route
-					path="/forgot-password"
+					path="/accounts/password/forgot"
 					element={<ForgotPasswordPage />}
 				/>
 				<Route
-					path="/reset-password/:id"
+					path="/accounts/password/reset/:token"
 					element={<ResetPasswordPage />}
 				/>
 
@@ -98,7 +94,7 @@ export const App = () => {
 				<Route path="/messages" element={<MessegesPage />} />
 				<Route path="/settings" element={<SettingsPage />} />
 				<Route path="/upload" element={<UploadPage />} />
-				<Route path="/edit-profile" element={<EditProfilePage />} />
+				<Route path="/accounts/edit" element={<EditProfilePage />} />
 			</Routes>
 
 			<Navbar

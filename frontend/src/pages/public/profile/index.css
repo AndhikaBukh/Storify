@@ -49,7 +49,7 @@
 }
 .profile__header__banner {
 	min-width: 100%;
-	aspect-ratio: 34 / 9;
+	aspect-ratio: 4 / 1;
 
 	border-radius: 0 0 10px 10px;
 
@@ -64,11 +64,19 @@
 	gap: 6px;
 
 	padding: 0 20px;
-	margin-top: calc(-50px - 1vw);
+	margin-top: calc(-50px - 0.25vw);
 }
+@media (max-width: 400px) {
+	.profile__header__container {
+		margin-top: -40px;
+		flex-direction: column;
+		align-items: center;
+	}
+}
+
 .profile__header__avatar {
-	width: clamp(50px, 20vw, 125px);
-	height: clamp(50px, 20vw, 125px);
+	width: clamp(80px, 20vw, 110px);
+	height: clamp(80px, 20vw, 110px);
 
 	border-radius: 50%;
 	background-color: var(--primary-grey);
@@ -80,6 +88,7 @@
 }
 .profile__header__statistics {
 	flex: 1;
+	align-self: stretch;
 	display: flex;
 	align-items: flex-end;
 	color: var(--primary-white);
@@ -87,7 +96,7 @@
 .profile__header__statistics-items {
 	flex: 1;
 	display: flex;
-	justify-content: center;
+	align-items: center;
 }
 .profile__header__statistics-item {
 	flex: 1;
@@ -101,16 +110,14 @@
 }
 
 .profile__header__statistics-item__value {
-	/* font-size: 1rem; */
-	font-size: clamp(0.875rem, 0.7917rem + 0.4444vw, 1.125rem);
+	font-size: clamp(0.875rem, 0.8333rem + 0.2222vw, 1rem);
 	font-weight: 600;
 	display: grid;
 	place-items: center;
 	color: var(--primary-white);
 }
 .profile__header__statistics-item__description {
-	/* font-size: 0.875rem; */
-	font-size: clamp(0.75rem, 0.6667rem + 0.4444vw, 1rem);
+	font-size: clamp(0.75rem, 0.7083rem + 0.2222vw, 0.875rem);
 	font-weight: 500;
 	display: grid;
 	place-items: center;
@@ -127,16 +134,18 @@
 	margin-top: 16px;
 }
 .profile__header__content__username {
-	font-size: 1.25rem;
+	font-size: var(--font-size--medium);
 	font-weight: 600;
 }
 .profile__header__content__valid-name {
-	font-size: 0.875rem;
+	font-size: var(--font-size--small);
 	font-weight: 500;
 	color: var(--opacity-white--50);
 }
 .profile__header__content__bio {
-	font-size: 0.875rem;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	font-size: var(--font-size--small);
 	font-weight: 500;
 
 	margin-top: 16px;
