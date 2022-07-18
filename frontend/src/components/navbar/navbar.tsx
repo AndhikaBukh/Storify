@@ -54,7 +54,6 @@ export const Navbar: FC<NavbarProps> = ({
 	const auth = useAuth();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [userProfile, setUserProfile] = useState<string>('pleaceholder');
 
 	const { leftContent, rightContent } = topNavbarAttributes || {};
 
@@ -65,24 +64,6 @@ export const Navbar: FC<NavbarProps> = ({
 		pageIconRight,
 		handlePageIconRight,
 	} = pageNavbarAttributes || {};
-
-	const toProfile = () => {
-		auth?.requestMe()
-			.then((res: any) => {
-				setUserProfile(res?.data?.user?.username);
-				navigate(`/${res?.data?.user?.username}`);
-				document.title = `Project Sylly - ${res?.data?.user?.username}`;
-			})
-			.catch(err => {
-				navigate('/login');
-			});
-	};
-
-	useEffect(() => {
-		auth?.requestMe().then((res: any) => {
-			setUserProfile(res?.data?.user?.username);
-		});
-	}, []);
 
 	return show && show ? (
 		type === 'top' ? (
@@ -171,9 +152,12 @@ export const Navbar: FC<NavbarProps> = ({
 
 						<button
 							className="navbar__icon-wrapper"
-							onClick={toProfile}
+							onClick={() => {
+								auth?.requireLogin();
+								navigate(`/${auth?.user?.username}`);
+							}}
 						>
-							{activeState === `/${userProfile}` ? (
+							{activeState === `/${auth?.user?.username}` ? (
 								<UserFilledIcon />
 							) : (
 								<UserIcon />
