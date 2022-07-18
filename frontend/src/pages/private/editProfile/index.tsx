@@ -11,44 +11,41 @@ import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
 import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
+import { userDataInterface } from '../../../utils/types';
 import './index.css';
-
-interface userDataInterface {
-	name?: string;
-	username?: string;
-	email?: string;
-	bio?: string;
-	gender?: string;
-
-	followers?: string[];
-	following?: string[];
-	post?: string[];
-
-	avatar?: string;
-	bannerPicture?: string;
-}
 
 export const EditProfilePage = () => {
 	const auth = useAuth();
 	const navigate = useNavigate();
 
-	const [userData, setUserData] = useState<userDataInterface>({});
+	const [userData, setUserData] = useState<userDataInterface>();
 
 	const [editUserData, setEditUserData] = useState<userDataInterface>({
-		name: userData.name || '',
-		username: userData.username || '',
-		email: userData.email || '',
-		bio: userData.bio || '',
+		name: userData?.name || '',
+		username: userData?.username || '',
+		email: userData?.email || '',
+		bio: userData?.bio || '',
 
-		followers: userData.followers || [],
-		following: userData.following || [],
-		post: userData.post || [],
+		followers: userData?.followers || [],
+		following: userData?.following || [],
+		post: userData?.post || [],
 
-		avatar: userData.avatar || '',
-		bannerPicture: userData.bannerPicture || '',
+		avatar: userData?.avatar || '',
+		banner: userData?.banner || '',
 	});
 
+	const handleEditedUserData = (
+		_name: string | undefined,
+		_bio: string | undefined,
+		_avatar: File | string,
+		_banner: File | string,
+		_gender: string
+	) => {
+		auth?.updateProfile(_name, _bio, _avatar, _banner, _gender);
+	};
+
 	useEffect(() => {
+		auth?.requireLogin();
 		auth?.requestMe()
 			.then((res: any) => {
 				setUserData(res?.data?.user);
@@ -90,7 +87,7 @@ export const EditProfilePage = () => {
 					<div
 						className="edit-profile__header__banner"
 						style={{
-							backgroundImage: `url(${userData?.bannerPicture})`,
+							backgroundImage: `url(${userData?.banner})`,
 						}}
 					></div>
 
@@ -129,10 +126,10 @@ export const EditProfilePage = () => {
 
 								<div className="edit-profile__header__statistics-item">
 									<div className="edit-profile__header__statistics-item__value">
-										{userData?.followers?.length}
+										{userData?.following?.length || 0}
 									</div>
 									<div className="edit-profile__header__statistics-item__description">
-										Followers
+										Following
 									</div>
 								</div>
 
@@ -146,10 +143,10 @@ export const EditProfilePage = () => {
 
 								<div className="edit-profile__header__statistics-item">
 									<div className="edit-profile__header__statistics-item__value">
-										{userData?.following?.length}
+										{userData?.followers?.length || 0}
 									</div>
 									<div className="edit-profile__header__statistics-item__description">
-										Following
+										Followers
 									</div>
 								</div>
 							</div>
@@ -252,7 +249,7 @@ export const EditProfilePage = () => {
 							</div>
 							<Input
 								placeholder="Bio"
-								value={userData.bio}
+								value={userData?.bio}
 								onChange={e => {
 									setEditUserData({
 										...editUserData,
