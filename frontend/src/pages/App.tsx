@@ -19,8 +19,16 @@ import { useAuth } from '../utils/auth';
 import { FormConfig } from '../utils/form';
 import { DebugPage } from './debug';
 import { EditProfilePage } from './private/editProfile';
+import { NotFoundPage } from './404';
 
-const hideNavbar = ['/landing', '/accounts/', '/login', '/signup', '/settings'];
+const hideNavbar = [
+	'/404',
+	'/landing',
+	'/accounts/',
+	'/login',
+	'/signup',
+	'/settings',
+];
 
 export const App = () => {
 	const auth = useAuth();
@@ -32,16 +40,12 @@ export const App = () => {
 	// Handle Navbar visibility
 	const [showBottomNavbar, setShowBottomNavbar] = useState(false);
 
-	auth?.requestMe()?.catch(() => {
-		setShowBottomNavbar(false);
-	});
-
 	useEffect(() => {
 		// Change icon highlight based on current page
 		setCurrentPosition(location.pathname);
 
 		// Checks if the current page is in the hideNavbar array
-		hideNavbar.includes(location.pathname)
+		hideNavbar.includes(location.pathname) || auth?.user === undefined
 			? setShowBottomNavbar(false)
 			: setShowBottomNavbar(true);
 	}, [location.pathname]);
@@ -56,7 +60,7 @@ export const App = () => {
 				{/* ----------- Public Router ----------- */}
 				<Route path="/" element={<DebugPage />} />
 				<Route path="/landing" element={<LandingPage />} />
-				<Route path="/404" element={<LoginPage />} />
+				<Route path="/404" element={<NotFoundPage />} />
 				<Route
 					path="/login"
 					element={

@@ -26,29 +26,35 @@ export const ProfilePage = () => {
 	);
 
 	const getIsFollowing: any = userData?.followers.find((follower: any) => {
-		return follower?.username === auth?.user?.username ?? '';
+		return follower?.username === auth?.user?.username ?? false;
 	});
 
-	const isFollowing = getIsFollowing?.username === auth?.user?.username;
-
-	const [allowFollow, setAllowFollow] = useState(isFollowing);
+	const [allowFollow, setAllowFollow] = useState<boolean>(false);
 
 	const handleMessageButton = () => {
 		// navigate(`/message/${_username}`);
-		console.log('message button clicked');
+		// console.log('message button clicked');
+		console.log(`USERNAME - ${_username}`);
+		console.log(`FOLLOW COUNT - ${countFollowers}`);
+		console.log(`ALLOW FOLLOW - ${allowFollow}`);
+		console.log(
+			`MATCH FOLLOW - ${
+				getIsFollowing?.username === auth?.user?.username
+			}`
+		);
 	};
 
 	const handleFollowButton = () => {
 		auth?.requireLogin();
 		auth?.requestFollow(_username);
-		setAllowFollow(true);
+		setAllowFollow(false);
 		setCountFollowers(countFollowers + 1);
 	};
 
 	const handleUnFollowButton = () => {
 		auth?.requireLogin();
 		auth?.requestUnfollow(_username);
-		setAllowFollow(false);
+		setAllowFollow(true);
 		setCountFollowers(countFollowers - 1);
 	};
 
@@ -56,6 +62,8 @@ export const ProfilePage = () => {
 		auth?.requestUser(_username)
 			.then((res: any) => {
 				setUserData(res?.data?.user);
+				getIsFollowing?.username === auth?.user?.username &&
+					setAllowFollow(true);
 				setCountFollowers(res?.data?.user?.followers.length);
 			})
 			.catch(error => {
@@ -149,7 +157,7 @@ export const ProfilePage = () => {
 
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{userData?.followers?.length || 0}
+										{countFollowers ?? 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
 										Followers
@@ -190,16 +198,7 @@ export const ProfilePage = () => {
 										Message
 									</Button>
 
-									{!allowFollow && isFollowing ? (
-										<Button
-											variant="optional"
-											onClick={() => {
-												handleUnFollowButton();
-											}}
-										>
-											Unfollow
-										</Button>
-									) : (
+									{allowFollow ? (
 										<Button
 											variant="bold"
 											onClick={() => {
@@ -207,6 +206,15 @@ export const ProfilePage = () => {
 											}}
 										>
 											Follow
+										</Button>
+									) : (
+										<Button
+											variant="optional"
+											onClick={() => {
+												handleUnFollowButton();
+											}}
+										>
+											Unfollow
 										</Button>
 									)}
 								</>

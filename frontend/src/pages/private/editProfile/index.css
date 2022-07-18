@@ -61,14 +61,19 @@
 
 .edit-profile__header__container {
 	display: flex;
+	flex-direction: row;
 	gap: 6px;
 
 	padding: 0 20px;
-	margin-top: calc(-50px - 0.25vw);
+	margin-top: -40px;
 }
-@media (max-width: 400px) {
+@media (min-width: 470px) {
 	.edit-profile__header__container {
-		margin-top: -40px;
+		margin-top: -55px;
+	}
+}
+@media (max-width: 350px) {
+	.edit-profile__header__container {
 		flex-direction: column;
 		align-items: center;
 	}
@@ -80,7 +85,7 @@
 
 	border-radius: 50%;
 	background-color: var(--primary-grey);
-	border: 8px solid var(--primary-black);
+	border: 6px solid var(--primary-black);
 
 	background-size: cover;
 	background-position: center;
