@@ -24,7 +24,7 @@ router
 
 router.get("/search", userCtrl.searchUser); // search user // http://localhost:3000/api/search
 
-router.get("/user/:username", userCtrl.getUserDetail); // deatil user by username // http://localhost:3000/api/user/:username
+router.post("/user/:username", userCtrl.getUserDetail); // deatil user by username // http://localhost:3000/api/user/:username
 
 // get user Detai by id
 router.get("/user/:id/detail", userCtrl.getUserDetail); // http://localhost:3000/api/user/:id/detail
