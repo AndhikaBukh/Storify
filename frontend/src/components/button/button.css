@@ -1,4 +1,4 @@
-@import url("../../styles/colors.css");
+@import url('../../styles/variables.css');
 
 .button {
 	flex: 1;

@@ -1,4 +1,3 @@
-import { isDisabled } from '@testing-library/user-event/dist/utils';
 import {
 	ChangeEventHandler,
 	FC,
@@ -77,7 +76,6 @@ export const Input: FC<InputProps> = ({
 				onChange={e => {
 					setInputValue(e.target.value);
 					onChange(e);
-					console.log(e.target.value);
 				}}
 				disabled={disabled ? disabled : false}
 			/>
