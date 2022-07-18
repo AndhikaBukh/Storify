@@ -163,9 +163,16 @@ const userController = {
                 });
             }
 
+            const checkFllwr = user.followers.find((follower) => {
+                if (follower.username == req.body.loginUser) {
+                    return follower;
+                }
+            });
+
             return res.status(200).json({
                 success: true,
                 user,
+                isFollowed: checkFllwr ? true : false,
             });
         } catch (error) {
             return res.status(500).json({ message: error.message });
