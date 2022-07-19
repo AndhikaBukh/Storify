@@ -9,8 +9,8 @@ import {
 
 interface PopUpProps {
 	show?: boolean;
-	variant?: 'alert' | 'focus' | 'option';
-	type?: 'success' | 'error' | 'warning' | 'info';
+	variant: 'alert' | 'focus' | 'option';
+	type: 'success' | 'error' | 'warning' | 'info' | string;
 	onClose?: () => void;
 	icon?: React.ReactNode;
 	header?: React.ReactNode | string;

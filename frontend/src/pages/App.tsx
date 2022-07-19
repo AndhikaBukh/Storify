@@ -9,7 +9,7 @@ import { SettingsPage } from './private/settings';
 import { UploadPage } from './private/upload';
 import { ProfilePage } from './public/profile';
 import { MessegesPage } from './private/messages';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ForgotPasswordPage } from './public/forgotPassword';
 import { LandingPage } from './public/landing';
 import { LoginPage } from './public/login';
@@ -45,7 +45,8 @@ export const App = () => {
 		setCurrentPosition(location.pathname);
 
 		// Checks if the current page is in the hideNavbar array
-		hideNavbar.includes(location.pathname) || auth?.user === undefined
+		hideNavbar.includes(location.pathname) ||
+		!localStorage.getItem('authToken')
 			? setShowBottomNavbar(false)
 			: setShowBottomNavbar(true);
 	}, [location.pathname]);

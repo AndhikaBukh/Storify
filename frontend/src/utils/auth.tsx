@@ -35,13 +35,13 @@ interface IAuthContext {
 
 	updateAvatar: (_file: File | string) => Promise<unknown>;
 	updateProfile: (
-		_name: string | undefined,
-		_bio: string | undefined,
+		_name?: string | undefined,
+		_bio?: string | undefined,
 
-		_avatar: File | string,
-		_banner: File | string,
+		_avatar?: File | undefined,
+		_banner?: File | undefined,
 
-		_gender: string
+		_gender?: string | undefined
 	) => Promise<unknown>;
 }
 
@@ -56,7 +56,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 	const navigate = useNavigate();
 
-	const API = 'http://localhost:3000/api';
+	const API = 'http://192.168.100.10:3000/api';
 
 	const config: object = {
 		headers: {
@@ -68,12 +68,21 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const assignUser = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return await axios.get(`${API}/me`, config).then(res => {
-			setUser(res.data.user);
-		});
+		return await axios
+			.get(`${API}/me`, config)
+			.then(res => {
+				setUser(res.data.user);
+			})
+			.catch(() => {
+				if (localStorage.getItem('authToken')) {
+					navigate('/login');
+				}
+			});
 	};
 
 	const requireLogin = async () => {
+		if (localStorage.getItem('authToken')) return;
+
 		return axios.get(`${API}/me`, config).catch(() => {
 			navigate('/login');
 		});
@@ -151,22 +160,29 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestMe = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return new Promise((resolve, reject) => {
+		return new Promise(resolve => {
 			axios
 				.get(`${API}/me`, config)
 				.then(res => {
 					resolve(res);
 				})
-				.catch(error => {
-					reject(error);
+				.catch(() => {
+					navigate('/login');
 				});
 		});
 	};
 
 	const requestUser = async (_username: string) => {
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
-				.get(`${API}/user/${_username}`, config)
+				.post(
+					`${API}/user/${_username}`,
+					{
+						loginUser:
+							user?.username === undefined ? '' : user.username,
+					},
+					config
+				)
 				.then(res => {
 					resolve(res);
 				})
@@ -178,7 +194,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 	const requestFollow = async (_username: string) => {
 		return new Promise(() => {
-			axios.get(`${API}/user/${_username}`, config).then(res => {
+			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
@@ -194,7 +210,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 	const requestUnfollow = async (_username: string) => {
 		return new Promise(() => {
-			axios.get(`${API}/user/${_username}`, config).then(res => {
+			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
@@ -234,17 +250,17 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		_name: string | undefined,
 		_bio: string | undefined,
 
-		_avatar: File | string,
-		_banner: File | string,
+		_avatar: File | undefined,
+		_banner: File | undefined,
 
-		_gender: string
+		_gender: string | undefined
 	) => {
 		const body = {
 			name: _name,
 			bio: _bio,
 
-			avatar: _avatar,
-			banner: _banner,
+			avatar: _avatar ?? undefined,
+			banner: _banner ?? undefined,
 
 			gender: _gender,
 		};
