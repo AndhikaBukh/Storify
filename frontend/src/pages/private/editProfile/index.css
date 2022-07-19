@@ -20,18 +20,31 @@
 	display: flex;
 }
 
-.edit-profile__header__banner__label,
-.edit-profile__header__avatar__label {
-	position: absolute;
-	z-index: 27;
+.edit-profile__header__banner__label {
+	position: relative;
 	min-height: 100%;
 	min-width: 100%;
+	cursor: pointer;
 	display: flex;
+	flex-direction: column;
+}
+.edit-profile__header__avatar__label {
+	position: relative;
+	min-height: 100%;
+	min-width: 100%;
 	cursor: pointer;
 }
 .edit-profile__header__banner__label input[type='file'],
 .edit-profile__header__avatar__label input[type='file'] {
 	display: none;
+}
+.edit-profile__header__banner__label:hover
+	.edit-profile__header__banner__label__overlay {
+	opacity: 1;
+}
+.edit-profile__header__avatar__label:hover
+	.edit-profile__header__avatar__label__overlay {
+	opacity: 1;
 }
 
 .edit-profile__popup-container {
@@ -76,8 +89,8 @@
 	min-width: 100%;
 	max-width: 100%;
 	min-height: 120px;
-	position: relative;
 	aspect-ratio: 4 / 1;
+	display: flex;
 
 	border-radius: 0 0 10px 10px;
 
@@ -86,22 +99,36 @@
 	background-repeat: no-repeat;
 	background-color: var(--primary-blue);
 }
+.edit-profile__header__banner__label__overlay {
+	min-width: 100%;
+	min-height: 100%;
+	aspect-ratio: 4 / 1;
+	opacity: 0;
+	overflow: hidden;
+	background-color: var(--opacity-grey--75);
+	display: flex;
+	display: grid;
+	place-items: center;
+	padding-top: 40px;
+	transition: opacity 0.2s ease-in-out;
+}
+.edit-profile__header__banner__label__overlay__wrapper {
+	width: clamp(24px, 24px, 24px);
+	height: clamp(24px, 24px, 24px);
+}
 
 .edit-profile__header__container {
+	max-height: 40px;
 	position: relative;
 	display: flex;
 	flex-direction: row;
 	gap: 6px;
 
-	margin: -30px 26px 0 26px;
-}
-@media (min-width: 470px) {
-	.edit-profile__header__container {
-		margin-top: -45px;
-	}
+	margin: 10px 26px 0;
 }
 @media (max-width: 350px) {
 	.edit-profile__header__container {
+		max-height: unset;
 		flex-direction: column;
 		align-items: center;
 	}
@@ -120,6 +147,8 @@
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
+
+	margin-top: -50px;
 }
 
 .edit-profile__header__avatar__label__overlay {
@@ -135,6 +164,7 @@
 	display: grid;
 	place-items: center;
 	padding: 28px;
+	transition: opacity 0.2s ease-in-out;
 }
 
 .edit-profile__header__avatar__label__guide {
@@ -155,10 +185,6 @@
 	place-items: center;
 	padding: 6px;
 	cursor: pointer;
-}
-.edit-profile__header__avatar__label:hover
-	.edit-profile__header__avatar__label__overlay {
-	opacity: 1;
 }
 
 .edit-profile__header__statistics {

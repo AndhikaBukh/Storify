@@ -119,6 +119,11 @@ export const EditProfilePage = () => {
 							htmlFor="banner"
 							className="edit-profile__header__banner__label"
 						>
+							<div className="edit-profile__header__banner__label__overlay">
+								<div className="edit-profile__header__banner__label__overlay__wrapper">
+									<CameraIcon />
+								</div>
+							</div>
 							<input
 								type="file"
 								name="banner"
