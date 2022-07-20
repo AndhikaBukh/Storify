@@ -15,21 +15,6 @@ import { useAuth } from '../../../utils/auth';
 import { userDataInterface } from '../../../utils/types';
 import './index.css';
 
-const handleScrolling = () => {
-	const navbar: any = document.querySelector('.navbar-top');
-	const posts: any = document.querySelector('.profile__user-posts');
-	const calc = posts.offsetTop - 86;
-	if (posts) {
-		if (window.scrollY > calc) {
-			navbar.style.borderRadius = '0px';
-			posts.style.borderRadius = '0';
-		} else {
-			navbar.style.borderRadius = '0 0 20px 20px';
-			posts.style.borderRadius = '20px 20px 0 0';
-		}
-	}
-};
-
 export const ProfilePage = () => {
 	const auth = useAuth();
 	const navigate = useNavigate();
@@ -39,6 +24,10 @@ export const ProfilePage = () => {
 	const _username = location.pathname.split('/')[1].toLowerCase();
 
 	const [allowFollow, setAllowFollow] = useState<boolean>(false);
+
+	const postsElement = useRef<HTMLDivElement>(null);
+	const [navbarStyle, setNavbarStyle] = useState('0 0 20px 20px');
+	const [postsStyle, setPostsStyle] = useState('20px 20px 0 0');
 
 	const handleMessageButton = () => {
 		// navigate(`/message/${_username}`);
@@ -84,9 +73,23 @@ export const ProfilePage = () => {
 		});
 	}, [handleFollowButton, handleUnFollowButton]);
 
+	// Remove borderRadius on Top Navbar & User Posts, creating
 	useEffect(() => {
 		window.onscroll = () => {
-			handleScrolling();
+			if (postsElement.current !== null) {
+				console.log(window.scrollY);
+				const calc = postsElement.current?.offsetTop - 86;
+
+				if (window.scrollY > calc) {
+					setNavbarStyle('0');
+					setPostsStyle('0');
+					console.log('scrolled down');
+				} else {
+					setNavbarStyle('0 0 20px 20px');
+					setPostsStyle('20px 20px 0 0');
+					console.log('Hey Listen!');
+				}
+			}
 		};
 	}, []);
 
@@ -110,6 +113,9 @@ export const ProfilePage = () => {
 							<SliderIcon />
 						</Link>
 					) : null,
+				}}
+				style={{
+					borderRadius: navbarStyle,
 				}}
 			/>
 			<div className="profile__wrapper">
@@ -234,7 +240,13 @@ export const ProfilePage = () => {
 					</div>
 				</div>
 
-				<div className="profile__user-posts">
+				<div
+					className="profile__user-posts"
+					ref={postsElement}
+					style={{
+						borderRadius: postsStyle,
+					}}
+				>
 					<div className="profile__user-posts__filter">
 						<div className="profile__user-posts__filter__item profile__user-posts__filter__item--active">
 							<ImageIcon />
