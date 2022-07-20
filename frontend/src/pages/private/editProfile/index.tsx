@@ -30,15 +30,20 @@ export const EditProfilePage = () => {
 	const [userData, setUserData] = useState<userDataInterface>();
 	const [editUserData, setEditUserData] = useState<userDataInterface>();
 
+	const [avatarInput, setAvatarInput] = useState(undefined);
+	const [bannerInput, setBannerInput] = useState(undefined);
+
 	const handleEditedUserData = () => {
 		auth?.updateProfile(
 			editUserData?.name,
 			editUserData?.bio,
 			editUserData?.avatar,
-			editUserData?.banner
+			editUserData?.banner,
+			editUserData?.gender
 		)
 			.then(() => {
 				setShowAlert(true);
+				console.log(editUserData);
 			})
 			.catch(error => {
 				setAlertType('error');
@@ -128,7 +133,8 @@ export const EditProfilePage = () => {
 								type="file"
 								name="banner"
 								id="banner"
-								accept="image/png, image/jpg, image/gif, image/jpeg"
+								accept="image/png, image/jpg, image/jpeg"
+								ref={bannerInput}
 							/>
 						</label>
 					</div>
@@ -153,7 +159,8 @@ export const EditProfilePage = () => {
 									type="file"
 									name="avatar"
 									id="avatar"
-									accept="image/png, image/jpg, image/gif, image/jpeg"
+									accept="image/png, image/jpg, image/jpeg"
+									ref={avatarInput}
 								/>
 							</label>
 							<div className="edit-profile__header__avatar__label__guide">
