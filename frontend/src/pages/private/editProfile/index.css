@@ -88,9 +88,10 @@
 .edit-profile__header__banner {
 	min-width: 100%;
 	max-width: 100%;
-	min-height: 120px;
+	min-height: 140px;
 	aspect-ratio: 4 / 1;
 	display: flex;
+	overflow: hidden;
 
 	border-radius: 0 0 10px 10px;
 
@@ -143,7 +144,7 @@
 
 	border-radius: 50%;
 	background-color: var(--primary-grey);
-	outline: 6px solid var(--primary-black);
+	outline: 12px solid var(--primary-black);
 
 	background-size: cover;
 	background-position: center;
@@ -181,7 +182,7 @@
 	overflow: hidden;
 	opacity: 1;
 	border-radius: 50%;
-	background-color: var(--primary-purple);
+	background-color: var(--primary-dark-blue);
 	display: grid;
 	place-items: center;
 	padding: 6px;

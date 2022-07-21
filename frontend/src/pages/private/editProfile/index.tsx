@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
 	BackIcon,
@@ -27,32 +27,91 @@ export const EditProfilePage = () => {
 		'Profile updated successfully'
 	);
 
+	const showPopup = (_type: string, _header: string, _message: string) => {
+		setAlertType(_type);
+		setAlertHeader(_header);
+		setAlertMessage(_message);
+		setShowAlert(true);
+	};
+
 	const [userData, setUserData] = useState<userDataInterface>();
 	const [editUserData, setEditUserData] = useState<userDataInterface>();
+	const [previewAvatar, setPreviewAvatar] = useState<string | undefined>(
+		undefined
+	);
+	const [previewBanner, setPreviewBanner] = useState<string | undefined>(
+		undefined
+	);
 
-	const [avatarInput, setAvatarInput] = useState(undefined);
-	const [bannerInput, setBannerInput] = useState(undefined);
+	const getBannerInput = useRef<HTMLInputElement>(null);
+	const getAvatarInput = useRef<HTMLInputElement>(null);
 
 	const handleEditedUserData = () => {
-		auth?.updateProfile(
-			editUserData?.name,
-			editUserData?.bio,
-			editUserData?.avatar,
-			editUserData?.banner,
-			editUserData?.gender
-		)
-			.then(() => {
-				setShowAlert(true);
-				console.log(editUserData);
-			})
-			.catch(error => {
-				setAlertType('error');
-				setAlertHeader('Error!');
-				setAlertMessage(error.response?.data?.message);
-				setShowAlert(true);
+		console.warn('ON DEBUG');
+		if (editUserData !== userData) {
+			auth?.updateProfile(
+				editUserData?.name,
+				editUserData?.bio,
 
-				console.log(error);
+				editUserData?.gender
+			).catch(error => {
+				showPopup(
+					'error',
+					'Failed to update profile',
+					`error at ${error.data.message}`
+				);
 			});
+		}
+
+		getAvatarInput?.current?.files?.[0] &&
+			auth
+				?.updateAvatar(getAvatarInput?.current?.files?.[0])
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Avatar updated successfully'
+					);
+				})
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update avatar',
+						`error at ${error.data.message}`
+					);
+				});
+		getBannerInput?.current?.files?.[0] &&
+			auth
+				?.updateBanner(getBannerInput?.current?.files?.[0])
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Banner updated successfully'
+					);
+				})
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update banner',
+						`error at ${error.data.message}`
+					);
+				});
+	};
+
+	const debugTHIS = () => {
+		editUserData === userData && console.log('No changes were made');
+		editUserData?.avatar !== userData?.avatar &&
+			console.log('Avatar changed');
+		editUserData?.banner !== userData?.banner &&
+			console.log('Banner changed');
+	};
+
+	const debugTHAT = () => {
+		userData?.avatar === editUserData?.avatar &&
+			console.log('Avatar is not changed');
+		userData?.banner === editUserData?.banner &&
+			console.log('Banner is not changed');
 	};
 
 	useEffect(() => {
@@ -60,11 +119,7 @@ export const EditProfilePage = () => {
 		auth?.requestMe()
 			.then((res: any) => {
 				setUserData(res?.data?.user);
-				setEditUserData({
-					...res?.data?.user,
-					avatar: undefined,
-					banner: undefined,
-				});
+				setEditUserData(res?.data?.user);
 			})
 			.catch(() => {
 				navigate('/login');
@@ -73,8 +128,45 @@ export const EditProfilePage = () => {
 		document.title = `Project Sylly - Edit Profile`;
 	}, []);
 
+	useEffect(() => {
+		auth?.requestMe().then((res: any) => {
+			setUserData(res?.data?.user);
+			setEditUserData(res?.data?.user);
+		});
+	}, [handleEditedUserData]);
+
 	return (
-		<div className="edit-profile" onScroll={() => console.log('Hey!')}>
+		<div className="edit-profile">
+			<button
+				onClick={debugTHIS}
+				style={{
+					position: 'fixed',
+					bottom: '0',
+					left: '0',
+					zIndex: '9999',
+					backgroundColor: 'red',
+					color: 'white',
+					padding: '10px',
+				}}
+			>
+				Debug this
+			</button>
+
+			<button
+				onClick={debugTHAT}
+				style={{
+					position: 'fixed',
+					bottom: '0',
+					right: '0',
+					zIndex: '9999',
+					backgroundColor: 'red',
+					color: 'white',
+					padding: '10px',
+				}}
+			>
+				Debug that
+			</button>
+
 			<Navbar
 				className="edit-profile--navbar"
 				type="top"
@@ -117,7 +209,10 @@ export const EditProfilePage = () => {
 					<div
 						className="edit-profile__header__banner"
 						style={{
-							backgroundImage: `url(${userData?.banner})`,
+							backgroundImage:
+								previewBanner !== undefined
+									? `url(${previewBanner})`
+									: `url(${userData?.banner})`,
 						}}
 					>
 						<label
@@ -134,7 +229,12 @@ export const EditProfilePage = () => {
 								name="banner"
 								id="banner"
 								accept="image/png, image/jpg, image/jpeg"
-								ref={bannerInput}
+								ref={getBannerInput}
+								onChange={e => {
+									if (!e.target.files) return;
+									const file = e.target.files[0];
+									setPreviewBanner(URL.createObjectURL(file));
+								}}
 							/>
 						</label>
 					</div>
@@ -143,9 +243,10 @@ export const EditProfilePage = () => {
 						<div
 							className="edit-profile__header__avatar"
 							style={{
-								backgroundImage: `
-								${`url(${userData?.avatar})`}
-							`,
+								backgroundImage:
+									previewAvatar !== undefined
+										? `url(${previewAvatar})`
+										: `url(${userData?.avatar})`,
 							}}
 						>
 							<label
@@ -160,7 +261,14 @@ export const EditProfilePage = () => {
 									name="avatar"
 									id="avatar"
 									accept="image/png, image/jpg, image/jpeg"
-									ref={avatarInput}
+									ref={getAvatarInput}
+									onChange={e => {
+										if (!e.target.files) return;
+										const file = e.target.files[0];
+										setPreviewAvatar(
+											URL.createObjectURL(file)
+										);
+									}}
 								/>
 							</label>
 							<div className="edit-profile__header__avatar__label__guide">
