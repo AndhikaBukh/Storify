@@ -53,7 +53,7 @@ This will install all the dependencies that is required for the project.
 ## 💠 Contributors
 
 -   [@AndhikaBukh](https://github.com/AndhikaBukh) - Front-End Developer & UI / UX Designer
+-   [@Bandfal](https://github.com/Bandfal) - Beginner Developer & UI / UX Designer
 -   [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer & API Developer
 -   [@ZuzuStack](https://github.com/zuzustack) - Back-End Developer & API Developer
--   [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, & UI / UX Contributor
 -   Made by 💖 & ☕
