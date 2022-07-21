@@ -33,13 +33,12 @@ interface IAuthContext {
 	requestFollow: (_username: string) => Promise<unknown>;
 	requestUnfollow: (_username: string) => Promise<unknown>;
 
-	updateAvatar: (_file: File | string) => Promise<unknown>;
+	updateAvatar: (_file: File) => Promise<unknown>;
+	updateBanner: (_file: File) => Promise<unknown>;
+
 	updateProfile: (
 		_name?: string | undefined,
 		_bio?: string | undefined,
-
-		_avatar?: File | undefined,
-		_banner?: File | undefined,
 
 		_gender?: string | undefined
 	) => Promise<unknown>;
@@ -125,7 +124,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 			password: _password,
 		};
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.post(`${API}/auth/login`, body, config)
 				.then(response => {
@@ -140,10 +139,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
-	const tryLogout = () => {
+	const tryLogout = async () => {
 		localStorage.removeItem('authToken');
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.post(`${API}/auth/logout`, {}, config)
 				.then(() => {
@@ -160,7 +159,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestMe = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return new Promise(resolve => {
+		return await new Promise(resolve => {
 			axios
 				.get(`${API}/me`, config)
 				.then(res => {
@@ -193,7 +192,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestFollow = async (_username: string) => {
-		return new Promise(() => {
+		return await new Promise(() => {
 			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
@@ -209,7 +208,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestUnfollow = async (_username: string) => {
-		return new Promise(() => {
+		return await new Promise(() => {
 			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
@@ -224,14 +223,34 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
-	const updateAvatar = async (_avatar: File | string) => {
-		return new Promise((resolve, reject) => {
+	const updateAvatar = async (_avatar: File) => {
+		return await new Promise((resolve, reject) => {
 			const data = new FormData();
 			data.append('avatar', _avatar);
 			axios
 				.put(`${API}/me`, data, {
 					headers: {
-						// 'Content-Type': 'multipart/form-data',
+						authorization: `Bearer ${localStorage.getItem(
+							'authToken'
+						)}`,
+					},
+				})
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const updateBanner = async (_banner: File) => {
+		return await new Promise((resolve, reject) => {
+			const data = new FormData();
+			data.append('banner', _banner);
+			axios
+				.put(`${API}/me`, data, {
+					headers: {
 						authorization: `Bearer ${localStorage.getItem(
 							'authToken'
 						)}`,
@@ -250,22 +269,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		_name: string | undefined,
 		_bio: string | undefined,
 
-		_avatar: File | undefined,
-		_banner: File | undefined,
-
 		_gender: string | undefined
 	) => {
 		const body = {
 			name: _name,
 			bio: _bio,
 
-			avatar: _avatar ?? undefined,
-			banner: _banner ?? undefined,
-
 			gender: _gender,
 		};
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.put(`${API}/me`, body, config)
 				.then(res => {
@@ -293,8 +306,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 				requestFollow,
 				requestUnfollow,
 
-				updateAvatar,
 				updateProfile,
+
+				updateAvatar,
+				updateBanner,
 			}}
 		>
 			{children}

@@ -26,6 +26,7 @@ interface NavbarProps {
 	activeState?: string;
 
 	className?: string;
+	style?: React.CSSProperties;
 }
 
 interface TopNavbarProps {
@@ -50,6 +51,7 @@ export const Navbar: FC<NavbarProps> = ({
 	activeState,
 
 	className,
+	style,
 }) => {
 	const auth = useAuth();
 	const location = useLocation();
@@ -73,6 +75,7 @@ export const Navbar: FC<NavbarProps> = ({
 						? `navbar-top ${className}`
 						: 'navbar-top'
 				}
+				style={style}
 			>
 				<div className="navbar-top__container">
 					<div className="navbar-top__wrapper">

@@ -53,7 +53,7 @@ export const ProfilePage = () => {
 				setUserData(res?.data?.user);
 				setAllowFollow(!res?.data?.isFollowed);
 			})
-			.catch(error => {
+			.catch(() => {
 				navigate('/404');
 			});
 
@@ -77,17 +77,14 @@ export const ProfilePage = () => {
 	useEffect(() => {
 		window.onscroll = () => {
 			if (postsElement.current !== null) {
-				console.log(window.scrollY);
 				const calc = postsElement.current?.offsetTop - 86;
 
 				if (window.scrollY > calc) {
 					setNavbarStyle('0');
 					setPostsStyle('0');
-					console.log('scrolled down');
 				} else {
 					setNavbarStyle('0 0 20px 20px');
 					setPostsStyle('20px 20px 0 0');
-					console.log('Hey Listen!');
 				}
 			}
 		};

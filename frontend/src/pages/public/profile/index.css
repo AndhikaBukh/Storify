@@ -61,7 +61,7 @@
 .profile__header__banner {
 	min-width: 100%;
 	max-width: 100%;
-	min-height: 120px;
+	min-height: 140px;
 	aspect-ratio: 4 / 1;
 	display: flex;
 
@@ -98,7 +98,7 @@
 
 	border-radius: 50%;
 	background-color: var(--primary-grey);
-	outline: 6px solid var(--primary-black);
+	outline: 12px solid var(--primary-black);
 
 	background-size: cover;
 	background-position: center;
@@ -243,6 +243,7 @@
 	background: var(--primary-grey);
 	border-radius: 20px 20px 0 0;
 	margin-top: 24px;
+	transition: border-radius 0.3s ease-in-out;
 }
 .profile__user-posts__filter {
 	align-self: stretch;

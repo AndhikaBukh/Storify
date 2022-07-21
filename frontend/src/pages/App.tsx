@@ -9,7 +9,7 @@ import { SettingsPage } from './private/settings';
 import { UploadPage } from './private/upload';
 import { ProfilePage } from './public/profile';
 import { MessegesPage } from './private/messages';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ForgotPasswordPage } from './public/forgotPassword';
 import { LandingPage } from './public/landing';
 import { LoginPage } from './public/login';
@@ -24,7 +24,7 @@ import { NotFoundPage } from './404';
 const hideNavbar = [
 	'/404',
 	'/landing',
-	'/accounts/',
+	'/accounts',
 	'/login',
 	'/signup',
 	'/settings',
@@ -42,10 +42,10 @@ export const App = () => {
 
 	useEffect(() => {
 		// Change icon highlight based on current page
-		setCurrentPosition(location.pathname);
+		setCurrentPosition(`/${location.pathname.split('/')[1]}`);
 
 		// Checks if the current page is in the hideNavbar array
-		hideNavbar.includes(location.pathname) ||
+		hideNavbar.includes(`/${location.pathname.split('/')[1]}`) ||
 		!localStorage.getItem('authToken')
 			? setShowBottomNavbar(false)
 			: setShowBottomNavbar(true);

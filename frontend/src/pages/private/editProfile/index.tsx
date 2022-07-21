@@ -47,22 +47,6 @@ export const EditProfilePage = () => {
 	const getAvatarInput = useRef<HTMLInputElement>(null);
 
 	const handleEditedUserData = () => {
-		console.warn('ON DEBUG');
-		if (editUserData !== userData) {
-			auth?.updateProfile(
-				editUserData?.name,
-				editUserData?.bio,
-
-				editUserData?.gender
-			).catch(error => {
-				showPopup(
-					'error',
-					'Failed to update profile',
-					`error at ${error.data.message}`
-				);
-			});
-		}
-
 		getAvatarInput?.current?.files?.[0] &&
 			auth
 				?.updateAvatar(getAvatarInput?.current?.files?.[0])
@@ -97,21 +81,30 @@ export const EditProfilePage = () => {
 						`error at ${error.data.message}`
 					);
 				});
-	};
 
-	const debugTHIS = () => {
-		editUserData === userData && console.log('No changes were made');
-		editUserData?.avatar !== userData?.avatar &&
-			console.log('Avatar changed');
-		editUserData?.banner !== userData?.banner &&
-			console.log('Banner changed');
-	};
+		if (editUserData !== userData) {
+			auth?.updateProfile(
+				editUserData?.name,
+				editUserData?.bio,
 
-	const debugTHAT = () => {
-		userData?.avatar === editUserData?.avatar &&
-			console.log('Avatar is not changed');
-		userData?.banner === editUserData?.banner &&
-			console.log('Banner is not changed');
+				editUserData?.gender
+			)
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Profile updated successfully'
+					);
+				})
+
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update profile',
+						`error at ${error.data.message}`
+					);
+				});
+		}
 	};
 
 	useEffect(() => {
@@ -137,36 +130,6 @@ export const EditProfilePage = () => {
 
 	return (
 		<div className="edit-profile">
-			<button
-				onClick={debugTHIS}
-				style={{
-					position: 'fixed',
-					bottom: '0',
-					left: '0',
-					zIndex: '9999',
-					backgroundColor: 'red',
-					color: 'white',
-					padding: '10px',
-				}}
-			>
-				Debug this
-			</button>
-
-			<button
-				onClick={debugTHAT}
-				style={{
-					position: 'fixed',
-					bottom: '0',
-					right: '0',
-					zIndex: '9999',
-					backgroundColor: 'red',
-					color: 'white',
-					padding: '10px',
-				}}
-			>
-				Debug that
-			</button>
-
 			<Navbar
 				className="edit-profile--navbar"
 				type="top"
