@@ -56,3 +56,6 @@ This will install all the dependencies that is required for the project.
 -   [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer & API Developer
 -   [@ZuzuStack](https://github.com/zuzustack) - Back-End Developer & API Developer
 -   [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, & UI / UX Contributor
+
+## Build with 💖 & ☕
+Thank you for visiting our repository! ✨
