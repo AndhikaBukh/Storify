@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Auth = require("../utils/Auth");
 
 const cloudinary = require("../config/cloudinary");
 const upload = require("../utils/multer");
@@ -8,7 +9,7 @@ const sendCookie = require("../utils/sendCookie");
 const userController = {
     updateUser: async (req, res) => {
         try {
-            const user = await User.findById(req.user._id);
+            const user = Auth.user;
 
             const { name, username, bio, gender } = req.body;
 
@@ -30,12 +31,9 @@ const userController = {
                     }
                 );
 
-                await User.findOneAndUpdate(
-                    { _id: req.user._id },
-                    {
-                        avatar: resultAvatar.secure_url,
-                    }
-                );
+                await Auth.update({
+                    avatar: resultAvatar.secure_url,
+                });
             }
 
             // Edit Banner
@@ -57,27 +55,23 @@ const userController = {
                     }
                 );
 
-                await User.findOneAndUpdate(
-                    { _id: req.user._id },
-                    {
-                        banner: resultBanner.secure_url,
-                    }
-                );
+                await Auth.update({
+                    banner: resultBanner.secure_url,
+                });
             }
 
-            await User.findOneAndUpdate(
-                { _id: req.user._id },
-                {
-                    name,
-                    username,
-                    bio,
-                    gender,
-                }
-            );
+            await Auth.update({
+                name,
+                username,
+                bio,
+                gender,
+            });
+
+            Auth.save();
 
             res.json({
                 message: "Update Succes!",
-                UpdateData: await User.findById(req.user._id),
+                UpdateData: Auth.user,
             });
         } catch (err) {
             return res.status(500).json({
@@ -103,7 +97,7 @@ const userController = {
 
     getMe: async (req, res) => {
         try {
-            const user = await User.findById(req.user._id).populate({
+            const user = await Auth.user.populate({
                 path: "post",
                 populate: {
                     path: "author",
@@ -164,14 +158,14 @@ const userController = {
             }
 
             const checkFllwr = user.followers.find((follower) => {
-                if (follower.username == req.body.loginUser) {
+                if (follower.username == Auth.user.username) {
                     return follower;
                 }
             });
 
             return res.status(200).json({
                 success: true,
-                user,
+                user: user,
                 isFollowed: checkFllwr ? true : false,
             });
         } catch (error) {

@@ -1,4 +1,5 @@
 const User = require("../models/user.model");
+const Auth = require("../utils/Auth");
 const crypto = require("crypto");
 const ErrorResponse = require("../utils/errorResponse");
 const sendCookie = require("../utils/sendCookie");
@@ -11,19 +12,39 @@ exports.register = async (req, res, next) => {
 
         !username && next(new ErrorResponse("Please provide username", 400));
 
-        !username && next(new ErrorResponse('USERNAME&Please provide username', 400));
+        !username &&
+            next(new ErrorResponse("USERNAME&Please provide username", 400));
 
-        username.length < 5 && next(new ErrorResponse('USERNAME&Username must be at least 5 characters', 400));
+        username.length < 5 &&
+            next(
+                new ErrorResponse(
+                    "USERNAME&Username must be at least 5 characters",
+                    400
+                )
+            );
 
-        !email && next(new ErrorResponse('EMAIL&Please provide a email', 400));
-        !email.includes('@') && next(new ErrorResponse('EMAIL&Please provide a valid email', 400));
+        !email && next(new ErrorResponse("EMAIL&Please provide a email", 400));
+        !email.includes("@") &&
+            next(new ErrorResponse("EMAIL&Please provide a valid email", 400));
 
-        !password && next(new ErrorResponse('PASSWORD&Please provide a password', 400));
+        !password &&
+            next(new ErrorResponse("PASSWORD&Please provide a password", 400));
 
-        !confirmPassword && next(new ErrorResponse('PASSWORDCONFIRM&Please confirm your password', 400));
+        !confirmPassword &&
+            next(
+                new ErrorResponse(
+                    "PASSWORDCONFIRM&Please confirm your password",
+                    400
+                )
+            );
 
         if (password !== confirmPassword) {
-            next(new ErrorResponse('PASSWORDMATCH&Password and Confirm Password must be same', 400));
+            next(
+                new ErrorResponse(
+                    "PASSWORDMATCH&Password and Confirm Password must be same",
+                    400
+                )
+            );
         } else {
             const user = await User.create({
                 name,
@@ -119,6 +140,8 @@ exports.login = async (req, res, next) => {
 
         const isMatch = await user.matchPasswords(password);
         !isMatch && next(new ErrorResponse("Password is wrong!", 400));
+
+        Auth.set(user);
 
         sendCookie(user, 200, res);
     } catch (error) {
