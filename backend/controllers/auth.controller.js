@@ -108,7 +108,8 @@ exports.verifyEmail = async (req, res, next) => {
         !user && next(new ErrorResponse("No user with this email", 404));
         !verifyToken && next(new ErrorResponse("Invalid Token", 400));
         user.verified && next(new ErrorResponse("Email already verified", 400));
-        verifyToken.token != token && next(new ErrorResponse("Blok", 400));
+        verifyToken.token != token &&
+            next(new ErrorResponse("Invalid Token", 400));
 
         if (verifyToken.token == token) {
             user.verified = true;

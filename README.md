@@ -20,7 +20,7 @@ npm install
 
 This will install all the dependencies that is required for the project.
 
-## 📦 Front-End Stack
+## 📦 Front-End
 
 [![ESLint](https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white)](https://eslint.org/)
 [![Prettier](https://img.shields.io/badge/prettier-1A2C34?style=for-the-badge&logo=prettier&logoColor=F7BA3E)](https://prettier.io/)
@@ -29,7 +29,7 @@ This will install all the dependencies that is required for the project.
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![CSS](https://img.shields.io/badge/CSS-239120?&style=for-the-badge&logo=css3&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/CSS)
 
-## 📦 Back-End Stack
+## 📦 Back-End
 
 [![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)](https://nodejs.org/en/)
 [![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)](http://expressjs.com/)
@@ -53,6 +53,7 @@ This will install all the dependencies that is required for the project.
 ## 💠 Contributors
 
 -   [@AndhikaBukh](https://github.com/AndhikaBukh) - Front-End Developer & UI / UX Designer
+-   [@Bandfal](https://github.com/Bandfal) - Beginner Developer & UI / UX Designer
 -   [@TejusLemonnn](https://github.com/TejusLemonnn) - Back-End Developer & API Developer
 -   [@ZuzuStack](https://github.com/zuzustack) - Back-End Developer & API Developer
--   [@Bandfal](https://github.com/Bandfal) - Beginner Developer, Helper, & UI / UX Contributor
+-   Made by 💖 & ☕

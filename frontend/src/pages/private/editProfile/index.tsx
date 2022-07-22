@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import {
 	BackIcon,
+	CameraIcon,
 	CheckCircleIcon,
 	EnvelopeIcon,
 	PenIcon,
@@ -9,6 +10,7 @@ import {
 } from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
+import { PopUp } from '../../../components/popup/popup';
 import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
 import { userDataInterface } from '../../../utils/types';
@@ -18,30 +20,91 @@ export const EditProfilePage = () => {
 	const auth = useAuth();
 	const navigate = useNavigate();
 
+	const [showAlert, setShowAlert] = useState(false);
+	const [alertType, setAlertType] = useState('success');
+	const [alertHeader, setAlertHeader] = useState('Success!');
+	const [alertMessage, setAlertMessage] = useState(
+		'Profile updated successfully'
+	);
+
+	const showPopup = (_type: string, _header: string, _message: string) => {
+		setAlertType(_type);
+		setAlertHeader(_header);
+		setAlertMessage(_message);
+		setShowAlert(true);
+	};
+
 	const [userData, setUserData] = useState<userDataInterface>();
+	const [editUserData, setEditUserData] = useState<userDataInterface>();
+	const [previewAvatar, setPreviewAvatar] = useState<string | undefined>(
+		undefined
+	);
+	const [previewBanner, setPreviewBanner] = useState<string | undefined>(
+		undefined
+	);
 
-	const [editUserData, setEditUserData] = useState<userDataInterface>({
-		name: userData?.name || '',
-		username: userData?.username || '',
-		email: userData?.email || '',
-		bio: userData?.bio || '',
+	const getBannerInput = useRef<HTMLInputElement>(null);
+	const getAvatarInput = useRef<HTMLInputElement>(null);
 
-		followers: userData?.followers || [],
-		following: userData?.following || [],
-		post: userData?.post || [],
+	const handleEditedUserData = () => {
+		getAvatarInput?.current?.files?.[0] &&
+			auth
+				?.updateAvatar(getAvatarInput?.current?.files?.[0])
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Avatar updated successfully'
+					);
+				})
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update avatar',
+						`error at ${error.data.message}`
+					);
+				});
+		getBannerInput?.current?.files?.[0] &&
+			auth
+				?.updateBanner(getBannerInput?.current?.files?.[0])
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Banner updated successfully'
+					);
+				})
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update banner',
+						`error at ${error.data.message}`
+					);
+				});
 
-		avatar: userData?.avatar || '',
-		banner: userData?.banner || '',
-	});
+		if (editUserData !== userData) {
+			auth?.updateProfile(
+				editUserData?.name,
+				editUserData?.bio,
 
-	const handleEditedUserData = (
-		_name: string | undefined,
-		_bio: string | undefined,
-		_avatar: File | string,
-		_banner: File | string,
-		_gender: string
-	) => {
-		auth?.updateProfile(_name, _bio, _avatar, _banner, _gender);
+				editUserData?.gender
+			)
+				.then(() => {
+					showPopup(
+						'success',
+						'Success!',
+						'Profile updated successfully'
+					);
+				})
+
+				.catch(error => {
+					showPopup(
+						'error',
+						'Failed to update profile',
+						`error at ${error.data.message}`
+					);
+				});
+		}
 	};
 
 	useEffect(() => {
@@ -57,6 +120,13 @@ export const EditProfilePage = () => {
 
 		document.title = `Project Sylly - Edit Profile`;
 	}, []);
+
+	useEffect(() => {
+		auth?.requestMe().then((res: any) => {
+			setUserData(res?.data?.user);
+			setEditUserData(res?.data?.user);
+		});
+	}, [handleEditedUserData]);
 
 	return (
 		<div className="edit-profile">
@@ -75,36 +145,99 @@ export const EditProfilePage = () => {
 							Edit Profile
 						</>
 					),
-					rightContent: localStorage.getItem('authToken') ? (
-						<Link to="/settings" className="navbar__button">
+					rightContent: (
+						<button
+							className="navbar__button"
+							onClick={handleEditedUserData}
+						>
 							<CheckCircleIcon color="#0494fc" />
-						</Link>
-					) : null,
+						</button>
+					),
 				}}
 			/>
+
+			<div className="edit-profile__popup-container">
+				<PopUp
+					variant="alert"
+					type={alertType}
+					show={showAlert}
+					header={alertHeader}
+					content={alertMessage}
+					onClose={() => setShowAlert(false)}
+				/>
+			</div>
+
 			<div className="edit-profile__wrapper">
 				<div className="edit-profile__header">
 					<div
 						className="edit-profile__header__banner"
 						style={{
-							backgroundImage: `url(${userData?.banner})`,
+							backgroundImage:
+								previewBanner !== undefined
+									? `url(${previewBanner})`
+									: `url(${userData?.banner})`,
 						}}
-					></div>
+					>
+						<label
+							htmlFor="banner"
+							className="edit-profile__header__banner__label"
+						>
+							<div className="edit-profile__header__banner__label__overlay">
+								<div className="edit-profile__header__banner__label__overlay__wrapper">
+									<CameraIcon />
+								</div>
+							</div>
+							<input
+								type="file"
+								name="banner"
+								id="banner"
+								accept="image/png, image/jpg, image/jpeg"
+								ref={getBannerInput}
+								onChange={e => {
+									if (!e.target.files) return;
+									const file = e.target.files[0];
+									setPreviewBanner(URL.createObjectURL(file));
+								}}
+							/>
+						</label>
+					</div>
 
 					<div className="edit-profile__header__container">
 						<div
 							className="edit-profile__header__avatar"
 							style={{
-								backgroundImage: `
-								${
-									userData?.avatar === '' ||
-									userData?.avatar === undefined
-										? 'url()'
-										: `url(${userData?.avatar})`
-								}
-							`,
+								backgroundImage:
+									previewAvatar !== undefined
+										? `url(${previewAvatar})`
+										: `url(${userData?.avatar})`,
 							}}
-						></div>
+						>
+							<label
+								htmlFor="avatar"
+								className="edit-profile__header__avatar__label"
+							>
+								<div className="edit-profile__header__avatar__label__overlay">
+									<CameraIcon />
+								</div>
+								<input
+									type="file"
+									name="avatar"
+									id="avatar"
+									accept="image/png, image/jpg, image/jpeg"
+									ref={getAvatarInput}
+									onChange={e => {
+										if (!e.target.files) return;
+										const file = e.target.files[0];
+										setPreviewAvatar(
+											URL.createObjectURL(file)
+										);
+									}}
+								/>
+							</label>
+							<div className="edit-profile__header__avatar__label__guide">
+								<CameraIcon />
+							</div>
+						</div>
 						<div className="edit-profile__header__statistics">
 							<div className="edit-profile__header__statistics-items">
 								<div className="edit-profile__header__statistics-item">
@@ -236,6 +369,7 @@ export const EditProfilePage = () => {
 									});
 								}}
 								icon={<PenIcon color="#776BF8" />}
+								disabled
 							/>
 							<div className="edit-profile__body__container__description">
 								Username is unique that only and can be used to
@@ -297,7 +431,7 @@ export const EditProfilePage = () => {
 								disabled
 							/>
 							<div className="edit-profile__body__container__description">
-								Email ic currently can not be changed. If you
+								Email is currently can not be changed. If you
 								want to change your email, please contact admin
 								or developer.
 							</div>

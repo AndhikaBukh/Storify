@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable prettier/prettier */
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button } from '../../../components/button/button';
 import {
@@ -21,58 +22,73 @@ export const ProfilePage = () => {
 
 	const [userData, setUserData] = useState<userDataInterface>();
 	const _username = location.pathname.split('/')[1].toLowerCase();
-	const [countFollowers, setCountFollowers] = useState(
-		userData?.followers.length ?? 0
-	);
-
-	const getIsFollowing: any = userData?.followers.find((follower: any) => {
-		return follower?.username === auth?.user?.username ?? false;
-	});
 
 	const [allowFollow, setAllowFollow] = useState<boolean>(false);
+
+	const postsElement = useRef<HTMLDivElement>(null);
+	const [navbarStyle, setNavbarStyle] = useState('0 0 20px 20px');
+	const [postsStyle, setPostsStyle] = useState('20px 20px 0 0');
 
 	const handleMessageButton = () => {
 		// navigate(`/message/${_username}`);
 		// console.log('message button clicked');
-		console.log(`USERNAME - ${_username}`);
-		console.log(`FOLLOW COUNT - ${countFollowers}`);
-		console.log(`ALLOW FOLLOW - ${allowFollow}`);
-		console.log(
-			`MATCH FOLLOW - ${
-				getIsFollowing?.username === auth?.user?.username
-			}`
-		);
+		console.clear();
 	};
 
 	const handleFollowButton = () => {
 		auth?.requireLogin();
 		auth?.requestFollow(_username);
-		setAllowFollow(false);
-		setCountFollowers(countFollowers + 1);
+		setAllowFollow(true);
 	};
 
 	const handleUnFollowButton = () => {
 		auth?.requireLogin();
 		auth?.requestUnfollow(_username);
-		setAllowFollow(true);
-		setCountFollowers(countFollowers - 1);
+		setAllowFollow(false);
 	};
 
 	useEffect(() => {
 		auth?.requestUser(_username)
 			.then((res: any) => {
 				setUserData(res?.data?.user);
-				getIsFollowing?.username === auth?.user?.username &&
-					setAllowFollow(true);
-				setCountFollowers(res?.data?.user?.followers.length);
+				setAllowFollow(!res?.data?.isFollowed);
 			})
-			.catch(error => {
-				console.log(error);
+			.catch(() => {
 				navigate('/404');
 			});
 
 		document.title = `Project Sylly - ${_username}`;
 	}, [location.pathname]);
+
+	useEffect(() => {
+		auth?.requestUser(_username).then((res: any) => {
+			setAllowFollow(!res?.data?.isFollowed);
+		});
+	}, [auth?.user]);
+
+	useEffect(() => {
+		auth?.requestUser(_username).then((res: any) => {
+			setUserData(res?.data?.user);
+			setAllowFollow(!res?.data?.isFollowed);
+		});
+	}, [handleFollowButton, handleUnFollowButton]);
+
+	// Remove borderRadius on Top Navbar & User Posts, creating
+	useEffect(() => {
+		window.onscroll = () => {
+			if (postsElement.current !== null) {
+				const calc = postsElement.current?.offsetTop - 86;
+
+				if (window.scrollY > calc) {
+					setNavbarStyle('0');
+					setPostsStyle('0');
+				} else {
+					setNavbarStyle('0 0 20px 20px');
+					setPostsStyle('20px 20px 0 0');
+				}
+			}
+		};
+	}, []);
 
 	return (
 		<div className="profile">
@@ -95,6 +111,9 @@ export const ProfilePage = () => {
 						</Link>
 					) : null,
 				}}
+				style={{
+					borderRadius: navbarStyle,
+				}}
 			/>
 			<div className="profile__wrapper">
 				<div className="profile__header">
@@ -110,12 +129,7 @@ export const ProfilePage = () => {
 							className="profile__header__avatar"
 							style={{
 								backgroundImage: `
-								${
-									userData?.avatar === '' ||
-									userData?.avatar === undefined
-										? 'url(https://res.cloudinary.com/dhpbjwguo/image/upload/v1657199909/avatar/default_wmkdzz.png)'
-										: `url(${userData?.avatar})`
-								}
+								${`url(${userData?.avatar})`}
 							`,
 							}}
 						></div>
@@ -123,7 +137,7 @@ export const ProfilePage = () => {
 							<div className="profile__header__statistics-items">
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{userData?.post.length || 0}
+										{userData?.post?.length || 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
 										Posts
@@ -157,7 +171,7 @@ export const ProfilePage = () => {
 
 								<div className="profile__header__statistics-item">
 									<div className="profile__header__statistics-item__value">
-										{countFollowers ?? 0}
+										{userData?.followers?.length || 0}
 									</div>
 									<div className="profile__header__statistics-item__description">
 										Followers
@@ -223,7 +237,13 @@ export const ProfilePage = () => {
 					</div>
 				</div>
 
-				<div className="profile__user-posts">
+				<div
+					className="profile__user-posts"
+					ref={postsElement}
+					style={{
+						borderRadius: postsStyle,
+					}}
+				>
 					<div className="profile__user-posts__filter">
 						<div className="profile__user-posts__filter__item profile__user-posts__filter__item--active">
 							<ImageIcon />

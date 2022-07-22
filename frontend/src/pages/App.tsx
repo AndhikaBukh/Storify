@@ -24,7 +24,7 @@ import { NotFoundPage } from './404';
 const hideNavbar = [
 	'/404',
 	'/landing',
-	'/accounts/',
+	'/accounts',
 	'/login',
 	'/signup',
 	'/settings',
@@ -42,10 +42,11 @@ export const App = () => {
 
 	useEffect(() => {
 		// Change icon highlight based on current page
-		setCurrentPosition(location.pathname);
+		setCurrentPosition(`/${location.pathname.split('/')[1]}`);
 
 		// Checks if the current page is in the hideNavbar array
-		hideNavbar.includes(location.pathname) || auth?.user === undefined
+		hideNavbar.includes(`/${location.pathname.split('/')[1]}`) ||
+		!localStorage.getItem('authToken')
 			? setShowBottomNavbar(false)
 			: setShowBottomNavbar(true);
 	}, [location.pathname]);

@@ -5,10 +5,10 @@ export interface userDataInterface {
 	bio?: string;
 	gender?: string;
 
-	followers: object[];
-	following: object[];
-	post: object[];
+	followers?: object[];
+	following?: object[];
+	post?: object[];
 
-	avatar?: string;
-	banner?: string;
+	avatar?: File | undefined;
+	banner?: File | undefined;
 }

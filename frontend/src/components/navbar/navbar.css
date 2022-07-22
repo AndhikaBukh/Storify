@@ -30,6 +30,8 @@
 	padding: 26px 20px 20px;
 	background: var(--primary-grey);
 	border-radius: 0 0 20px 20px;
+
+	transition: border-radius 0.3s ease-in-out;
 }
 
 .navbar-top__container {

@@ -33,15 +33,14 @@ interface IAuthContext {
 	requestFollow: (_username: string) => Promise<unknown>;
 	requestUnfollow: (_username: string) => Promise<unknown>;
 
-	updateAvatar: (_file: File | string) => Promise<unknown>;
+	updateAvatar: (_file: File) => Promise<unknown>;
+	updateBanner: (_file: File) => Promise<unknown>;
+
 	updateProfile: (
-		_name: string | undefined,
-		_bio: string | undefined,
+		_name?: string | undefined,
+		_bio?: string | undefined,
 
-		_avatar: File | string,
-		_banner: File | string,
-
-		_gender: string
+		_gender?: string | undefined
 	) => Promise<unknown>;
 }
 
@@ -56,7 +55,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 
 	const navigate = useNavigate();
 
-	const API = 'http://localhost:3000/api';
+	const API = 'http://192.168.100.10:3000/api';
 
 	const config: object = {
 		headers: {
@@ -68,12 +67,21 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const assignUser = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return await axios.get(`${API}/me`, config).then(res => {
-			setUser(res.data.user);
-		});
+		return await axios
+			.get(`${API}/me`, config)
+			.then(res => {
+				setUser(res.data.user);
+			})
+			.catch(() => {
+				if (localStorage.getItem('authToken')) {
+					navigate('/login');
+				}
+			});
 	};
 
 	const requireLogin = async () => {
+		if (localStorage.getItem('authToken')) return;
+
 		return axios.get(`${API}/me`, config).catch(() => {
 			navigate('/login');
 		});
@@ -116,7 +124,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 			password: _password,
 		};
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.post(`${API}/auth/login`, body, config)
 				.then(response => {
@@ -131,10 +139,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
-	const tryLogout = () => {
+	const tryLogout = async () => {
 		localStorage.removeItem('authToken');
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.post(`${API}/auth/logout`, {}, config)
 				.then(() => {
@@ -151,22 +159,29 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const requestMe = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return new Promise((resolve, reject) => {
+		return await new Promise(resolve => {
 			axios
 				.get(`${API}/me`, config)
 				.then(res => {
 					resolve(res);
 				})
-				.catch(error => {
-					reject(error);
+				.catch(() => {
+					navigate('/login');
 				});
 		});
 	};
 
 	const requestUser = async (_username: string) => {
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
-				.get(`${API}/user/${_username}`, config)
+				.post(
+					`${API}/user/${_username}`,
+					{
+						loginUser:
+							user?.username === undefined ? '' : user.username,
+					},
+					config
+				)
 				.then(res => {
 					resolve(res);
 				})
@@ -177,8 +192,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestFollow = async (_username: string) => {
-		return new Promise(() => {
-			axios.get(`${API}/user/${_username}`, config).then(res => {
+		return await new Promise(() => {
+			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
@@ -193,8 +208,8 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	};
 
 	const requestUnfollow = async (_username: string) => {
-		return new Promise(() => {
-			axios.get(`${API}/user/${_username}`, config).then(res => {
+		return await new Promise(() => {
+			axios.post(`${API}/user/${_username}`, config).then(res => {
 				const uid = res?.data?.user?._id;
 
 				if (uid) {
@@ -208,14 +223,34 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
-	const updateAvatar = async (_avatar: File | string) => {
-		return new Promise((resolve, reject) => {
+	const updateAvatar = async (_avatar: File) => {
+		return await new Promise((resolve, reject) => {
 			const data = new FormData();
 			data.append('avatar', _avatar);
 			axios
 				.put(`${API}/me`, data, {
 					headers: {
-						// 'Content-Type': 'multipart/form-data',
+						authorization: `Bearer ${localStorage.getItem(
+							'authToken'
+						)}`,
+					},
+				})
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const updateBanner = async (_banner: File) => {
+		return await new Promise((resolve, reject) => {
+			const data = new FormData();
+			data.append('banner', _banner);
+			axios
+				.put(`${API}/me`, data, {
+					headers: {
 						authorization: `Bearer ${localStorage.getItem(
 							'authToken'
 						)}`,
@@ -234,22 +269,16 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		_name: string | undefined,
 		_bio: string | undefined,
 
-		_avatar: File | string,
-		_banner: File | string,
-
-		_gender: string
+		_gender: string | undefined
 	) => {
 		const body = {
 			name: _name,
 			bio: _bio,
 
-			avatar: _avatar,
-			banner: _banner,
-
 			gender: _gender,
 		};
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.put(`${API}/me`, body, config)
 				.then(res => {
@@ -277,8 +306,10 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 				requestFollow,
 				requestUnfollow,
 
-				updateAvatar,
 				updateProfile,
+
+				updateAvatar,
+				updateBanner,
 			}}
 		>
 			{children}

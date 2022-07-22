@@ -14,7 +14,7 @@ const userController = {
             const { name, username, bio, gender } = req.body;
 
             // Edit Avatar
-            if (req.files.avatar) {
+            if (req.files?.avatar) {
                 await cloudinary.uploader.destroy(
                     `avatar/${user.email.split("@")[0]}`,
                     user.avatar
@@ -37,7 +37,7 @@ const userController = {
             }
 
             // Edit Banner
-            if (req.files.banner) {
+            if (req.files?.banner) {
                 await cloudinary.uploader.destroy(
                     `banner/${user.email.split("@")[0]}`,
                     user.banner
