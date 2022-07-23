@@ -99,7 +99,11 @@ export const App = () => {
 				<Route path="/messages" element={<MessegesPage />} />
 				<Route path="/settings" element={<SettingsPage />} />
 				<Route path="/upload" element={<UploadPage />} />
+				<Route path="/upload/*" element={<UploadPage />} />
 				<Route path="/accounts/edit" element={<EditProfilePage />} />
+
+				{/* ----------- Not Found Route ----------- */}
+				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 
 			<Navbar

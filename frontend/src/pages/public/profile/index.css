@@ -34,13 +34,11 @@
 
 .profile__wrapper {
 	flex: 1;
-	/* align-self: stretch; */
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	z-index: 1;
 
-	/* experimental */
 	min-width: 600px;
 	max-width: 600px;
 }
@@ -78,7 +76,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: row;
-	gap: 6px;
+	gap: 12px;
 
 	margin: 10px 26px 0;
 }

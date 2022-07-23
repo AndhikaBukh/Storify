@@ -15,8 +15,11 @@
 	--warning: #ffc453;
 	--info: var(--primary-blue);
 
+	--opacity-success--25: #16c79a40;
+
 	--opacity-white--75: #ffffffbf;
 	--opacity-white--50: #ffffff80;
+	--opacity-white--25: #ffffff40;
 
 	--opacity-black--75: #0e101dbf;
 	--opacity-black--50: #0e101d80;

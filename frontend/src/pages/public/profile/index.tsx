@@ -30,9 +30,8 @@ export const ProfilePage = () => {
 	const [postsStyle, setPostsStyle] = useState('20px 20px 0 0');
 
 	const handleMessageButton = () => {
-		// navigate(`/message/${_username}`);
-		// console.log('message button clicked');
-		console.clear();
+		auth?.requireLogin();
+		navigate(`/messages/${_username}`);
 	};
 
 	const handleFollowButton = () => {

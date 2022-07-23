@@ -30,7 +30,7 @@
 
 /* ----------------- PopUp Variant ----------------- */
 
-.pop-up--alert  {
+.pop-up--alert {
 	flex: 1;
 	align-self: stretch;
 	align-items: center;
@@ -45,7 +45,6 @@
 }
 
 .pop-up__icon {
-	/* align-self: stretch; */
 	width: clamp(36px, 36px, 36px);
 	height: clamp(36px, 36px, 36px);
 	display: flex;

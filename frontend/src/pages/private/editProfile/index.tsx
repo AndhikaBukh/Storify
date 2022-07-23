@@ -234,9 +234,12 @@ export const EditProfilePage = () => {
 									}}
 								/>
 							</label>
-							<div className="edit-profile__header__avatar__label__guide">
+							<button
+								className="edit-profile__header__avatar__label__guide"
+								onClick={() => getAvatarInput.current?.click()}
+							>
 								<CameraIcon />
-							</div>
+							</button>
 						</div>
 						<div className="edit-profile__header__statistics">
 							<div className="edit-profile__header__statistics-items">
