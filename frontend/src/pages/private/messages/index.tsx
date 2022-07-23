@@ -1,10 +1,16 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MenuIcon, SearchIcon } from '../../../components/icons';
+import {
+	LockFilledIcon,
+	LockIcon,
+	MenuIcon,
+	SearchIcon,
+} from '../../../components/icons';
 import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
 import { useAuth } from '../../../utils/auth';
 import './index.css';
+import '../../../styles/unavailable.css';
 
 const userData = {
 	username: 'Andhika Bukhari',
@@ -35,30 +41,30 @@ const messegesData = [
 		id: 1,
 		avatar: userData.profilePicture,
 		username: userData.validName,
-		message: "Nice day for fishing ain't it?",
+		messeges: "Nice day for fishing ain't it?",
 		time: '07/07/2022',
 	},
 ];
 
-const renderMessageItem = () => {
+const rendermessegesItem = () => {
 	return (
-		<Link to={`/messages/${userData.validName}`} className="message-item">
+		<Link to={`/messegess/${userData.validName}`} className="messeges-item">
 			<div
-				className="message-item__avatar"
+				className="messeges-item__avatar"
 				style={{ backgroundImage: `url(${userData.profilePicture})` }}
 			></div>
 
-			<div className="message-item__content">
-				<div className="message-item__content__header">
-					<div className="message-item__content__header__username">
+			<div className="messeges-item__content">
+				<div className="messeges-item__content__header">
+					<div className="messeges-item__content__header__username">
 						{userData.username}
 					</div>
-					<div className="message-item__content__header__time">
+					<div className="messeges-item__content__header__time">
 						{messegesData[0].time}
 					</div>
 				</div>
-				<div className="message-item__content__body">
-					{messegesData[0].message}
+				<div className="messeges-item__content__body">
+					{messegesData[0].messeges}
 				</div>
 			</div>
 		</Link>
@@ -78,8 +84,9 @@ export const MessegesPage = () => {
 		<div className="messeges">
 			<Navbar
 				type="top"
+				className="messages--navbar"
 				topNavbarAttributes={{
-					leftContent: <div>Direct Message</div>,
+					leftContent: <div>Direct messeges</div>,
 					rightContent: (
 						<button className="navbar__button">
 							<MenuIcon />
@@ -88,15 +95,26 @@ export const MessegesPage = () => {
 				}}
 			/>
 
-			<div className="messeges__items-container">
-				<Input
-					className="messeges__items-container__search-bar"
-					icon={<SearchIcon />}
-					placeholder="Search . . ."
-				/>
+			<div className="messeges__wrapper">
+				<div className="messeges__items-container">
+					<Input
+						className="messeges__items-container__search-bar"
+						icon={<SearchIcon />}
+						placeholder="Search . . ."
+					/>
 
-				<div className="messeges__items-container__items">
-					{renderMessageItem()}
+					<div className="messeges__items-container__items">
+						<div className="unavailable-feature">
+							<div className="unavailable-feature__icon">
+								<LockFilledIcon color="#fff" />
+							</div>
+
+							<div className="unavailable-feature__description">
+								This feature is unavailable, <br />
+								Please wait for update in the future
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

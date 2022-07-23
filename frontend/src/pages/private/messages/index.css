@@ -1,67 +1,93 @@
-.message {
+.messeges {
 	min-width: 100%;
-	min-height: 100%;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+.messages--navbar {
+	position: fixed;
+	z-index: 272727;
+}
+
+.messeges__wrapper {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
 	position: relative;
 	z-index: 1;
+
+	min-width: 600px;
+	max-width: 600px;
+}
+@media (max-width: 600px) {
+	.messeges__wrapper {
+		min-width: 100%;
+		max-width: 100%;
+	}
 }
 
 .messeges__items-container {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
+	gap: 12px;
 
-	padding: 0 10px;
-	margin-top: 10px;
+	padding: 96px 0 0;
 }
 .messeges__items-container__search-bar {
-	min-height: 50px;
-	padding: 0 10px;
+	max-height: 46px;
+	margin: 0 10px;
 }
 
 .messeges__items-container__items {
+	flex: 1;
 	display: flex;
 	flex-direction: column;
-	gap: 24px;
 }
 
-.message-item {
+.messeges-item {
 	flex: 1;
 	display: flex;
 	gap: 12px;
 
-	padding: 0 4px;
+	padding: 12px 20px;
 }
-.message-item__avatar {
-	min-height: 58px;
-	min-width: 58px;
+
+.messeges-item:hover {
+	background-color: var(--opacity-grey--75);
+}
+
+.messeges-item__avatar {
+	min-height: 50px;
+	min-width: 50px;
 
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
 	border-radius: 50%;
 }
-.message-item__content {
+.messeges-item__content {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 }
-.message-item__content__header {
+.messeges-item__content__header {
 	display: flex;
+	align-items: center;
 	justify-content: space-between;
 }
-.message-item__content__header__username {
-	font-size: 1rem;
+.messeges-item__content__header__username {
+	font-size: var(--font-size--small);
 	font-weight: 600;
 	color: var(--primary-white);
 }
-.message-item__content__header__time {
-	font-size: 0.75rem;
+.messeges-item__content__header__time {
+	font-size: var(--font-size--tiny);
 	color: var(--opacity-white--75);
 }
-.message-item__content__body {
-	font-size: 0.875rem;
+.messeges-item__content__body {
+	font-size: var(--font-size--tiny);
 	color: var(--opacity-white--75);
 }
