@@ -1,0 +1,22 @@
+.unavailable-feature {
+	flex: 1;
+	align-self: stretch;
+	min-width: 100%;
+	max-width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+.unavailable-feature__icon {
+	min-width: 80px;
+	min-height: 80px;
+	max-width: 80px;
+	max-height: 80px;
+}
+.unavailable-feature__description {
+	font-size: var(--font-size--medium);
+	text-align: center;
+	font-weight: 600;
+	color: var(--primary-white);
+}
