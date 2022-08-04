@@ -7,6 +7,7 @@ interface userInterface {
 	username: string;
 	email: string;
 	bio: string;
+	avatar: string;
 }
 
 interface IAuthContext {
@@ -42,6 +43,11 @@ interface IAuthContext {
 
 		_gender?: string | undefined
 	) => Promise<unknown>;
+
+	postCreate: (_image: File, _caption: string) => Promise<unknown>;
+
+	// BELOW THIS LIES TESTING FEATURE
+	requestPost: () => Promise<unknown>;
 }
 
 const authContext = createContext<IAuthContext | null>(null);
@@ -50,12 +56,19 @@ interface AuthProviderProps {
 	children: React.ReactNode;
 }
 
+/**
+ * authProvider
+ *
+ * See Function {@link authProvider}
+ */
 export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const [user, setUser] = useState<userInterface>();
 
 	const navigate = useNavigate();
 
-	const API = 'http://192.168.100.10:3000/api';
+	// const API = 'http://192.168.100.10:3000/api';
+	// const API = 'http://192.168.43.51:3000/api';
+	const API = 'http://localhost:3000/api';
 
 	const config: object = {
 		headers: {
@@ -67,23 +80,35 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	const assignUser = async () => {
 		if (!localStorage.getItem('authToken')) return;
 
-		return await axios
-			.get(`${API}/me`, config)
-			.then(res => {
-				setUser(res.data.user);
-			})
-			.catch(() => {
-				if (localStorage.getItem('authToken')) {
-					navigate('/login');
-				}
-			});
+		return await new Promise((resolve, reject) => {
+			axios
+				.get(`${API}/me`, config)
+				.then(res => {
+					resolve(res);
+					setUser({
+						username: res.data?.user?.username,
+						name: res.data?.user?.name,
+						email: res.data?.user?.email,
+						bio: res.data?.user?.bio,
+						avatar: res.data?.user?.avatar,
+					} as userInterface);
+				})
+				.catch(error => {
+					reject(error);
+					if (localStorage.getItem('authToken')) {
+						navigate('/login');
+					}
+				});
+		});
 	};
 
 	const requireLogin = async () => {
 		if (localStorage.getItem('authToken')) return;
 
-		return axios.get(`${API}/me`, config).catch(() => {
-			navigate('/login');
+		return await new Promise((resolve, reject) => {
+			axios.get(`${API}/me`, config).catch(() => {
+				navigate('/login');
+			});
 		});
 	};
 
@@ -100,7 +125,7 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 			confirmPassword: _confirmPassword,
 		};
 
-		return new Promise((resolve, reject) => {
+		return await new Promise((resolve, reject) => {
 			axios
 				.post(`${API}/auth/register`, body, config)
 				.then(res => {
@@ -223,6 +248,19 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
+	const requestPost = async () => {
+		return await new Promise((resolve, reject) => {
+			axios
+				.get(`${API}/post`, config)
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
 	const updateAvatar = async (_avatar: File) => {
 		return await new Promise((resolve, reject) => {
 			const data = new FormData();
@@ -290,6 +328,42 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 		});
 	};
 
+	const postCreate = async (_image: File, _caption: string) => {
+		return await new Promise((resolve, reject) => {
+			const data = new FormData();
+			data.append('caption', _caption);
+			data.append('images', _image);
+
+			axios
+				.post(`${API}/post`, data, {
+					headers: {
+						authorization: `Bearer ${localStorage.getItem(
+							'authToken'
+						)}`,
+					},
+				})
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
+	const postRequest = async (_id: string) => {
+		return await new Promise((resolve, reject) => {
+			axios
+				.get(`${API}/post/${_id}`, config)
+				.then(res => {
+					resolve(res);
+				})
+				.catch(error => {
+					reject(error);
+				});
+		});
+	};
+
 	return (
 		<authContext.Provider
 			value={{
@@ -306,10 +380,14 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 				requestFollow,
 				requestUnfollow,
 
-				updateProfile,
-
 				updateAvatar,
 				updateBanner,
+				updateProfile,
+
+				postCreate,
+
+				// BELOW THIS LIES TESTING FEATURE
+				requestPost,
 			}}
 		>
 			{children}
@@ -317,6 +395,11 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
 	);
 };
 
+/**
+ * @description - Returns the current user from the context
+ *
+ * See Function {@link useAuth}
+ */
 export const useAuth = () => {
 	return useContext(authContext);
 };
