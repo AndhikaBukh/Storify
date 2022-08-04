@@ -10,18 +10,17 @@ import {
 	ArrowRightIcon,
 	BackIcon,
 	CameraIcon,
-	ChevronCircleDownIcon,
 	CommentIcon,
-	FileIcon,
 	HeartIcon,
 	SendIcon,
 	StarIcon,
 	UploadFilledIcon,
-	VideoIcon,
 } from '../../../components/icons';
+import { Input } from '../../../components/input/input';
 import { Navbar } from '../../../components/navbar/navbar';
 import { PopUp } from '../../../components/popup/popup';
 import { Post } from '../../../components/post/post';
+import { Seperator } from '../../../components/seperator/seperator';
 import { useAuth } from '../../../utils/auth';
 import './index.css';
 
@@ -41,34 +40,12 @@ export const UploadPage = () => {
 	const [previewImage, setPreviewImage] = useState<string | undefined>(
 		undefined
 	);
-	const [tempStoreUpload, setTempStoreUpload] = useState<File | undefined>(
-		undefined
-	);
 
 	const [styleOnDragOver, setStyleOnDragOver] = useState('100% 0 0');
 
-	const handleDragOver = (e: any) => {
-		setStyleOnDragOver('0');
-
-		e.preventDefault();
-	};
-
 	const validateFile = (file: File) => {
-		const validTypes = [
-			'image/jpeg',
-			'image/png',
-			'image/jpg',
-			'image/webp',
-		];
+		const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 		const validSize = file.size < 5000000;
-
-		if (!validSize) {
-			setAlertType('error');
-			setAlertHeader('File size too large!');
-			setAlertMessage('Please select a file less than 5MB.');
-			setShowAlert(true);
-			return false;
-		}
 
 		if (!validTypes.includes(file.type)) {
 			setAlertType('error');
@@ -78,21 +55,52 @@ export const UploadPage = () => {
 			return false;
 		}
 
+		if (!validSize) {
+			setAlertType('error');
+			setAlertHeader('File size too large!');
+			setAlertMessage('Please select a file less than 5MB.');
+			setShowAlert(true);
+			return false;
+		}
+
 		return true;
 	};
 
-	// -------------------------- TEMPORARY ------------------------------ //
+	const [postImage, setPostImage] = useState<File | undefined>(undefined);
+	const [postCaption, setPostCaption] = useState<string | undefined>(
+		undefined
+	);
 
-	const storeUser = auth
-		?.requestMe()
-		.then((res: any) => {
-			if (res.status === 200) return res.data;
-		})
-		.catch(err => {
-			console.log(err);
-		});
+	const handlePostCreate = () => {
+		if (!postImage) {
+			setAlertType('error');
+			setAlertHeader('No image selected');
+			setAlertMessage('Please select an image.');
+			setShowAlert(true);
+			return;
+		}
 
-	// -------------------------- TEMPORARY ------------------------------ //
+		if (!postCaption) {
+			setAlertType('error');
+			setAlertHeader('No caption entered');
+			setAlertMessage('Please enter a caption.');
+			setShowAlert(true);
+			return;
+		}
+
+		auth?.postCreate(postImage, postCaption)
+			.then((res: any) => {
+				if (res.status === 200) {
+					navigate('/');
+				}
+			})
+			.catch(error => {
+				setAlertType('error');
+				setAlertHeader('Error creating post');
+				setAlertMessage(error.message);
+				setShowAlert(true);
+			});
+	};
 
 	const validateUpload = () => {
 		if (previewImage === undefined) {
@@ -107,15 +115,17 @@ export const UploadPage = () => {
 	};
 
 	useEffect(() => {
-		auth?.requireLogin();
+		// auth?.requireLogin();
 
 		document.title = 'Project Sylly - Upload';
 	}, []);
 
 	useEffect(() => {
 		if (location.pathname === '/upload/preview') {
-			setNavbarTitle('Preview');
-		} else setNavbarTitle('New Post');
+			setNavbarTitle('Create new post');
+
+			postImage === undefined && navigate('/upload');
+		} else setNavbarTitle('Choose an image');
 	}, [location.pathname]);
 
 	return (
@@ -149,7 +159,11 @@ export const UploadPage = () => {
 					rightContent: (
 						<button
 							className="navbar__button"
-							onClick={validateUpload}
+							onClick={
+								location.pathname === '/upload/preview'
+									? handlePostCreate
+									: validateUpload
+							}
 						>
 							<ArrowRightIcon color="#295adb" />
 						</button>
@@ -225,7 +239,7 @@ export const UploadPage = () => {
 
 											validateFile(file);
 
-											if (file) {
+											if (file && validateFile(file)) {
 												const reader = new FileReader();
 
 												reader.onload = () => {
@@ -235,6 +249,7 @@ export const UploadPage = () => {
 												};
 
 												reader.readAsDataURL(file);
+												setPostImage(file);
 											}
 										}}
 										ref={getInputElement}
@@ -249,21 +264,24 @@ export const UploadPage = () => {
 										<input
 											id="upload-input"
 											type="file"
-											accept="image/*"
+											accept="image/png, image/jpg, image/jpeg"
+											name="images"
 											onChange={e => {
 												if (!e.target.files) return;
 
 												const file = e.target.files[0];
 												validateFile(file);
 
-												if (validateFile(file)) {
-													e.target.files[0] &&
-														setPreviewImage(
-															URL.createObjectURL(
-																e.target
-																	.files[0]
-															)
-														);
+												if (
+													file &&
+													validateFile(file)
+												) {
+													setPreviewImage(
+														URL.createObjectURL(
+															e.target.files[0]
+														)
+													);
+													setPostImage(file);
 												}
 											}}
 										/>
@@ -278,69 +296,64 @@ export const UploadPage = () => {
 						element={
 							<div className="upload__content upload__content--preview">
 								<div className="upload__content__post">
-									<div className="post">
-										<div className="post__container">
-											<div className="post__author">
-												<img
-													className="post__author__avatar"
-													// src={profilePicture}
-													alt=""
-												/>
-												<div className="post__author__username">
-													{/* {postAuthor} */}
-												</div>
-												<div className="post__author__valid-name">
-													{/* {postAuthorName} */}
+									<div className="upload__content__post__preview">
+										<div className="upload__content__post__preview__container">
+											<div className="upload__content__post__preview__author">
+												<div
+													className="upload__content__post__preview__author__avatar"
+													style={{
+														background: `url(${auth?.user?.avatar}) center center / cover no-repeat`,
+													}}
+												></div>
+												<div className="upload__content__post__preview__author__body">
+													<div className="upload__content__post__preview__author__body__name">
+														{auth?.user?.name}
+													</div>
+													<div className="upload__content__post__preview__author__body__username">
+														{'@' +
+															auth?.user
+																?.username}
+													</div>
 												</div>
 											</div>
 
-											<div className="post__content">
+											<div className="upload__content__post__preview__content">
 												<img
-													className="post__content-image"
+													className="upload__content__post__preview__content-image"
 													src={previewImage}
 													alt=""
 												/>
 
-												<div className="post__content-action">
-													<div className="post__content-action__icon">
+												<div className="upload__content__post__preview__content-action">
+													<div className="upload__content__post__preview__content-action__icon">
 														<HeartIcon />
 													</div>
-													<div className="post__content-action__wrapper">
-														<div className="post__content-action__icon">
+													<div className="upload__content__post__preview__content-action__wrapper">
+														<div className="upload__content__post__preview__content-action__icon">
 															<SendIcon />
 														</div>
-														<div className="post__content-action__icon">
+														<div className="upload__content__post__preview__content-action__icon">
 															<CommentIcon />
 														</div>
-														<div className="post__content-action__icon">
+														<div className="upload__content__post__preview__content-action__icon">
 															<StarIcon />
 														</div>
 													</div>
 												</div>
+											</div>
 
-												<div className="post__content-text">
-													<div className="post__content-text__likes">
-														<div className="post__content-text__likes-amount">
-															{/* {likes} */}
-														</div>
-														<div className="post__content-text__likes-text">
-															Likes
-														</div>
-													</div>
-
-													<div className="post__content-text__container">
-														<div className="post__content-text__username">
-															{/* {postAuthor} */}
-														</div>
-														<div className="post__content-text__wrapper">
-															{/* {postDescription} */}
-														</div>
-													</div>
-
-													<div className="post__content-text__time">
-														{/* {postTime} */}
-													</div>
-												</div>
+											<div className="upload__content__post__preview__form">
+												<Input
+													className="upload__content__post__preview__form__input"
+													type="textarea"
+													placeholder="Add a caption..."
+													onChange={e =>
+														setPostCaption(
+															e.target.value
+														)
+													}
+													autoFocus
+												/>
 											</div>
 										</div>
 									</div>

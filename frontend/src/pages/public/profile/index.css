@@ -39,10 +39,10 @@
 	position: relative;
 	z-index: 1;
 
-	min-width: 600px;
-	max-width: 600px;
+	min-width: 500px;
+	max-width: 500px;
 }
-@media (max-width: 600px) {
+@media (max-width: 500px) {
 	.profile__wrapper {
 		min-width: 100%;
 		max-width: 100%;
@@ -61,7 +61,6 @@
 	max-width: 100%;
 	min-height: 140px;
 	aspect-ratio: 4 / 1;
-	display: flex;
 
 	border-radius: 0 0 10px 10px;
 
@@ -90,19 +89,24 @@
 
 .profile__header__avatar {
 	position: relative;
-	width: clamp(60px, 18vw, 90px);
-	height: clamp(60px, 18vw, 90px);
+	width: clamp(60px, 18vw, 80px);
+	height: clamp(60px, 18vw, 80px);
 	aspect-ratio: 1 / 1;
 
 	border-radius: 50%;
 	background-color: var(--primary-grey);
-	outline: 12px solid var(--primary-black);
+	outline: 4px solid var(--primary-black);
 
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
 
 	margin-top: -45px;
+}
+.profile__header__avatar__skeleton {
+	display: flex;
+	width: clamp(60px, 18vw, 80px);
+	height: clamp(60px, 18vw, 80px);
 }
 
 .profile__header__statistics {
@@ -125,6 +129,7 @@
 .profile__header__statistics-item--seperator {
 	flex: 0;
 	min-height: 33px;
+	min-width: 2px;
 	align-self: center;
 }
 
@@ -152,7 +157,7 @@
 
 	margin-top: 16px;
 }
-.profile__header__content__username {
+.profile__header__content__name {
 	font-size: var(--font-size--medium);
 	font-weight: 600;
 }
@@ -232,23 +237,32 @@
 }
 
 .profile__user-posts {
-	min-height: calc(100vh - 82px);
+	min-height: calc(100vh - 86px);
 	flex: 1;
 	display: flex;
 	flex-direction: column;
+	position: relative;
 
-	padding: 0 20px;
+	padding: 64px 20px 101px;
 	background: var(--primary-grey);
 	border-radius: 20px 20px 0 0;
 	margin-top: 24px;
 	transition: border-radius 0.3s ease-in-out;
 }
 .profile__user-posts__filter {
-	align-self: stretch;
+	position: absolute;
+	min-width: calc(500px - 40px);
 	display: flex;
+	gap: 5px;
 
-	min-height: 50px;
+	background: var(--primary-grey);
 }
+@media (max-width: 500px) {
+	.profile__user-posts__filter {
+		min-width: calc(100% - 40px);
+	}
+}
+
 .profile__user-posts__filter__item {
 	max-height: 50px;
 
@@ -266,4 +280,22 @@
 	background: var(--primary-blue);
 	position: absolute;
 	bottom: 0;
+}
+
+.profile__user-posts__container {
+	flex: 1;
+	align-self: stretch;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	grid-template-rows: repeat(5, 1fr);
+	gap: 4px;
+}
+
+.profile__user-posts__container__item {
+	aspect-ratio: 1 / 1;
+
+	background-size: cover;
+	background-position: center;
+	background-repeat: no-repeat;
+	border-radius: 5px;
 }
