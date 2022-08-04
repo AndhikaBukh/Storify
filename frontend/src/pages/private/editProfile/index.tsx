@@ -36,6 +36,7 @@ export const EditProfilePage = () => {
 
 	const [userData, setUserData] = useState<userDataInterface>();
 	const [editUserData, setEditUserData] = useState<userDataInterface>();
+
 	const [previewAvatar, setPreviewAvatar] = useState<string | undefined>(
 		undefined
 	);
@@ -124,7 +125,6 @@ export const EditProfilePage = () => {
 	useEffect(() => {
 		auth?.requestMe().then((res: any) => {
 			setUserData(res?.data?.user);
-			setEditUserData(res?.data?.user);
 		});
 	}, [handleEditedUserData]);
 
@@ -238,14 +238,16 @@ export const EditProfilePage = () => {
 								className="edit-profile__header__avatar__label__guide"
 								onClick={() => getAvatarInput.current?.click()}
 							>
-								<CameraIcon />
+								<div className="edit-profile__header__avatar__label__guide__icon">
+									<CameraIcon />
+								</div>
 							</button>
 						</div>
 						<div className="edit-profile__header__statistics">
 							<div className="edit-profile__header__statistics-items">
 								<div className="edit-profile__header__statistics-item">
 									<div className="edit-profile__header__statistics-item__value">
-										{userData?.post?.length}
+										{userData?.post?.length || 0}
 									</div>
 									<div className="edit-profile__header__statistics-item__description">
 										Posts
@@ -290,8 +292,6 @@ export const EditProfilePage = () => {
 					</div>
 
 					<div className="edit-profile__header__content">
-						{/* Normal Username - Custom Username ignoring availability */}
-
 						<div className="edit-profile__header__content__username">
 							{userData?.name === '' && editUserData?.name === ''
 								? userData?.username
@@ -301,7 +301,6 @@ export const EditProfilePage = () => {
 								: editUserData?.name}
 						</div>
 
-						{/* Valid Username - Username that is only valid when not taken by someone else */}
 						<div className="edit-profile__header__content__valid-name">
 							@
 							{editUserData?.username === ''
@@ -395,7 +394,6 @@ export const EditProfilePage = () => {
 											''
 										),
 									});
-									e.target.value;
 								}}
 								type="textarea"
 							/>

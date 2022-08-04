@@ -1,5 +1,5 @@
-import { FC, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { FC } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../utils/auth';
 import {
 	BackIcon,
@@ -91,7 +91,7 @@ export const Navbar: FC<NavbarProps> = ({
 					<div className="navbar-top__wrapper">
 						{rightContent !== undefined ? (
 							rightContent
-						) : (
+						) : rightContent === undefined ? null : (
 							<button className="navbar__icon-wrapper">
 								<MenuIcon />
 							</button>

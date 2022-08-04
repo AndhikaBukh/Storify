@@ -9,7 +9,7 @@ import { SettingsPage } from './private/settings';
 import { UploadPage } from './private/upload';
 import { ProfilePage } from './public/profile';
 import { MessegesPage } from './private/messages';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ForgotPasswordPage } from './public/forgotPassword';
 import { LandingPage } from './public/landing';
 import { LoginPage } from './public/login';
@@ -21,14 +21,7 @@ import { DebugPage } from './debug';
 import { EditProfilePage } from './private/editProfile';
 import { NotFoundPage } from './404';
 
-const hideNavbar = [
-	'/404',
-	'/landing',
-	'/accounts',
-	'/login',
-	'/signup',
-	'/settings',
-];
+const hideNavbar = ['/landing', '/accounts', '/login', '/signup', '/settings'];
 
 export const App = () => {
 	const auth = useAuth();
@@ -42,11 +35,10 @@ export const App = () => {
 
 	useEffect(() => {
 		// Change icon highlight based on current page
-		setCurrentPosition(`/${location.pathname.split('/')[1]}`);
+		setCurrentPosition(`/${location.pathname.split('/')[1].toLowerCase()}`);
 
 		// Checks if the current page is in the hideNavbar array
-		hideNavbar.includes(`/${location.pathname.split('/')[1]}`) ||
-		!localStorage.getItem('authToken')
+		hideNavbar.includes(`/${location.pathname.split('/')[1]}`)
 			? setShowBottomNavbar(false)
 			: setShowBottomNavbar(true);
 	}, [location.pathname]);
@@ -61,7 +53,6 @@ export const App = () => {
 				{/* ----------- Public Router ----------- */}
 				<Route path="/" element={<DebugPage />} />
 				<Route path="/landing" element={<LandingPage />} />
-				<Route path="/404" element={<NotFoundPage />} />
 				<Route
 					path="/login"
 					element={
@@ -91,18 +82,16 @@ export const App = () => {
 
 				{/* ----------- Semi-Public Route ----------- */}
 				<Route path="/search" element={<SearchPage />} />
-
-				<Route path={'/:username'} element={<ProfilePage />} />
+				<Route path="/:username" element={<ProfilePage />} />
 
 				{/* ----------- Private Route ----------- */}
 				<Route path="/" element={<HomePage />} />
 				<Route path="/messages" element={<MessegesPage />} />
 				<Route path="/settings" element={<SettingsPage />} />
-				<Route path="/upload" element={<UploadPage />} />
 				<Route path="/upload/*" element={<UploadPage />} />
 				<Route path="/accounts/edit" element={<EditProfilePage />} />
 
-				{/* ----------- Not Found Route ----------- */}
+				{/* ----------- Global Matching Route ----------- */}
 				<Route path="*" element={<NotFoundPage />} />
 			</Routes>
 

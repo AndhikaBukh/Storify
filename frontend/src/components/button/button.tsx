@@ -25,7 +25,6 @@ export const Button: FC<ButtonProps> = props => {
 	useEffect(() => {
 		if (type === 'submit') {
 			refElement.current?.addEventListener('keyup', e => {
-				console.log(e.key);
 				e.preventDefault();
 
 				e.stopPropagation();
