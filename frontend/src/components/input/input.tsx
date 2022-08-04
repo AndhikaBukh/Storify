@@ -23,6 +23,7 @@ interface InputProps {
 	isHighlighted?: boolean;
 	value?: string;
 	disabled?: boolean;
+	autoFocus?: boolean;
 	className?: string;
 }
 
@@ -38,10 +39,13 @@ export const Input: FC<InputProps> = ({
 	isHighlighted = false,
 	value,
 	disabled = false,
+	autoFocus = false,
 	className = '',
 }) => {
 	const handleClassName = `input-container ${className ? className : ''}${
-		icon === undefined ? ' input-container--without-icon' : ''
+		icon === undefined && eventIcon === undefined
+			? ' input-container--without-icon'
+			: ''
 	} ${isHighlighted ? 'input-container--highlighted' : ''}`;
 
 	const [inputValue, setInputValue] = useState(value);
@@ -74,10 +78,10 @@ export const Input: FC<InputProps> = ({
 				ref={refElement}
 				value={inputValue}
 				onChange={e => {
-					setInputValue(e.target.value);
 					onChange(e);
 				}}
-				disabled={disabled ? disabled : false}
+				disabled={disabled}
+				autoFocus={autoFocus}
 			/>
 
 			{eventIcon !== undefined ? (
@@ -91,14 +95,16 @@ export const Input: FC<InputProps> = ({
 		</div>
 	) : show && type === 'textarea' ? (
 		<textarea
-			className="input-container__element input-container__element--textarea"
+			className={`input-container__element input-container__element--textarea ${className}`}
 			placeholder={placeholder}
 			value={inputValue}
 			onChange={e => {
 				setInputValue(e.target.value);
 				onChange(e);
 			}}
-			disabled={disabled ? disabled : false}
+			disabled={disabled}
+			autoFocus={autoFocus}
+			spellCheck={false}
 		/>
 	) : null;
 };

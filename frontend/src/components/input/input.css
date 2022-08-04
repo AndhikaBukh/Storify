@@ -10,9 +10,11 @@
 	border-radius: 5px;
 	outline: 2px solid transparent;
 	transition: outline 200ms linear;
+
+	font-size: 0.875rem;
 }
 .input-container--without-icon {
-	padding: 16px 20px;
+	padding: 14px 16px;
 }
 .input-container--highlighted {
 	outline: 2px solid var(--error) !important;
@@ -25,28 +27,32 @@
 .input-container__element,
 .input-container__element::placeholder {
 	flex: 1;
-	font-size: var(--font-size--medium);
 	font-weight: 600;
 	color: var(--primary-white);
 	overflow: auto;
 }
 .input-container__element--textarea {
-	min-height: 160px;
+	flex: 1;
+	align-self: stretch;
+	min-height: 16ch;
 	background: var(--primary-grey);
-	padding: 16px 20px;
+	padding: 14px 16px;
 	border-radius: 5px;
 	border: none;
 	outline: 2px solid transparent;
 	transition: outline 200ms linear;
 	resize: vertical;
 	white-space: pre-wrap;
+	resize: none;
 }
 .input-container__element::placeholder {
 	color: var(--opacity-white--50);
 }
 
 .input-container:focus-within,
-.input-container:hover {
+.input-container:hover,
+.input-container__element--textarea:focus-within,
+.input-container__element--textarea:hover {
 	outline: 2px solid var(--primary-dark-blue);
 }
 
@@ -59,6 +65,7 @@
 .input-container__icon-wrapper {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	--size: 40px;
 	min-width: var(--size);
 	min-height: var(--size);
