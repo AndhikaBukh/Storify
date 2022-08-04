@@ -24,6 +24,7 @@
 
 .navbar-top {
 	min-width: 100%;
+	min-height: 86px;
 	display: flex;
 	justify-content: center;
 
@@ -35,11 +36,11 @@
 }
 
 .navbar-top__container {
-	min-width: 600px;
+	min-width: 500px;
 	display: flex;
 	justify-content: space-between;
 
-	max-width: 600px;
+	max-width: 500px;
 }
 @media (max-width: 640px) {
 	.navbar-top__container {
@@ -68,10 +69,10 @@
 	left: 0;
 	z-index: 999;
 
-	padding: 20px;
+	padding: 10px;
 	transition: all 0.5s ease;
 }
-@media (min-width: 620px) {
+@media (min-width: 520px) {
 	.navbar-bottom-container {
 		bottom: -100%;
 	}
