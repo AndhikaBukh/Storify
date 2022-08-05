@@ -16,10 +16,12 @@ const postController = {
 
             const result = await cloudinary.uploader.upload(req.file.path, {
                 folder: "sylly",
-                width: 1080,
-                height: 1080,
                 public_id: `post/${token}`,
                 secure_url: true,
+                width: 1080,
+                height: 1080,
+                quality: 60,
+                format: "jpg",
             });
 
             const post = new Post({

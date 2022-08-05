@@ -77,6 +77,13 @@ const UserSchema = new mongoose.Schema(
             },
         ],
 
+        story: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: "Story",
+            },
+        ],
+
         saved: [
             {
                 type: mongoose.Schema.Types.ObjectId,
