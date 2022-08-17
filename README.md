@@ -1,6 +1,6 @@
 ## ✨ Introduction
 
-Project Sylly is a social media app built with [React](https://reactjs.org/). We are building a platform for users to share their stories and connect with others. We are currently working on the frontend and backend of the app.
+Project Storify is a social media app built with [React](https://reactjs.org/). We are building a platform for users to share their stories and connect with others. We are currently working on the frontend and backend of the app.
 
 ## ⚙️ Installation
 
